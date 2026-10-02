@@ -20,12 +20,12 @@ Paste the prompts below as they are, filling in only the `<…>` parts.
 
 ## R1. Structure check (automatic)
 
-`node tools/check-skills.mjs skills/<name>` exits 0. This covers the frontmatter, the description
+`node tools/check-skills.mjs skills/<category>/<name>` exits 0. This covers the frontmatter, the description
 rules, the eight sections in order, `Done when:` on every step, links to existing files, the formats
 of `evals.md` and `CHANGELOG.md`, a privacy scan, and description overlap with other skills.
 
 *Supplement:* once VERIFIED.md confirms `muse skills validate`, also run
-`muse skills validate skills/<name>`. That is Muse's own check, and both must pass.
+`muse skills validate skills/<category>/<name>`. That is Muse's own check, and both must pass.
 
 ---
 
@@ -61,8 +61,8 @@ matching. Use at least 3 should-trigger and 2 should-not lines; aim for 5 and 3.
 
 ```text
 This is a skill trigger test. Do not perform any of the requests.
-Read every skills/*/SKILL.md frontmatter in this folder (descriptions only).
-Then, for each line of skills/<name>/evals.md under "Should trigger" and "Should not trigger",
+Read every skills/*/*/SKILL.md frontmatter in this folder (descriptions only).
+Then, for each line of skills/<category>/<name>/evals.md under "Should trigger" and "Should not trigger",
 answer in a table: request id | the one skill you would load (or "none") | the phrase in that
 skill's description that decided it.
 Choose from the quoted request text only. Ignore everything after the closing quote (the expected
@@ -93,14 +93,14 @@ data only.
 **Prompt (fresh session):**
 
 ```text
-Load the skill <name> from the batch worktree (skills/<name>/SKILL.md) and follow it exactly on
+Load the skill <name> from the batch worktree (skills/<category>/<name>/SKILL.md) and follow it exactly on
 this task: <the trial task from the skill's prompt>.
 Work only in <trial folder or worktree>. Synthetic data only.
 After the task, grade every step of the skill: step number | Done-when met? (yes/no) | evidence
 (command + exit code, file path, or quote) | was the instruction clear, wrong, or missing something?
 Then list: (1) any step you had to improvise because the skill did not say, (2) any instruction that
 was wrong for this project, (3) any anti-pattern you nearly committed.
-Append the result to skills/<name>/TRIALS.md under "## Trials" with today's date. No private data.
+Append the result to skills/<category>/<name>/TRIALS.md under "## Trials" with today's date. No private data.
 ```
 
 **Pass:** every `Done when` was met, and no improvised step changed the outcome.
@@ -110,7 +110,7 @@ session. Use at most 3 cycles. When it passes, add `## 0.2.0 — <date> — test
 
 *Supplement (optional): fixture runs.* This is Meta's cookbook method, from
 `docs/MUSE-REFERENCE.md` §8, and needs the harness from prompt E1. Rewrite the trial task as a
-tiny folder in `skills/<name>/fixtures/<case>/` that uses invented words (for example "Glimber").
+tiny folder in `skills/<category>/<name>/fixtures/<case>/` that uses invented words (for example "Glimber").
 With invented words, a correct result can only come from reading the files. Each case holds:
 
 - `prompt.txt`, which invokes the skill by name;
@@ -154,7 +154,7 @@ R2 for each changed skill, and adds `## 0.3.0 — <date> — reviewed`.
 **Prompt (append to the end of any normal task message, once skills exist):**
 
 ```text
-When you finish, for each skill you loaded this task, append to skills/<name>/TRIALS.md in
+When you finish, for each skill you loaded this task, append to skills/<category>/<name>/TRIALS.md in
 C:\Users\ddrac\muse-skills-wt\field (branch muse/skills-field) under "## Field use":
 - <date> | <task type in 5 words> | helped: <step> | missed: <what it did not cover, or none>
 Also note any request where you expected a skill to fire and none did, in
@@ -167,6 +167,14 @@ Create the field worktree once:
 After `core-retro` is built, it does this step itself.
 
 ---
+
+## The recursive loop
+
+R5–R7 are the stages of the recursive self-development scheme described in
+[`../SELF-DEVELOPMENT.md`](../SELF-DEVELOPMENT.md). Once `core-retro` exists, R5 is `/core-retro log`
+and R6 is `/core-retro review`, followed by `/core-skill-authoring revise` and `/core-skill-evals`.
+Everything is user-invoked. The seven safety rules there apply to every stage, especially "no
+self-grading" for the four self-development skills.
 
 ## R6. Revision (after 3 field uses, or after any miss)
 

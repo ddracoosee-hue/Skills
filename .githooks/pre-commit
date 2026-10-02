@@ -1,14 +1,18 @@
 #!/bin/sh
-# Blocks commits that add secrets or personal absolute paths to skills/ or templates/, and runs the
-# structure check on changed skills. Enabled by install.ps1 (git config core.hooksPath .githooks).
-# Git for Windows runs this with its bundled sh; node (20+) must be on PATH.
+# Blocks commits that add secrets or personal absolute paths to skills/ or templates/, runs the
+# structure check on changed skills, and checks the skills map is current. Enabled by install.ps1
+# (git config core.hooksPath .githooks). Git for Windows runs this with its bundled sh; node (20+)
+# must be on PATH.
 command -v node >/dev/null 2>&1 || { echo "pre-commit: node not found; install Node 20+ to enable the scan" >&2; exit 1; }
 
 files=$(git diff --cached --name-only --diff-filter=ACM -- skills templates)
-[ -z "$files" ] && exit 0
-# shellcheck disable=SC2086
-node tools/check-skills.mjs --scan $files || { echo "pre-commit: remove the flagged content (see above)" >&2; exit 1; }
+if [ -n "$files" ]; then
+  # shellcheck disable=SC2086
+  node tools/check-skills.mjs --scan $files || { echo "pre-commit: remove the flagged content (see above)" >&2; exit 1; }
+  for skill in $(printf '%s\n' $files | sed -n 's#^skills/\([^/]*/[^/]*\)/.*#skills/\1#p' | sort -u); do
+    [ -f "$skill/SKILL.md" ] || continue
+    node tools/check-skills.mjs "$skill" || exit 1
+  done
+fi
 
-for skill in $(printf '%s\n' $files | sed -n 's#^skills/\([^/]*\)/.*#skills/\1#p' | sort -u); do
-  node tools/check-skills.mjs "$skill" || exit 1
-done
+node tools/skill-map.mjs --check >/dev/null || { node tools/skill-map.mjs --check; echo "pre-commit: run node tools/skill-map.mjs and stage the result" >&2; exit 1; }

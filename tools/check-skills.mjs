@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Structure check for skills (refinement stage R1). Node 20+, no dependencies.
 //   node tools/check-skills.mjs                 check every skill under skills/
-//   node tools/check-skills.mjs skills/<name>   check one skill (plus overlap against the others)
+//   node tools/check-skills.mjs skills/<category>/<name>   check one skill (plus overlap against the others)
 //   node tools/check-skills.mjs --scan <files>  secret / personal-path scan only (pre-commit hook)
 // Exit 0 = no errors. Warnings never fail the run but must be read.
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
@@ -130,8 +130,10 @@ if (process.argv[2] === '--scan') {
 }
 
 const target = process.argv[2];
+// Skills live one level down, in function-category folders: skills/<category>/<skill>/.
 const all = existsSync(SKILLS)
-  ? readdirSync(SKILLS).filter((d) => statSync(join(SKILLS, d)).isDirectory()).map((d) => join(SKILLS, d))
+  ? readdirSync(SKILLS).filter((c) => statSync(join(SKILLS, c)).isDirectory())
+    .flatMap((c) => readdirSync(join(SKILLS, c)).filter((d) => statSync(join(SKILLS, c, d)).isDirectory()).map((d) => join(SKILLS, c, d)))
   : [];
 const chosen = target ? [resolve(target)] : all;
 const results = chosen.map(checkSkill).filter(Boolean);

@@ -1,0 +1,125 @@
+{
+  "about": "Source of truth for which function category each skill belongs to. tools/skill-map.mjs turns this into SKILLS-MAP.md and skills/<category>/README.md. Each skill lives in skills/<category>/<skill>/ and is called in Muse as /<skill>.",
+  "categories": [
+    {
+      "id": "01-self-development",
+      "title": "Self-development",
+      "purpose": "Build, test and improve skills — the recursive loop that improves every skill, including these four.",
+      "skills": ["core-skill-authoring", "core-skill-evals", "core-skill-maintenance", "core-retro"]
+    },
+    {
+      "id": "02-session-and-workflow",
+      "title": "Session and workflow",
+      "purpose": "Start a session, work in isolation, prove changes, commit, pass gates, and know when to stop and ask.",
+      "skills": ["core-session-start", "core-context-budget", "core-worktree", "core-recheck-loop", "core-commit",
+                 "core-phase-gate", "core-escalation", "core-long-run", "core-windows-env", "core-port-safety"]
+    },
+    {
+      "id": "03-project-setup",
+      "title": "Project setup and orientation",
+      "purpose": "Give a project its profile and structure, and learn where everything lives.",
+      "skills": ["core-project-profile", "core-repo-bootstrap", "textclone-codebase-map", "textclone-voice-glossary"]
+    },
+    {
+      "id": "04-records-and-handoff",
+      "title": "Records and handoff",
+      "purpose": "Write down what happened, what was decided and what comes next, for the user, Codex and the next session.",
+      "skills": ["core-handoff-writer", "core-report-writer", "core-codex-handoff", "core-roadmap-sync",
+                 "core-task-authoring", "core-decision-record", "core-experiment-log", "core-trace-report",
+                 "core-session-audit"]
+    },
+    {
+      "id": "05-planning-and-product",
+      "title": "Planning and product",
+      "purpose": "Decide what to build and why before any code, and check it from the user's side afterwards.",
+      "skills": ["core-product-brief", "core-acceptance-criteria", "core-scope-slicer", "core-premortem",
+                 "core-research-sources", "core-user-journey-walk", "core-dogfood"]
+    },
+    {
+      "id": "06-interface-design",
+      "title": "Interface design",
+      "purpose": "Layout, states, wording, readability, look, accessibility and the UI-specific project rules.",
+      "skills": ["core-information-architecture", "core-states-design", "core-microcopy", "core-readability",
+                 "core-ux-heuristics", "core-motion", "core-onboarding", "core-visual-design-method",
+                 "core-layout-audit", "core-a11y-review", "core-nextjs16", "core-static-site",
+                 "textclone-ui-guardrails", "textclone-ui-parity", "textclone-checkpoint-preview",
+                 "textclone-dictation", "orion-orb-integration", "orion-orb-states"]
+    },
+    {
+      "id": "07-build-and-test",
+      "title": "Build and test",
+      "purpose": "Write correct code with tests first, sound interfaces, and contracts that callers can rely on.",
+      "skills": ["core-test-first", "core-web-test", "core-browser-automation", "core-property-tests",
+                 "core-mutation-check", "core-type-hardening", "core-refactor-safely", "core-api-design",
+                 "core-state-machines", "core-diff-self-review", "textclone-synthetic-fixtures",
+                 "textclone-api-contract", "textclone-error-contract", "textclone-sse-contract"]
+    },
+    {
+      "id": "08-debugging-and-performance",
+      "title": "Debugging and performance",
+      "purpose": "Find causes, not symptoms: reproduce, bisect, triage flakes, profile and fix slowness.",
+      "skills": ["core-debug-method", "core-git-bisect", "core-flake-triage", "core-perf-profiling",
+                 "core-latency-budget", "core-concurrency-review", "textclone-convergence-debug", "textclone-latency"]
+    },
+    {
+      "id": "09-safety-and-control",
+      "title": "Safety and control",
+      "purpose": "Keep software and agents inside their limits: security, privacy, hostile input, permissions, budgets and who decides.",
+      "skills": ["core-security-review", "core-privacy-guard", "core-dependency-audit", "core-untrusted-content",
+                 "core-permissions-approvals", "core-bounded-execution", "core-ai-decision-boundary", "core-log-analysis"]
+    },
+    {
+      "id": "10-data-and-recovery",
+      "title": "Data and recovery",
+      "purpose": "Store, migrate, back up, recover and trace data, and keep datasets and statistics honest.",
+      "skills": ["core-backup-drill", "core-migration-rehearsal", "core-crash-recovery", "core-audit-trail",
+                 "core-dataset-hygiene", "core-stats-sanity", "textclone-db-migration", "textclone-jobs-recovery",
+                 "textclone-provenance", "textclone-corpus-growth", "textclone-ingest-adapter",
+                 "textclone-ingest-pipeline", "textclone-profile-feature"]
+    },
+    {
+      "id": "11-ai-and-models",
+      "title": "AI and models",
+      "purpose": "Run, prompt, evaluate and route language models, local or hosted, and Textclone's voice engine.",
+      "skills": ["core-ollama-models", "core-hosted-llm-apis", "core-prompt-versioning", "core-structured-output",
+                 "core-llm-eval", "core-judge-calibration", "core-retrieval-quality", "textclone-eval-harness",
+                 "textclone-blind-voice-test", "textclone-stylometry-metric", "textclone-registers",
+                 "textclone-ai-tells", "textclone-detect-calibration", "textclone-finetune-safety",
+                 "textclone-generation-loop", "textclone-critic-repair", "textclone-new-task-type",
+                 "textclone-prompt-parity", "textclone-llm-router", "textclone-compose-registry",
+                 "textclone-multi-profile"]
+    },
+    {
+      "id": "12-operations-and-release",
+      "title": "Operations and release",
+      "purpose": "Run, check, ship and present projects: CI, releases, launchers, health checks, logs and the portfolio site.",
+      "skills": ["core-ci-setup", "core-release", "core-windows-packaging", "core-local-observability",
+                 "core-portfolio-sync", "textclone-doctor-check", "textclone-launcher"]
+    },
+    {
+      "id": "13-flows",
+      "title": "Flows (entry points)",
+      "purpose": "Start here for whole jobs. Each flow calls the right skills from the other categories in order.",
+      "skills": ["core-flow-feature", "core-flow-bugfix", "core-flow-ui-change", "core-flow-experiment", "core-flow-release"]
+    }
+  ],
+  "finder": [
+    ["Start working in any repo", "core-session-start"],
+    ["A new or empty project needs structure", "core-repo-bootstrap"],
+    ["Build a feature end to end", "core-flow-feature"],
+    ["Fix something broken", "core-flow-bugfix"],
+    ["Change how a screen looks or is arranged", "core-flow-ui-change"],
+    ["Try an idea to improve AI output or speed", "core-flow-experiment"],
+    ["Ship a version", "core-flow-release"],
+    ["A test fails sometimes", "core-flake-triage"],
+    ["Something is slow", "core-perf-profiling"],
+    ["Before committing", "core-diff-self-review"],
+    ["Hand work to Codex", "core-codex-handoff"],
+    ["Text, logs or pages from outside could steer the AI", "core-untrusted-content"],
+    ["Calling Gemini, OpenAI or DeepSeek (keys, limits, cost)", "core-hosted-llm-apis"],
+    ["The portfolio site no longer matches a project", "core-portfolio-sync"],
+    ["Pin what ran in this session", "core-trace-report"],
+    ["After a task: log what the skills missed", "core-retro"],
+    ["Write or fix a skill", "core-skill-authoring"]
+  ]
+}

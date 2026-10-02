@@ -11,6 +11,9 @@ Two more rules apply to every flow, because a skill applies to one turn (docs/MU
 - A flow keeps its ledger in `.agents/state/<flow>.json`. At every gate it ends the turn with
   `Re-invoke: /<flow> continue`, and on re-invoke it resumes from the ledger.
 
+Every flow ends with `/core-retro log`. That step is how ordinary work feeds the recursive
+self-development loop (`../SELF-DEVELOPMENT.md`) without anything running on its own.
+
 Every flow SKILL.md also has this rule: **a flow never repeats a chained skill's instructions.**
 It names the skill, says what that step must hand to the next one, and gives the stage's
 "done when". This keeps flows short and stops them drifting from the skills they call.
@@ -40,6 +43,7 @@ Chain and hand-offs (each step is "use <skill>; hand on <output>; done when <con
 10. core-user-journey-walk (user-facing slices) → friction log; blockers fixed.
 11. core-phase-gate (when the phase's slices are done) → gate passed.
 12. core-handoff-writer + core-report-writer → handoff section and report.
+13. /core-retro log → field entries for every skill used (SELF-DEVELOPMENT.md).
 Decision rules: a failed step returns to its own skill; the flow never skips a step silently —
 a skipped step is written with its reason; user checkpoints stop the flow.
 Anti-patterns: starting at step 6; merging slices to save time.
@@ -79,6 +83,7 @@ Chain and hand-offs:
 7. core-diff-self-review → clean.
 8. core-commit → commit with the regression line.
 9. core-handoff-writer (and core-codex-handoff when Codex reviews) → record.
+10. /core-retro log → field entries for every skill used.
 Decision rules: no fix without a reproduction (or a recorded reason why none is possible); fix
 the cause, not the symptom; if the cause is in a protected area (prompts, schema) → stop
 condition.
@@ -122,6 +127,7 @@ Chain and hand-offs:
 10. Checkpoint preview if the project requires one (textclone-checkpoint-preview) → stop for
     approval.
 11. core-commit, core-handoff-writer.
+12. /core-retro log → field entries for every skill used.
 Decision rules: any change in requests or defaults → it's not a UI change; stop and use
 core-flow-feature; audit findings are fixed in the UI, never in the audit.
 Anti-patterns: raw colours; skipping both themes; testing only at laptop width.
@@ -156,6 +162,7 @@ Chain and hand-offs:
 4. core-llm-eval → comparison run id.
 5. core-stats-sanity → verdict with n and CI.
 6. Keep (core-commit) or revert; core-experiment-log → result entry.
+7. /core-retro log → field entries for every skill used.
 Decision rules: one variable per experiment; GPU runs need the user's go-ahead; "no significant
 change" → revert.
 Anti-patterns: changing two things; keeping changes on vibes.
@@ -191,6 +198,7 @@ Chain and hand-offs:
 4. core-ci-setup or core-recheck-loop on master → green.
 5. core-release → version, notes, tag, smoke test.
 6. core-report-writer → release report.
+7. /core-retro log → field entries for every skill used.
 Decision rules: any failed step stops the release; pushing tags is the user's action.
 Anti-patterns: releasing with a pending checkpoint.
 Evidence: the ledger.

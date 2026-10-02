@@ -42,6 +42,11 @@ user to merge.
 | Textclone | **A only** | The personal writing corpus. `.env` files. The checkpoint preview copies the live database. |
 | Orion | **A only** | Credentials: the host token and model and service keys in `.env`. |
 | Manuscript | **A only, permanently** | Private text. |
+| Microcoin | **A only** | Future live collectors need credentials; collected content is hostile. |
+| Charizard | **A only** | Spending and checkout. |
+| MCLA | **A only** | Sends network logs and diagrams to a hosted model. |
+| SOC-Analyst-Tool, OmniRoute, Traitor, SotS | **A until profiled** | Purpose not yet recorded. |
+| Portfolio site | B allowed | Public content only. |
 | This skills repo | A for authoring; B allowed for fixture runs | Fixtures use invented data. |
 
 Per-project template:

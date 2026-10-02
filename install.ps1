@@ -34,7 +34,9 @@ Get-ChildItem -Path $Target -Force | Where-Object { $_.LinkType -eq 'Junction' }
 }
 
 $linked = 0
-Get-ChildItem -Path $repoSkills -Directory | ForEach-Object {
+# Skills are grouped by function in the repo (skills\<category>\<skill>); Muse gets one flat list.
+Get-ChildItem -Path $repoSkills -Directory | Get-ChildItem -Directory |
+    Where-Object { Test-Path (Join-Path $_.FullName 'SKILL.md') } | ForEach-Object {
     $link = Join-Path $Target $_.Name
     if (Test-Path $link) {
         $item = Get-Item $link -Force

@@ -26,7 +26,7 @@ Never push. Never merge. The user reviews the batch branch and merges it.
 ## 2. What one skill folder contains
 
 ```
-skills/<name>/
+skills/<category>/<name>/          <category> is the skill's function folder from skills-map.json
   SKILL.md        frontmatter + the eight sections below, 150 lines or fewer (hard limit 200)
   evals.md        trigger tests (format in 01-REFINEMENT.md, stage R2)
   CHANGELOG.md    "## 0.1.0 — YYYY-MM-DD — draft" plus one line on what the version does
@@ -87,12 +87,13 @@ the most important line in the file. Change it only when stage R2 fails, and rec
    file for each project fact you will write.
 2. Write the folder (section 2). Done when: `SKILL.md`, `evals.md`, `CHANGELOG.md` and any
    `references/` files the prompt lists exist (`TRIALS.md` is created in step 4).
-3. Run `node tools/check-skills.mjs skills/<name>`. Done when: exit 0. Read every warning, and fix any
+3. Run `node tools/check-skills.mjs skills/<category>/<name>`. Done when: exit 0. Read every warning, and fix any
    description overlap it reports.
 4. Run stage R2 (trigger check) and stage R3 (trial) from `01-REFINEMENT.md`. Done when: both are
    recorded and passed, or 3 fix cycles are used up (then report and stop).
 5. Commit only that skill's folder:
-   `git add skills/<name>` then `git commit -m "Add skill <name> (draft)"`. Done when: `git status`
+   `node tools/skill-map.mjs` (regenerates SKILLS-MAP.md and the category README), then
+   `git add skills/<category>/<name> SKILLS-MAP.md skills/<category>/README.md` then `git commit -m "Add skill <name> (draft)"`. Done when: `git status`
    shows nothing else staged.
 6. Report (section 5). Done when: the report is sent.
 
@@ -102,7 +103,7 @@ One skill per user message, unless the user writes otherwise.
 
 ```
 Skill: <name>  (status: draft | tested)
-Folder: skills/<name>/  SKILL.md lines: <n>
+Folder: skills/<category>/<name>/  SKILL.md lines: <n>
 Description: <verbatim>
 Checker: <exit code and summary line>
 R2 trigger check: <T passed>/<T total>, <N passed>/<N total>  (rounds used: <n>)

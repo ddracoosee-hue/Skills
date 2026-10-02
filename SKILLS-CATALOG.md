@@ -1,6 +1,6 @@
 # Muse skills catalog
 
-This is the full list of skills planned for this repo. It is a list only: no skill is written yet.
+This is the full list of skills planned for this repo: 128 skills. No skill is written yet.
 Build prompts for Muse come later, in batches, starting with the P1 skills.
 
 The list is ordered so it reads top to bottom as one path:
@@ -10,7 +10,12 @@ The list is ordered so it reads top to bottom as one path:
 3. the shared core, from planning a product to releasing it;
 4. the flows that chain core skills together;
 5. the Textclone pack;
-6. the Orion pack.
+6. the Orion pack;
+7. cross-project skills drawn from all the other projects.
+
+The same skills sorted by **function**, showing which skill pairs with which and what to call
+instead, are in [SKILLS-MAP.md](SKILLS-MAP.md). On GitHub, each skill lives in its function's
+folder, `skills/<category>/<skill>/`.
 
 Each table row is one skill, with what it does and why it matters for building better products.
 
@@ -251,7 +256,26 @@ the voice is. These skills point Muse at those problems before anything else.
 
 The rest of the Orion pack will be scoped from the Orion repo itself, not guessed.
 
-## 7. Totals
+## 7. Cross-project skills (all projects)
+
+These come from patterns that repeat across the whole portfolio, not just Textclone and Orion (see
+[PROJECTS.md](PROJECTS.md)). Prompts are in [`prompts/60-cross-project.md`](prompts/60-cross-project.md).
+
+| Skill | Pri | What it does and why |
+| --- | --- | --- |
+| `core-repo-bootstrap` **New** | P1 | Gives a new or empty repo its working structure: README, AGENTS.md rules, spec, plan, decisions, handoff, CI, lane and profile. OmniRoute, Traitor, SotS and SOC-Analyst-Tool are empty today. |
+| `core-untrusted-content` **New** | P1 | Treats chats, logs, pages, documents and images as data, never instructions, and tests prompt injection. Microcoin, MCLA, Orion and Textclone all feed outside text to models. |
+| `core-permissions-approvals` **New** | P2 | Capabilities enforced in code; approval tiers (auto, ask, never); allow once, for the session, or deny; fail closed. Orion, Microcoin, Charizard. |
+| `core-bounded-execution` **New** | P2 | Completion conditions, budgets reserved before use, no-progress detection, one retry owner, partial results. Microcoin, Charizard, Textclone, Orion. |
+| `core-ai-decision-boundary` **New** | P2 | Models propose and deterministic code decides, behind typed validation and gates the model cannot talk past. Orion, Microcoin, Textclone. |
+| `core-audit-trail` **New** | P2 | Append-only records with hashes, lineage, idempotency keys and a verify command. Orion's event log, Microcoin's evidence, Charizard's spend ledger. |
+| `core-hosted-llm-apis` **New** | P2 | Keys from the environment, timeouts, rate limits, cost caps, fallbacks, and what data may leave the machine. Orion, MCLA, Ella's Closet, Wholesale Market Analysis. |
+| `core-portfolio-sync` **New** | P2 | Keeps the portfolio site's project cards and run instructions true to each repo. The site already disagrees with Microcoin's README. |
+| `core-log-analysis` **New** | P3 | Security log analysis: typed events, deterministic policy checks, models only to explain. MCLA, SOC-Analyst-Tool. |
+| `core-browser-automation` **New** | P3 | Real-site automation with meaning-based selectors, dry-run first, a mock site and limits before irreversible clicks. Charizard. |
+| `core-static-site` **New** | P3 | Links, accessibility, mobile layout, metadata and publishing for the GitHub Pages site. |
+
+## 8. Totals
 
 | Group | From first list | New | Total |
 | --- | --- | --- | --- |
@@ -260,9 +284,10 @@ The rest of the Orion pack will be scoped from the Orion repo itself, not guesse
 | Flows | 0 | 5 | 5 |
 | Textclone pack | 20 | 15 | 35 |
 | Orion pack | 1 | 1 | 2 |
-| **All** | **46** | **71** | **117** |
+| Cross-project | 0 | 11 | 11 |
+| **All** | **46** | **82** | **128** |
 
 The first list had 45 skills plus #0 `core-project-profile`.
 
-P1 count: 58. The first build batch is the foundation P1s, so every later skill is written and
+P1 count: 60. The first build batch is the foundation P1s, so every later skill is written and
 tested the same way. Then the core P1s, the five flows, and the Textclone voice-quality P1s.

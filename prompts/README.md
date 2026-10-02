@@ -1,7 +1,7 @@
 # Muse skill-build prompts
 
 This folder holds one build prompt for every skill in [`SKILLS-CATALOG.md`](../SKILLS-CATALOG.md):
-117 prompts. They are organised in the same sections as the catalog, and come with the rules Muse
+128 prompts. They are organised in the same sections as the catalog, and come with the rules Muse
 follows to build them and the "post-training" that refines them.
 
 ## How the pieces fit
@@ -10,9 +10,12 @@ follows to build them and the "post-training" that refines them.
 | --- | --- | --- |
 | [`00-BUILD-PROTOCOL.md`](00-BUILD-PROTOCOL.md) | The rules for every build: where Muse works, the folder layout, the eight sections, writing rules, the build sequence, the report, stop conditions. | Muse, once per session |
 | [`01-REFINEMENT.md`](01-REFINEMENT.md) | The post-build training. **R1** structure check, **R2** trigger check, **R3** trial run, **R4** cross-review, **R5** field use, **R6** revision, **R7** regression. Each stage has a ready-made prompt, and statuses go draft → tested → reviewed → stable. | Muse; Codex for R4 |
-| [`../tools/check-skills.mjs`](../tools/check-skills.mjs) | The automatic R1 check. Run `node tools/check-skills.mjs [skills/<name>]`. | Muse |
+| [`../tools/check-skills.mjs`](../tools/check-skills.mjs) | The automatic R1 check. Run `node tools/check-skills.mjs [skills/<category>/<name>]`. | Muse |
 | [`05-environment-and-tools.md`](05-environment-and-tools.md) | Optional supplements: **E0** check Muse facts on this PC (fills `VERIFIED.md`); **E1** a fixture harness; **E3** a trace ledger; **E4** hooks. | Muse, when you want them |
-| `10-…` to `50-…` | The 117 skill prompts, one fenced block each. | You paste them into Muse |
+| `10-…` to `60-…` | The 128 skill prompts, one fenced block each. `60-cross-project.md` holds the skills drawn from all projects. | You paste them into Muse |
+| [`../SKILLS-MAP.md`](../SKILLS-MAP.md) | Every skill by function category: what to call, what it pairs with, what to call instead. | You, when choosing a skill |
+| [`../SELF-DEVELOPMENT.md`](../SELF-DEVELOPMENT.md) | The recursive self-development loop and its seven safety rules. | You and Muse |
+| [`../PROJECTS.md`](../PROJECTS.md) | Every project the skills serve, and the patterns they share. | Muse, for core skills |
 
 Each skill prompt contains:
 - the exact description;
@@ -70,8 +73,10 @@ findings to Muse: "Apply these R4 findings per 01-REFINEMENT.md R4, one commit p
 | 1 | `foundation` | core-skill-authoring, core-skill-evals, core-project-profile | 10 |
 | 2 | `core-session` | core-session-start, core-worktree, core-recheck-loop, core-commit, core-phase-gate, core-escalation, core-long-run, core-handoff-writer | 20 |
 | 2b | `core-session` (same batch) | core-windows-env, core-port-safety, core-privacy-guard | 24 |
+| 2c | `core-session` (same batch) | core-repo-bootstrap | 60 |
 | 3 | `core-quality` | core-test-first, core-debug-method, core-diff-self-review, core-flake-triage, core-web-test | 23 |
 | 3b | `core-quality` (same batch) | core-codex-handoff | 27 |
+| 3c | `core-quality` (same batch) | core-untrusted-content | 60 |
 | 4 | `core-product` | core-product-brief, core-acceptance-criteria, core-scope-slicer, core-user-journey-walk | 21 |
 | 5 | `core-ux` | core-information-architecture, core-states-design, core-microcopy, core-readability, core-visual-design-method, core-layout-audit, core-a11y-review, core-nextjs16 | 22 |
 | 6 | `core-ai` | core-ollama-models, core-prompt-versioning, core-llm-eval, core-experiment-log | 25 |
@@ -81,7 +86,7 @@ findings to Muse: "Apply these R4 findings per 01-REFINEMENT.md R4, one commit p
 | 8 | `textclone-voice-ui` | textclone-eval-harness, textclone-blind-voice-test, textclone-corpus-growth, textclone-provenance, textclone-ui-guardrails, textclone-ui-parity, textclone-checkpoint-preview, orion-orb-integration | 40, 43, 50 |
 | 9 | `flows` | core-flow-feature, core-flow-bugfix, core-flow-ui-change, core-flow-experiment | 30 |
 
-That covers all 58 P1 skills plus one pulled-forward P2.
+That covers all 60 P1 skills plus one pulled-forward P2.
 
 **P2 batches** (build after batch 9, one catalog section at a time):
 - `foundation-2`: core-skill-maintenance, core-retro, then the supplemental core-trace-report and
@@ -101,8 +106,11 @@ That covers all 58 P1 skills plus one pulled-forward P2.
   textclone-ingest-pipeline, textclone-profile-feature, textclone-doctor-check,
   textclone-jobs-recovery, textclone-dictation, textclone-voice-glossary.
 - `orion-2`: orion-orb-states.
+- `cross-project-2`: core-permissions-approvals, core-bounded-execution, core-ai-decision-boundary,
+  core-audit-trail, core-hosted-llm-apis, core-portfolio-sync.
 
-**P3 skills** (build when the need first comes up): core-dogfood, core-onboarding,
+**P3 skills** (build when the need first comes up): core-log-analysis, core-browser-automation,
+core-static-site, core-dogfood, core-onboarding,
 core-property-tests, core-mutation-check, core-type-hardening, core-local-observability,
 core-release, core-windows-packaging, core-flow-release, textclone-finetune-safety,
 textclone-multi-profile, textclone-launcher.

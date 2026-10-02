@@ -3,9 +3,16 @@
 Shared skills for Meta Muse Code. One clone serves every project on this PC. Muse runs in
 PowerShell here.
 
-- **What to build:** the planned skills, their priorities and the anatomy every skill follows are in
-  [SKILLS-CATALOG.md](SKILLS-CATALOG.md).
-- **How to build:** to build them with Muse, start at [prompts/README.md](prompts/README.md).
+**Where to look:**
+
+| You want to… | Open |
+| --- | --- |
+| Find the right skill to call, and what it pairs with | [SKILLS-MAP.md](SKILLS-MAP.md): every skill by function |
+| Browse skills on GitHub | [`skills/`](skills/): one folder per function, each with its own README |
+| See how skills improve themselves | [SELF-DEVELOPMENT.md](SELF-DEVELOPMENT.md): the recursive loop and its safety rules |
+| See which projects the skills serve | [PROJECTS.md](PROJECTS.md) and [LESSONS.md](LESSONS.md) |
+| See the full plan with priorities | [SKILLS-CATALOG.md](SKILLS-CATALOG.md) |
+| Build skills with Muse | [prompts/README.md](prompts/README.md) |
 
 > This repository is **public**. Skills must be safe to publish: no secrets, private text or
 > personal paths. The pre-commit scan enforces this. To make the repo private, go to GitHub →
@@ -15,15 +22,27 @@ PowerShell here.
 
 ```
 skills/
-  core-project-profile/SKILL.md   # reads <project>/.muse/project.json
-  core-<name>/SKILL.md            # project-neutral skills
-  textclone-<name>/SKILL.md       # Textclone pack
-  orion-<name>/SKILL.md           # Orion pack
+  01-self-development/            # one folder per function (13), each with a generated README
+    core-skill-authoring/SKILL.md # one folder per skill; called in Muse as /core-skill-authoring
+  02-session-and-workflow/
+  …
+  13-flows/
+skills-map.json                   # which function each skill belongs to (edit this)
+SKILLS-MAP.md                     # generated map: what to call, pairs with, instead use
+tools/skill-map.mjs               # regenerates SKILLS-MAP.md and the folder READMEs
 templates/SKILL.template.md       # the eight-section skeleton every skill starts from
 prompts/                          # one Muse build prompt per skill, the build protocol, refinement
 tools/check-skills.mjs            # structure and privacy check every skill must pass (stage R1)
 install.ps1                       # links each skill into ~\.agents\skills
-SKILLS-CATALOG.md                 # the 117 planned skills
+SKILLS-CATALOG.md                 # the 128 planned skills
+```
+
+Self-development and portfolio files:
+
+```
+SELF-DEVELOPMENT.md      the recursive loop: use → log → review → revise → test, always user-invoked
+LESSONS.md               lessons proven across two or more projects
+PROJECTS.md              every project the skills serve
 ```
 
 Supplemental files, used where they help and never as the structure:
@@ -55,7 +74,8 @@ powershell -ExecutionPolicy Bypass -File $HOME\muse-skills\install.ps1
 ```
 
 The installer links each skill separately into `~\.agents\skills\<name>`, so other skills can
-live alongside them. It never overwrites a real folder, and it turns on the pre-commit scan. If you
+live alongside them. The function folders exist only in the repo: Muse sees one flat list, and you
+call every skill by name. It never overwrites a real folder, and it turns on the pre-commit scan. If you
 ran the first version (one link for the whole folder), it replaces that link.
 
 Restart Muse, then run `/skills` (or `muse skills list`). The installed skills should be listed.

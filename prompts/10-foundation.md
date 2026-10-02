@@ -36,6 +36,13 @@ Steps the skill must contain:
 7. Write evals.md (5 T lines in the user's words, 3 N lines that are real near-misses).
 8. Write CHANGELOG.md "0.1.0 — <date> — draft".
 9. Run the checker; fix every error and every overlap warning.
+10. Place the folder in its function category, skills/<category>/<name>/, using skills-map.json
+    (a new skill gets added there in the category that matches its function); in References add a
+    line "Related: <skills it pairs with>"; run node tools/skill-map.mjs. Done when: --check passes.
+Revise mode (/core-skill-authoring revise <skill>, see SELF-DEVELOPMENT.md): apply only proposals
+the user approved; every change gets a CHANGELOG.md line "Because: <TRIALS.md / MISSES.md entry ids>";
+add the trial or eval case that would have caught the miss; bump the version (minor for new steps or
+rules, patch for wording); then hand over to /core-skill-evals.
 Decision rules to include: if a fact has no source → leave it out and list it as an open question;
 if two skills would share more than half their steps → propose a merge instead; if SKILL.md passes
 150 lines → move detail to references/, never delete steps; core skills never hard-code project
@@ -49,6 +56,8 @@ references/ to write:
   "core-example-lint" (synthetic), plus the protocol §8 supplemental rules (gate wording,
   saving state in skills that pause, no dates in SKILL.md, commands not concepts).
 - references/description-guide.md: 6 weak descriptions and their rewrites.
+- references/revise-mode.md: the revise procedure and the seven recursion rules from
+  SELF-DEVELOPMENT.md §3 that apply when revising.
 
 Evals:
 T: "write a new skill that teaches you how we do commits" | "this skill is too long and messy,
@@ -88,10 +97,16 @@ Steps:
 3. R2: open a fresh session per round; run the R2 prompt; fill the results table in evals.md.
 4. On an R2 failure, edit only the description/Use when/Not for; max 3 rounds; record each round.
 5. R3: run the trial task from the skill's prompt or TRIALS.md; grade every step; append to TRIALS.md.
-6. Update CHANGELOG.md status only when R1–R3 all pass.
+6. Update CHANGELOG.md status only when R1–R3 all pass and the new version does at least as well
+   as the previous one (same trials, plus any fixtures in EVALS.csv).
 7. For a group, run R2 for every skill in the group after any description change (R7).
+8. No self-grading (SELF-DEVELOPMENT.md §3 rule 1): when the skill under test is one of the four
+   self-development skills (core-skill-authoring, core-skill-evals, core-skill-maintenance,
+   core-retro), run this procedure from the previous stable version, read with
+   git show skill/core-skill-evals/v<last stable>:skills/01-self-development/core-skill-evals/SKILL.md,
+   and the checker from the same tag. If no stable tag exists yet, say so and have the user review.
 Decision rules: a near-miss that fires the skill is worse than a missed trigger (it does wrong
-work) → fix it first; never edit T/N lines to make a test pass (only add new ones); if two skills
+work) → fix it first; never edit or remove T/N lines or trials to make a test pass (tests only grow); if two skills
 keep stealing each other's requests after 3 rounds → report "merge candidate" with both names; R2
 is a proxy, so never mark a skill stable from R2 alone.
 Anti-patterns: running R2 in the session that wrote the skill (it knows the answers); test lines
@@ -204,6 +219,14 @@ Steps:
 5. Retire: a skill unused in 90 days of field logs, or fully covered by another → propose
    retirement (move to retired/ with a note); never delete.
 6. Merge: two skills flagged as merge candidates by core-skill-evals → propose one merged skill.
+7. After every merge to main: run node tools/skill-map.mjs (the map and category READMEs are
+   generated; --check must pass) and tag each released skill version:
+   git tag skill/<name>/v<x.y.z> (the user pushes tags).
+8. Rollback (/core-skill-maintenance rollback <skill>): when field use shows a revision did worse,
+   restore the folder from the last stable tag on a branch, record "Because: <evidence>" in
+   CHANGELOG.md, and hand over to /core-skill-evals.
+9. Placement: a skill whose job has drifted into another function → propose moving it in
+   skills-map.json and the folder; the map shows the change.
 Decision rules: retire or merge only with the user's approval; a renamed source → update the
 citation and the fact; a removed source → mark the skill "blocked" and ask.
 Anti-patterns: bulk find-and-replace across skills; editing a stable skill without re-running R3;
@@ -233,26 +256,41 @@ Build the skill core-retro. Follow prompts/00-BUILD-PROTOCOL.md and prompts/01-R
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use at the end of a phase or a hard task to record what failed or wasted time and propose skill edits from the evidence. Not for project changes making skills stale (use `core-skill-maintenance`).
+Use at the end of a task (log mode) or after a phase (review mode): capture what skills missed, sort lessons by skill, project or portfolio, and propose evidence-backed edits. Not for stale facts after project changes (use `core-skill-maintenance`).
 
-Purpose: automate refinement stages R5 and R6 so skills keep improving from real work.
+Purpose: the engine of the recursive self-development loop (SELF-DEVELOPMENT.md). It runs only when
+the user or a flow calls it; it never edits a skill itself.
 
-Read first: prompts/01-REFINEMENT.md R5–R7, the field worktree layout, MISSES.md format.
+Read first: SELF-DEVELOPMENT.md (all), LESSONS.md, PROJECTS.md, prompts/01-REFINEMENT.md R5–R7,
+the field worktree layout and MISSES.md format, EVALS.csv.
 
-Steps:
-1. Collect evidence for the phase: failed checks, retries, stop conditions hit, questions asked,
-   time sinks (from the handoff and the session). Done when: a list with one line each exists.
-2. Map each item to the skill that should have prevented it, or "no skill" (a new-skill candidate).
-3. Write the R5 field entries (3 lines per loaded skill) and MISSES.md lines.
-4. For each skill with 3 new entries or any miss, draft the smallest R6 edit; do not apply it.
-5. Present the proposals: skill, evidence lines, proposed edit, expected effect.
-6. On approval, apply them via core-skill-authoring and run R1–R3 (R7 for groups).
+Log mode (/core-retro log, at the end of a task; every flow ends with it):
+1. For each skill used this task: one field entry in its TRIALS.md — date | task type in 5 words |
+   helped: <step> | missed: <what it did not cover, or none>. Done when: one entry per skill.
+2. Moments where a skill should have been used and wasn't → MISSES.md.
+3. Sort each lesson: skill-specific (stays in TRIALS.md), project-specific (propose a
+   .muse/project.json fact or a project-skill step), cross-project (propose a LESSONS.md row with
+   status "proposed" and the projects where it was seen).
+4. Commit the logs on the field branch ("Field log <date>"). No private data. Done when: committed.
+Review mode (/core-retro review, whenever the user chooses):
+5. Read all field entries, misses and proposed lessons since the last review, for every skill
+   including the four self-development skills (this is what makes the loop recursive).
+6. Apply the evidence threshold: the same failure twice → propose the smallest edit; once is
+   logged only, unless it caused harm or leaked private data; a gap with no skill twice → propose a
+   new skill and its category in skills-map.json.
+7. For each proposed or seed lesson in LESSONS.md seen in two or more projects: propose accepting it
+   and which core skills should absorb it.
+8. Gate: present each proposal (skill, evidence ids, edit, expected effect) and ask
+   "Approve, request changes, or cancel?" one at a time; save progress to
+   .agents\state\core-retro.json; end each turn with "Re-invoke: /core-retro review continue".
+9. Approved proposals go to /core-skill-authoring revise <skill>, then /core-skill-evals; respect
+   "one level at a time" (SELF-DEVELOPMENT.md §3 rule 4) when a self-development skill is involved.
 Decision rules: one failure is an anecdote → log it; the same failure twice → propose an edit;
-a failure with no matching skill twice → propose a new skill; never edit a skill without approval.
+never edit a skill or accept a lesson without approval; never schedule itself or run unasked.
 Anti-patterns: blaming the model instead of the instructions; vague lessons ("be more careful");
-private text in logs; editing several skills in one commit.
-Evidence: the item → skill table, entries written, proposals, and approvals received.
-
+private text in logs; editing several skills in one commit; proposals without evidence ids.
+Evidence: log mode — entries written and lessons sorted; review mode — the item → skill table,
+proposals with evidence ids, approvals received, lessons accepted.
 Evals:
 T: "phase 3 is done, what should we learn from it?" | "that task took four retries, capture why" |
 "do a retro on this week's runs" | "log what the skills missed today" | "which skills need improving
