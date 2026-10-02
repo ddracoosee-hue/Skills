@@ -16,3 +16,4 @@
 | Date | Round | Should trigger | Should not | Changed |
 | --- | --- | --- | --- | --- |
 | 2026-10-02 | 1 | 5/5 | 1/3 (N1,N2 → none; targets core-skill-evals, core-retro unbuilt, routing correct, no misfire) | none — re-run N1 at batch close, N2 when core-retro exists |
+| 2026-10-02 | 2 | 5/5 | 2/3 (N1 → core-skill-evals ✓; N2 → none, target core-retro unbuilt, routing correct) | none — re-run N2 when core-retro exists |

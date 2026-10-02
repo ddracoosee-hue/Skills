@@ -16,3 +16,4 @@
 | Date | Round | Should trigger | Should not | Changed |
 | --- | --- | --- | --- | --- |
 | 2026-10-02 | 1 | 5/5 | 1/3 (N2,N3 → none; targets core-port-safety, core-worktree unbuilt, routing correct, no misfire) | none — re-run N2/N3 when targets exist |
+| 2026-10-02 | 2 | 5/5 | 1/3 (N2,N3 → none; targets core-port-safety, core-worktree unbuilt, routing correct, no misfire) | none — re-run N2/N3 when targets exist |
