@@ -22,6 +22,11 @@
 Write the requests in different words from the description. Use at least
 3 should-trigger and 2 should-not lines; aim for 5 and 3.
 
+Score N lines per prompts/01-REFINEMENT.md: routed, misfire, or deferred.
+A Should-not cell reads "x/y exercised, z deferred"; list each deferred
+line's rerun dependency in Changed (for example "re-run N2 when core-retro
+exists"). A provisional round (zero misfires, some deferred) is not a pass.
+
 ## TRIALS.md
 
 ```markdown

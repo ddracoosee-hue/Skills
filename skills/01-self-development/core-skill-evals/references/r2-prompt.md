@@ -19,8 +19,12 @@ Placeholders:
 - `<name>`: the skill under test.
 
 Pass: every T line picks `<name>`, and every N line picks its arrow target
-(or none). If an arrow target is not built yet, "none" with the correct
-reasoning counts as routed, not as a misfire; re-run when the target exists.
+(or none). Score each N line as routed, misfire, or deferred, exactly as
+prompts/01-REFINEMENT.md defines them: a line whose expected target is not
+built yet is deferred — record the observed choice, do not count it as
+exercised, and re-run it when its target exists. A round with zero misfires
+and at least one deferred line is provisional, not a full pass; write its
+score as "N x/y exercised, z deferred".
 
 On a failure: change only the description and the `## Use when` / `## Not for`
 sections, never the test lines. Re-run in a new session, at most 3 rounds,

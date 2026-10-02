@@ -29,10 +29,12 @@ export const cases = [
       const dir = makeRepoCopy('f13b');
       const p = join(dir, 'skills/01-self-development/core-skill-evals/CHANGELOG.md');
       const text = readFileSync(p, 'utf8');
-      writeFileSync(p, text.replace('## 0.2.0 — 2026-10-02 — tested', '## 0.2.0 — 2026-10-02 — BROKEN'));
+      assert(/^## \d+\.\d+\.\d+ — \d{4}-\d{2}-\d{2} — [a-z]+$/m.test(text), 'fixture has a valid newest entry to break');
+      writeFileSync(p, text.replace(/^## .+$/m, '## 0.9.9 — 2026-10-02 — BROKEN'));
       const r = await node([join(dir, 'tools', 'skill-map.mjs')], { cwd: dir });
       assertEq(r.exit, 1, `generator must fail on an invalid newest entry (was ${r.exit}): ${(r.stdout + r.stderr).slice(0, 400)}`);
-      assert(!r.stdout.includes('v0.1.0'), 'generator must not silently display the older status');
+      const row = readFileSync(join(dir, 'SKILLS-MAP.md'), 'utf8').split('\n').find((l) => l.startsWith('| `/core-skill-evals` |'));
+      assert(row && !row.includes('v0.1.0'), 'generator must not silently display the older status');
     },
   },
   {
