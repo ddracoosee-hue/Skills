@@ -17,3 +17,4 @@
 | --- | --- | --- | --- | --- |
 | 2026-10-02 | 1 | 5/5 | 1/3 (N2,N3 → none; targets core-port-safety, core-worktree unbuilt, routing correct, no misfire) | none — re-run N2/N3 when targets exist |
 | 2026-10-02 | 2 | 5/5 | 1/3 (N2,N3 → none; targets core-port-safety, core-worktree unbuilt, routing correct, no misfire) | none — re-run N2/N3 when targets exist |
+| 2026-10-02 | 3 | 5/5 | 1/1 exercised, 2 deferred (N2,N3 → none; targets core-port-safety, core-worktree unbuilt, routing correct, no misfire) | none — provisional; re-run N2/N3 when targets exist; fresh-context subagent round |
