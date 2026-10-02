@@ -3,11 +3,14 @@
 // any built SKILL.md files. Node 20+, no dependencies.
 //   node tools/skill-map.mjs          write the map and the category READMEs
 //   node tools/skill-map.mjs --check  exit 1 if they are out of date or the map is inconsistent
+//
+// SKILLS_REPO_ROOT overrides the repo root (used by the pre-commit snapshot gate
+// and by tests); it defaults to the checkout holding this script.
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const ROOT = process.env.SKILLS_REPO_ROOT ? resolve(process.env.SKILLS_REPO_ROOT) : resolve(dirname(fileURLToPath(import.meta.url)), '..');
 // Read text with CRLF normalized to LF: Windows checkouts (core.autocrlf) store CRLF on disk,
 // while the prompt/section patterns below expect LF. Generated output always uses LF.
 const read = (p) => readFileSync(p, 'utf8').replace(/\r\n/g, '\n');
