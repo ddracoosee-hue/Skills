@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   assert, assertEq, node, makeRepoCopy,
-  generatedMapFiles, snapshotFiles, assertSameSnapshot,
+  generatedMapFiles, snapshotFiles, assertSameSnapshot, MAPGEN,
 } from './helpers.mjs';
 
 function addInventedSkill(dir) {
@@ -98,6 +98,26 @@ export const cases = [
       assertEq(cells[5], '`/core-skill-evals`, `/core-retro`, `/core-skill-maintenance`, `/core-project-profile`', 'Pairs with keeps the four related skills');
       const readmeCells = authoringRow(readFileSync(join(dir, 'skills/01-self-development/README.md'), 'utf8'));
       assertEq(readmeCells[6], cells[6], 'category README matches the map');
+    },
+  },
+  {
+    id: 'B01',
+    name: 'stored prompt metadata has no unconsumed fields',
+    run: async () => {
+      const src = readFileSync(MAPGEN, 'utf8');
+      const stored = src.match(/prompts\[name\] = \{([^}]+)\}/);
+      assert(stored, 'prompt-object literal found');
+      const body = stored[1];
+      // Candidate keys ever stored on a prompt object; each stored key must be read
+      // through a prompt handle (p.<key> / prompts[..].<key>) somewhere else.
+      for (const key of ['name', 'pri', 'desc', 'file', 'notFor', 'works']) {
+        const isStored = new RegExp(`\\b${key}\\b\\s*[:,}]`).test(body) || new RegExp(`[,{]\\s*${key}\\s*[,}]`).test(body);
+        if (!isStored) continue;
+        const consumed = new RegExp(`p\\.${key}\\b`).test(src)
+          || new RegExp(`prompts\\[[^\\]]+\\]\\??\\.${key}\\b`).test(src)
+          || new RegExp(`\\bconst\\s*\\{[^}]*\\b${key}\\b[^}]*\\}\\s*=\\s*p\\b`).test(src);
+        assert(consumed, `stored prompt field "${key}" has no consumer (remove it or use it in diagnostics)`);
+      }
     },
   },
 ];

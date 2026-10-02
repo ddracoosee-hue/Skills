@@ -36,7 +36,7 @@ for (const f of readdirSync(join(ROOT, 'prompts')).filter((f) => /^[1-9]\d-.*\.m
     for (const x of nPart.matchAll(/→\s*`?([a-z0-9-]+)`?/g)) if (x[1] !== 'none') notFor.add(x[1]);
     const works = [];
     for (const x of body.matchAll(NAME)) if (x[1] !== name && !works.includes(x[1])) works.push(x[1]);
-    prompts[name] = { name, pri, desc, file: f, notFor: [...notFor].filter((n) => n !== name), works };
+    prompts[name] = { pri, desc, notFor: [...notFor].filter((n) => n !== name), works };
   }
 }
 
