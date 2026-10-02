@@ -11,6 +11,8 @@ PowerShell here.
 | Browse skills on GitHub | [`skills/`](skills/): one folder per function, each with its own README |
 | See how skills improve themselves | [SELF-DEVELOPMENT.md](SELF-DEVELOPMENT.md): the recursive loop and its safety rules |
 | See which projects the skills serve | [PROJECTS.md](PROJECTS.md) and [LESSONS.md](LESSONS.md) |
+| Understand large vs small skills, and what to build next | [SKILL-ARCHITECTURE.md](SKILL-ARCHITECTURE.md) |
+| Rank your projects from your PC | [prompts/07-local-portfolio-survey.md](prompts/07-local-portfolio-survey.md) (run in Muse) |
 | See the full plan with priorities | [SKILLS-CATALOG.md](SKILLS-CATALOG.md) |
 | Build skills with Muse | [prompts/README.md](prompts/README.md) |
 
