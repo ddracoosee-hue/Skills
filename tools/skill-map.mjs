@@ -8,14 +8,17 @@ import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const MAP = JSON.parse(readFileSync(join(ROOT, 'skills-map.json'), 'utf8'));
+// Read text with CRLF normalized to LF: Windows checkouts (core.autocrlf) store CRLF on disk,
+// while the prompt/section patterns below expect LF. Generated output always uses LF.
+const read = (p) => readFileSync(p, 'utf8').replace(/\r\n/g, '\n');
+const MAP = JSON.parse(read(join(ROOT, 'skills-map.json')));
 const NAME = /\b((?:core|textclone|orion)-[a-z0-9]+(?:-[a-z0-9]+)*)\b/g;
 const problems = [];
 
 // 1. Read every build prompt block.
 const prompts = {};
 for (const f of readdirSync(join(ROOT, 'prompts')).filter((f) => /^[1-9]\d-.*\.md$/.test(f)).sort()) {
-  const text = readFileSync(join(ROOT, 'prompts', f), 'utf8');
+  const text = read(join(ROOT, 'prompts', f));
   const re = /^## (?:[\d.]+ )?`([a-z0-9-]+)` · (P\d)[^\n]*\n+```text\n([\s\S]*?)```/gm;
   for (const m of text.matchAll(re)) {
     const [, name, pri, block] = m;
@@ -39,18 +42,18 @@ function built(cat, name) {
   const dir = join(ROOT, 'skills', cat, name);
   const md = join(dir, 'SKILL.md');
   if (!existsSync(md)) return null;
-  const text = readFileSync(md, 'utf8');
+  const text = read(md);
   const desc = (text.match(/^description:\s*(.+)$/m) ?? [])[1]?.trim();
   const section = (h) => (text.match(new RegExp(`^## ${h}\\s*$([\\s\\S]*?)(?=^## |(?![\\s\\S]))`, 'm')) ?? [])[1] ?? '';
   const notFor = [...section('Not for').matchAll(NAME)].map((x) => x[1]);
   const related = [...(section('References').match(/^.*Related:.*$/m) ?? [''])[0].matchAll(NAME)].map((x) => x[1]);
   const log = join(dir, 'CHANGELOG.md');
-  const head = existsSync(log) ? readFileSync(log, 'utf8').match(/^## (\d+\.\d+\.\d+) — [\d-]+ — ([a-z]+)/m) : null;
+  const head = existsSync(log) ? read(log).match(/^## (\d+\.\d+\.\d+) — [\d-]+ — ([a-z]+)/m) : null;
   return { desc, notFor, related, status: head ? `v${head[1]} ${head[2]}` : 'built' };
 }
 
 // 3. Consistency: every skill in exactly one category, every skill has a prompt, catalog agrees.
-const catalog = new Set([...readFileSync(join(ROOT, 'SKILLS-CATALOG.md'), 'utf8').matchAll(/^\| `([a-z0-9-]+)`/gm)].map((m) => m[1]));
+const catalog = new Set([...read(join(ROOT, 'SKILLS-CATALOG.md')).matchAll(/^\| `([a-z0-9-]+)`/gm)].map((m) => m[1]));
 const seen = new Map();
 for (const c of MAP.categories) for (const s of c.skills) {
   if (seen.has(s)) problems.push(`${s} is in both ${seen.get(s)} and ${c.id}`);
@@ -133,7 +136,7 @@ for (const c of MAP.categories) {
 const check = process.argv.includes('--check');
 let stale = 0;
 for (const [path, text] of Object.entries(files)) {
-  const old = existsSync(path) ? readFileSync(path, 'utf8') : null;
+  const old = existsSync(path) ? read(path) : null;
   if (old === text) continue;
   stale++;
   if (!check) { mkdirSync(dirname(path), { recursive: true }); writeFileSync(path, text); }
