@@ -2,7 +2,8 @@
 
 Private, shared skills for Meta Muse Code. One clone serves every project on this PC.
 The planned skills, their priorities and the anatomy every skill follows are in
-[SKILLS-CATALOG.md](SKILLS-CATALOG.md).
+[SKILLS-CATALOG.md](SKILLS-CATALOG.md). To build them with Muse, start at
+[prompts/README.md](prompts/README.md).
 
 ## Layout
 
@@ -13,7 +14,9 @@ skills/
   textclone-<name>/SKILL.md       # Textclone pack
   orion-<name>/SKILL.md           # Orion pack
 install.ps1                       # links skills/ into ~/.agents/skills
-SKILLS-CATALOG.md                 # the planned list (no skill written yet)
+SKILLS-CATALOG.md                 # the planned list of 115 skills
+prompts/                          # one Muse build prompt per skill, the build protocol, refinement
+tools/check-skills.mjs            # structure check every skill must pass (refinement stage R1)
 ```
 
 Each skill is a folder with a `SKILL.md`: YAML frontmatter (`name`, `description`), then the instructions.
