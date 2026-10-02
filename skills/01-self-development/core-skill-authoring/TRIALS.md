@@ -1,0 +1,7 @@
+# Trials: core-skill-authoring
+
+## Trials
+- 2026-10-02 | R3 cycle 1 (trial folder r3-authoring) | throwaway core-trial-hello: 33-line SKILL.md, 3T+2N evals, 0.1.0 draft; checker exit 0 verified by parent; greeting "Hello, Trial Project!" verified | steps 1,3,4,5,6,8,9,10,14 met; steps 2,7 failed on skill text; steps 11,12,13 had no throwaway handling | 9 fixes applied (steps 2,3,6,7,8,9,10,11, throwaway rule) | folder deleted after verification.
+- 2026-10-02 | R3 cycle 2 (trial folder r3-authoring-2) | throwaway core-trial-hello: 40-line SKILL.md; checker exit 0 verified by parent; validate valid:true, zero diagnostics; greeting verified | all cycle-1 fixes behaved; steps 1-10,14 met; 11,13 skipped per rule; step 12 failed (contradiction with throwaway rule on TRIALS.md) | 4 fixes applied (step-12 qualifier, extended throwaway rule, Sources-used label, unbuilt-skill rule) | folder deleted after verification.
+- 2026-10-02 | R3 cycle 3 (trial folder r3-authoring-3) | throwaway core-trial-hello: 30-line SKILL.md, 5T+3N evals; checker exit 0 verified by parent; validate valid:true, zero diagnostics; greeting verified | steps 1-10,12,14 met; 11,13 skipped per rule; wrong instructions: none | PASS | folder deleted after verification.
+- 2026-10-02 | R6 candidate (not applied; R3 cycles exhausted 3/3) | Inputs branch rule says nothing about throwaways; cycle 3 resolved it via the prompt-override rule, correctly. Consider adding "(throwaways stay in the trial folder)". Revisit after field use.
