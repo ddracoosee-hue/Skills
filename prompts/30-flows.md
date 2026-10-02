@@ -25,7 +25,7 @@ Build the skill core-flow-feature. Follow prompts/00-BUILD-PROTOCOL.md and promp
 if one is not, stop and list which.
 
 Description (verbatim; change only if R2 fails):
-Use when building a new feature end to end: brief, criteria, slices, test-first build, self-review, journey walk, handoff. Not for bug fixes (use `core-flow-bugfix`) or purely visual UI changes (use `core-flow-ui-change`). Runs only when invoked by name. Writes .agents/runs/core-flow-feature/.
+Use when building a new feature end to end: brief, criteria, slices, test-first build, self-review, journey walk, handoff. Not for bug fixes (use `core-flow-bugfix`) or purely visual UI changes (use `core-flow-ui-change`).
 
 Chain and hand-offs (each step is "use <skill>; hand on <output>; done when <condition>"):
 1. core-session-start → scope statement.
@@ -67,7 +67,7 @@ Build the skill core-flow-bugfix. Follow prompts/00-BUILD-PROTOCOL.md and prompt
 (R1–R3). Use core-skill-authoring. Chained skills must be "tested" or better.
 
 Description (verbatim; change only if R2 fails):
-Use when something is broken and needs fixing: reproduce, find the cause, regression test first, minimal fix, recheck, handoff. Not for new features (use `core-flow-feature`) or test flakiness only (use `core-flake-triage`). Runs only when invoked by name. Writes .agents/runs/core-flow-bugfix/.
+Use when something is broken and needs fixing: reproduce, find the cause, regression test first, minimal fix, recheck, handoff. Not for new features (use `core-flow-feature`) or test flakiness only (use `core-flake-triage`).
 
 Chain and hand-offs:
 1. core-session-start → scope.
@@ -106,7 +106,7 @@ Build the skill core-flow-ui-change. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring. Chained skills must be "tested".
 
 Description (verbatim; change only if R2 fails):
-Use when changing what a UI looks like or how it is arranged without changing what the app does: placement, states, wording, look, then audits and rubric. Not for features with new backend behaviour (use `core-flow-feature`). Runs only when invoked by name. Writes .agents/runs/core-flow-ui-change/.
+Use when changing what a UI looks like or how it is arranged without changing what the app does: placement, states, wording, look, then audits and rubric. Not for features with new backend behaviour (use `core-flow-feature`).
 
 Chain and hand-offs:
 1. core-session-start → scope, including the project's UI rules (textclone: UI track rules
@@ -147,7 +147,7 @@ Build the skill core-flow-experiment. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring. Chained skills must be "tested".
 
 Description (verbatim; change only if R2 fails):
-Use when trying an idea to improve output quality or speed (prompt, model, setting, retrieval, metric): log, baseline, change one thing, measure, check stats, keep or revert. Not for building features (use `core-flow-feature`). Runs only when invoked by name. Writes .agents/runs/core-flow-experiment/.
+Use when trying an idea to improve output quality or speed (prompt, model, setting, retrieval, metric): log, baseline, change one thing, measure, check stats, keep or revert. Not for building features (use `core-flow-feature`).
 
 Chain and hand-offs:
 1. core-experiment-log → hypothesis entry; duplicate check done.
@@ -182,7 +182,7 @@ Build the skill core-flow-release. Follow prompts/00-BUILD-PROTOCOL.md and promp
 (R1–R3). Use core-skill-authoring. Chained skills must be "tested".
 
 Description (verbatim; change only if R2 fails):
-Use when preparing a release end to end: backup drill, migration rehearsal, green CI, version and notes, smoke test. Not for only writing release notes (use `core-release`). Runs only when invoked by name. Writes .agents/runs/core-flow-release/.
+Use when preparing a release end to end: backup drill, migration rehearsal, green CI, version and notes, smoke test. Not for only writing release notes (use `core-release`).
 
 Chain and hand-offs:
 1. core-session-start → scope (version target).

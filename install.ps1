@@ -1,11 +1,10 @@
 # Links each skill in this repo into the Muse user-skills folder, one junction per skill, and turns on
-# the repo's pre-commit secret scan. For Muse Code running natively on Windows (the default since
-# Meta's native Windows release). If Muse runs inside WSL on this PC, use install.sh inside WSL instead.
+# the repo's pre-commit secret scan. Muse runs natively in PowerShell on this PC.
 #
 #   powershell -ExecutionPolicy Bypass -File install.ps1 [-Target <folder>] [-WhatIf]
 #
-# Target defaults to $HOME\.agents\skills. Check VERIFIED.md: Phase 0 records which folder
-# `muse skills list` actually reads on this machine.
+# Target defaults to $HOME\.agents\skills. VERIFIED.md #4 records which folder `muse skills list`
+# actually reads on this PC; pass -Target if it differs.
 # Safe by design: a real folder or a link that points elsewhere is never replaced; only junctions
 # that point into this repo are created or removed. Removing a junction never deletes its contents.
 [CmdletBinding(SupportsShouldProcess)]

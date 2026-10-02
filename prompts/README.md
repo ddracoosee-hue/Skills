@@ -2,19 +2,16 @@
 
 This folder holds one build prompt for every skill in [`SKILLS-CATALOG.md`](../SKILLS-CATALOG.md):
 117 prompts. They are organised in the same sections as the catalog, and come with the rules Muse
-follows to build them and the evaluate-and-revise loop that improves them.
-
-Skills never train Muse ([`docs/MUSE-REFERENCE.md`](../docs/MUSE-REFERENCE.md) §1.1). A skill gets
-better only when its text is edited because of measured results.
+follows to build them and the "post-training" that refines them.
 
 ## How the pieces fit
 
 | File | What it is | Who reads it |
 | --- | --- | --- |
-| [`00-BUILD-PROTOCOL.md`](00-BUILD-PROTOCOL.md) | The rules for every build: the 10 key concepts, where Muse works, the folder layout, the description contract, the nine sections (and which prompt field goes where), writing rules, the build sequence, the report, stop conditions. | Muse, once per session |
-| [`01-REFINEMENT.md`](01-REFINEMENT.md) | The evaluate-and-revise loop:<br>**R1** structure check<br>**R2** routing proxy and explicit-only log check<br>**R3** invented-term fixtures run headlessly 5 times on Lane B, plus 1 cross-lane run on Lane A, scored in EVALS.csv with a ship rule<br>**R4** cross-review<br>**R5** field use<br>**R6** revision<br>**R7** regression and monthly drift<br>Statuses go draft → tested → reviewed → stable. | Muse; Codex for R4 |
-| [`05-environment-and-tools.md`](05-environment-and-tools.md) | **E0** verify Muse on this PC (fills VERIFIED.md)<br>**E1** build the fixture harness<br>**E2** prove the loop on a probe<br>**E3** the trace ledger<br>**E4** optional hooks | Muse |
-| [`../tools/check_skills.py`](../tools/check_skills.py) | The automatic R1 check. Run `python tools/check_skills.py [skills/<name>]`. | Muse, and the pre-commit hook |
+| [`00-BUILD-PROTOCOL.md`](00-BUILD-PROTOCOL.md) | The rules for every build: where Muse works, the folder layout, the eight sections, writing rules, the build sequence, the report, stop conditions. | Muse, once per session |
+| [`01-REFINEMENT.md`](01-REFINEMENT.md) | The post-build training. **R1** structure check, **R2** trigger check, **R3** trial run, **R4** cross-review, **R5** field use, **R6** revision, **R7** regression. Each stage has a ready-made prompt, and statuses go draft → tested → reviewed → stable. | Muse; Codex for R4 |
+| [`../tools/check-skills.mjs`](../tools/check-skills.mjs) | The automatic R1 check. Run `node tools/check-skills.mjs [skills/<name>]`. | Muse |
+| [`05-environment-and-tools.md`](05-environment-and-tools.md) | Optional supplements: **E0** check Muse facts on this PC (fills `VERIFIED.md`); **E1** a fixture harness; **E3** a trace ledger; **E4** hooks. | Muse, when you want them |
 | `10-…` to `50-…` | The 117 skill prompts, one fenced block each. | You paste them into Muse |
 
 Each skill prompt contains:
@@ -30,22 +27,20 @@ Each skill prompt contains:
 ## Before the first batch (once)
 
 1. Install the repo on your PC (see the root README). The live clone is
-   `C:\Users\ddrac\muse-skills` for native Windows Muse, or `~/src/muse-skills` in WSL.
-2. Decide whether the GitHub repo should stay public.
-3. Run `05-environment-and-tools.md` **E0, E1, E2** in order, on Lane A. E0 fills `VERIFIED.md`,
-   and every later prompt depends on it. If E0 shows Muse runs in WSL, follow the "How results
-   change the library" table in `VERIFIED.md` first.
-
-Start every Muse session by running `/models`. Then begin your first message with the lane, for
-example "Lane A, model muse-spark-1.3" (`LANES.md`).
+   `C:\Users\ddrac\muse-skills`.
+2. Confirm Muse can see skills. Create a tiny test skill, run `/skills`, and check it appears (the
+   README's install section). If it doesn't appear, stop here and tell Claude.
+3. Recommended: run **E0** from `05-environment-and-tools.md`. It checks the Muse facts the skills
+   lean on and records them in `VERIFIED.md`.
+4. Start each Muse session by running `/models`, then name the lane (Standard or Contributor) in your
+   first message (see `LANES.md`). Textclone and Orion are Standard only.
 
 ## Running a batch
 
 **1. Open the batch** (paste into Muse):
 
 ```text
-Lane A, model <from /models>. Read C:\Users\ddrac\muse-skills\prompts\00-BUILD-PROTOCOL.md,
-01-REFINEMENT.md, VERIFIED.md and LANES.md. Create the batch
+Read C:\Users\ddrac\muse-skills\prompts\00-BUILD-PROTOCOL.md and 01-REFINEMENT.md. Create the batch
 worktree for batch "<batch>" exactly as protocol §1 shows, then confirm the path and branch and
 stop. Do not build anything yet.
 ```
@@ -57,10 +52,9 @@ cycles, read it before moving on.
 **3. Close the batch** (paste into Muse):
 
 ```text
-Batch "<batch>" is built. In its worktree: run python tools/check_skills.py (all skills) and
-muse skills validate on each new skill; run R2 again for every skill in this batch in one
-fresh-session pass; show the EVALS.csv rows for this batch; list each skill with its status, pass
-rate and open questions. Do not merge or push. Stop.
+Batch "<batch>" is built. In its worktree: run node tools/check-skills.mjs (all skills) and show the
+summary; run R2 again for every skill in this batch, in one fresh-session pass, and record results;
+list each skill with its status and any open questions. Do not merge or push. Stop.
 ```
 
 **4. Cross-review (R4):** give Codex the R4 prompt from `01-REFINEMENT.md`. Then paste Codex's
@@ -73,8 +67,7 @@ findings to Muse: "Apply these R4 findings per 01-REFINEMENT.md R4, one commit p
 
 | # | Batch name | Skills, in order | Prompt file |
 | --- | --- | --- | --- |
-| 0 | `env` | E0 verify, E1 fixture harness, E2 loop probe | 05 |
-| 1 | `foundation` | core-skill-authoring, core-skill-evals, core-project-profile, core-trace-report, core-session-audit (then E3 trace ledger) | 10, 05 |
+| 1 | `foundation` | core-skill-authoring, core-skill-evals, core-project-profile | 10 |
 | 2 | `core-session` | core-session-start, core-worktree, core-recheck-loop, core-commit, core-phase-gate, core-escalation, core-long-run, core-handoff-writer | 20 |
 | 2b | `core-session` (same batch) | core-windows-env, core-port-safety, core-privacy-guard | 24 |
 | 3 | `core-quality` | core-test-first, core-debug-method, core-diff-self-review, core-flake-triage, core-web-test | 23 |
@@ -88,11 +81,11 @@ findings to Muse: "Apply these R4 findings per 01-REFINEMENT.md R4, one commit p
 | 8 | `textclone-voice-ui` | textclone-eval-harness, textclone-blind-voice-test, textclone-corpus-growth, textclone-provenance, textclone-ui-guardrails, textclone-ui-parity, textclone-checkpoint-preview, orion-orb-integration | 40, 43, 50 |
 | 9 | `flows` | core-flow-feature, core-flow-bugfix, core-flow-ui-change, core-flow-experiment | 30 |
 
-That covers all 60 P1 skills plus one pulled-forward P2.
+That covers all 58 P1 skills plus one pulled-forward P2.
 
 **P2 batches** (build after batch 9, one catalog section at a time):
-- `foundation-2`: core-skill-maintenance, core-retro. Build this one first, because `core-retro`
-  automates R5 and R6.
+- `foundation-2`: core-skill-maintenance, core-retro, then the supplemental core-trace-report and
+  core-session-audit. Build this batch first, because `core-retro` automates R5 and R6.
 - `core-session-2`: core-context-budget, core-report-writer.
 - `core-product-2`: core-premortem, core-decision-record.
 - `core-ux-2`: core-ux-heuristics, core-motion.
@@ -116,10 +109,8 @@ textclone-multi-profile, textclone-launcher.
 
 ## After the skills exist: keep training them
 
-- End real tasks with `/core-trace-report` so every run is pinned to an export hash.
 - Add the **R5 field-use** line from `01-REFINEMENT.md` to the end of your normal Muse task
   messages, until `core-retro` is built.
-- Re-run all fixtures monthly or after a Muse update (R7), because docs and defaults drift.
 - Every 3 field uses, or after any miss, run **R6 revision** for that skill.
 - A skill reaches `stable` after 3 real uses in a row with no miss.
 - When Textclone or Orion change, run `core-skill-maintenance`, so skills don't go stale.

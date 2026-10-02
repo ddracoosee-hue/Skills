@@ -1,17 +1,22 @@
 # Muse Code Skills — Build Plan and Reference
 
-> **Library note (added 2026-10-02 when this file was imported):**
+> **Library note (how this document is used here):**
 >
-> - This is the user's reference document, kept as supplied, except that the owner line was
->   removed because the repo is public.
-> - **Correction to §1.3 and Phase 0:** on 2026-09-16, Meta announced native Windows support ("no
->   WSL required… PowerShell-fluent"). Muse may therefore run natively on Windows, where `~` is
->   `C:\Users\<user>`. `VERIFIED.md` #1 records which host this PC uses. `install.ps1` serves native
->   Windows and `install.sh` serves WSL.
-> - **Name changes:** `tools/check_skills.py` exists. The fixture harness is `tools/run_fixture`
->   (built in prompt E1), and the ledger is `tools/trace_ledger.py` (prompt E3).
-> - **Facts:** where this file and `VERIFIED.md` disagree, `VERIFIED.md` (observed on the machine)
->   wins.
+> - **Supplemental.** This is a reference that informs our skill structure; it does not replace it.
+>   The structure stays as defined in `prompts/00-BUILD-PROTOCOL.md` (eight sections) and
+>   `prompts/01-REFINEMENT.md` (R1–R7). Protocol §8 lists which facts from this document apply and
+>   where they go.
+> - **Adapted for this PC: Muse runs in PowerShell.** Meta has supported Muse natively on Windows
+>   since 2026-09-16 ("no WSL required… PowerShell-fluent"). This matches how the projects are
+>   developed: PowerShell commands, `npm.cmd`, Windows venvs. WSL is not used. `~` means `$HOME`
+>   (`C:\Users\<user>`). Paths below shown in Linux form are noted as such, and their Windows
+>   locations are confirmed in `VERIFIED.md`.
+> - **Tool names here:**
+>   - the structure check is `tools/check-skills.mjs`;
+>   - the optional fixture harness is `tools/run_fixture.ps1`;
+>   - the optional ledger is `tools/trace_ledger.ps1`.
+> - **Privacy and conflicts.** The owner line was removed because the repo is public. Where this
+>   file and `VERIFIED.md` disagree, `VERIFIED.md` (observed on the PC) wins.
 
 Date compiled: 2026-10-02
 Target platform: Meta Muse Code (terminal coding agent), model family Muse Spark 1.3
@@ -70,18 +75,21 @@ Design consequence: write every skill as if it will be published. No secrets, pr
 client names, manuscript passages or internal paths inside SKILL.md (Section 7.1). Run sensitive
 repositories, especially the manuscript and anything with credentials, on Standard only.
 
-### 1.3 "Stays in the base platform" means user scope (and on Windows that meant WSL — see the library note)
+### 1.3 "Stays in the base platform" means user scope, in PowerShell on this PC
 
 Muse Code loads user skills from `$XDG_CONFIG_HOME/muse/skills` and `~/.agents/skills`, and those
 are available in every project. [Certain] That is the correct home for a cross-project library.
 
-At launch, Muse Code ran on Windows only through WSL2. [Certain at launch; superseded 2026-09-16 by
-native Windows support] Inside WSL, `~` means the Linux home (for example `/home/<user>`), not
-`C:\Users\<user>`. A PowerShell script that links skills into the Windows
-`%USERPROFILE%\.agents\skills` will not be seen by a Muse process running in WSL. [Likely]
+Muse runs natively on Windows in PowerShell. [Certain, Meta for Developers, 2026-09-16] So `~` is
+`$HOME` (`C:\Users\<user>`), and the user skills folder is `$HOME\.agents\skills`. [Likely;
+confirm with `muse skills list`, VERIFIED.md #4]
 
-Design consequence: if Muse runs in WSL, keep the source-of-truth git repo inside the WSL
-filesystem and symlink it into `~/.agents/skills` with a bash script.
+Design consequence: keep the source-of-truth git repo at `$HOME\muse-skills`. Link each skill into
+`$HOME\.agents\skills\<skill-id>` with `install.ps1`, which uses directory junctions and needs no
+admin rights.
+
+(Historical: at launch, Muse ran on Windows only through WSL2, where `~` was the Linux home. That
+route is not used here.)
 
 ---
 
@@ -123,6 +131,9 @@ Early user reports say a fresh install can default to Contributor. [Guessing] Ch
 start of every session that touches private material.
 
 ### 2.3 Paths and files
+
+Paths are shown as documented (Linux form). On this PC `~` is `$HOME`. The Windows locations of
+the settings file and the session logs are confirmed in `VERIFIED.md` (#6, #12).
 
 | What | Where | Confidence |
 |---|---|---|
@@ -298,7 +309,8 @@ control, then cost, then output, then maintenance.
 **Output — making results traceable and checkable**
 
 - **5.14 Every skill writes a dated artifact to a fixed path.** [Certain basis] The path is
-  `.agents/runs/<skill-id>/<YYYYMMDD-HHMM>-<slug>.md`, with the trace block.
+  `.agents/runs/<skill-id>/<YYYYMMDD-HHMM>-<slug>.md`, with the trace block. (Here, each skill's
+  "Evidence to report" plus `core-trace-report` serve this. Per-skill run files are optional.)
 - **5.15 Separate "turn finished" from "work correct."** [Certain basis] `muse exec` exit code 0
   means the turn completed. Run the project's real check and record pass or fail.
 - **5.16 Let explicit user instructions override skill defaults.** [Certain basis]
@@ -359,8 +371,9 @@ Constraints:
 
 ### 6.4 Audit tool
 
-`tools/trace_ledger.py` reads `muse export` JSON plus `.agents/runs/**` and prints one row per skill
-run: skill, version, lane, session, approvals and test result. It is modeled on Meta's cookbook
+`tools/trace_ledger.ps1` (optional, prompt E3) reads `muse export` JSON plus the reports from
+`core-trace-report`, and prints one row per traced task: skills, lane, session, approvals and
+test result. It is modeled on Meta's cookbook
 `build_ledger.py`.
 
 ---
@@ -383,14 +396,14 @@ run: skill, version, lane, session, approvals and test result. It is modeled on 
 
 ## 8. Validation and test loop
 
-This loop replaces the idea of "training" a skill. It is implemented in
-`prompts/01-REFINEMENT.md`.
+This loop replaces the idea of "training" a skill. Here, steps 2–6 are the optional fixture
+supplement to R3 in `prompts/01-REFINEMENT.md`. The standard R3 trial remains the default.
 
-1. **Structure check:** `tools/check_skills.py`, then `muse skills validate`.
+1. **Structure check:** `node tools/check-skills.mjs`, then `muse skills validate` (once verified).
 2. **Grounding fixture:** a tiny git repo with invented domain terms ("Glimber", "Quokkascale",
    "Frobnitz-9"). [Certain technique]
-3. **Headless run:** `muse exec --model muse-spark-1.3 --max-model-steps 60 --json --prompt-file
-   fixtures/<case>/prompt.txt > trace/<case>.jsonl`. Gate on the fixture's own `verify` script,
+3. **Headless run** (PowerShell, through `tools\run_fixture.ps1`): `muse exec --model muse-spark-1.3
+   --max-model-steps 60 --json --prompt-file fixtures\<case>\prompt.txt > trace\<case>.jsonl`. Gate on the fixture's own `verify` script,
    not on the exit code.
 4. **Scorecard:** pass rate over N = 5 runs, mean model steps, approvals requested and artifacts
    written correctly, recorded in `EVALS.csv`. A revision ships only if its pass rate is at least
@@ -400,18 +413,19 @@ This loop replaces the idea of "training" a skill. It is implemented in
 
 ---
 
-## 9. Build phases
+## 9. Build phases (as applied here)
 
-- **Phase 0, verify the environment:** `prompts/05-environment-and-tools.md` E0. Acceptance:
-  VERIFIED.md is filled in.
-- **Phase 1, repo scaffold:** done in this repo — `skills/`, `tools/`, `templates/`, both
-  installers, VERIFIED.md, EVALS.csv, LANES.md and the pre-commit scan. Then E1 and E2.
-- **Phase 2, core traceability skills:** `core-project-profile`, `core-trace-report` and
-  `core-session-audit`. Each passes its fixture 5/5 on Standard.
-- **Phase 3, workflow skills:** the rest of the catalog. Each needs at least 4/5 fixture passes on
-  both lanes and a pinned export.
-- **Phase 4, ledger and hooks:** E3 and E4.
-- **Phase 5, ongoing loop:** branch, check, fixtures, EVALS.csv, merge. Re-run all fixtures monthly.
+The skill batches in `prompts/README.md` are the build plan. This document's phases map onto them
+as follows:
+
+- **Phase 0, verify the environment:** prompt E0. Recommended before batch 1.
+- **Phase 1, repo scaffold:** done (`skills/`, `tools/`, `templates/`, `install.ps1`, `VERIFIED.md`,
+  `EVALS.csv`, `LANES.md`, the pre-commit scan).
+- **Phase 2, traceability skills:** `core-trace-report` and `core-session-audit` are P2 supplements,
+  built in the `foundation-2` batch. `core-project-profile` is already P1.
+- **Phase 3, workflow skills:** the catalog's batches.
+- **Phase 4, ledger and hooks:** prompts E3 and E4 (optional).
+- **Phase 5, ongoing loop:** refinement stages R5–R7.
 
 ---
 

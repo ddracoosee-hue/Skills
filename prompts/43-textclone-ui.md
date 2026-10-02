@@ -15,7 +15,7 @@ Build the skill textclone-ui-guardrails. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when working on Textclone's UI redesign track: rules U1–U8, guardrails G1–G20, scope (web/ only), the phase checker and its gate, checkpoints UI-CPa/b/c. Not for request parity details (use `textclone-ui-parity`). Runs only when invoked by name. Writes .agents/runs/textclone-ui-guardrails/.
+Use when working on Textclone's UI redesign track: rules U1–U8, guardrails G1–G20, scope (web/ only), the phase checker and its gate, checkpoints UI-CPa/b/c. Not for request parity details (use `textclone-ui-parity`).
 
 Read first (UI branch): docs/ui-redesign/MUSE-START-HERE.md, GUARDRAILS.md (G1–G20, operating
 limits, 3-cycle retry budget, report contents), TASKS-UI.md (U1–U8, phases UI-0…UI-9),
@@ -55,7 +55,7 @@ Build the skill textclone-ui-parity. Follow prompts/00-BUILD-PROTOCOL.md and pro
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a Textclone UI change might alter what the app does: same backend calls, identical requests for the same input, same defaults, no blocked features, runs not cancelled by navigation. Not for visual rules (use `core-visual-design-method`). Runs only when invoked by name. Writes .agents/runs/textclone-ui-parity/.
+Use when a Textclone UI change might alter what the app does: same backend calls, identical requests for the same input, same defaults, no blocked features, runs not cancelled by navigation. Not for visual rules (use `core-visual-design-method`).
 
 Read first (UI branch): GUARDRAILS.md G14–G16, guardrails/request-parity.json (13 golden cases from
 the old Studio), check-ui.mjs G8 (no new API paths except GET /api/compose/registry) and G9
@@ -93,7 +93,7 @@ Build the skill textclone-checkpoint-preview. Follow prompts/00-BUILD-PROTOCOL.m
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring. Build after core-port-safety.
 
 Description (verbatim; change only if R2 fails):
-Use when a Textclone checkpoint needs a preview: read-only DB copy, preview on 8010/3010, announce, wait for approval, then stop and delete the copy. Not for general port checks (use `core-port-safety`). Runs only when invoked by name. Writes .agents/runs/textclone-checkpoint-preview/.
+Use when a Textclone checkpoint needs a preview: read-only DB copy, preview on 8010/3010, announce, wait for approval, then stop and delete the copy. Not for general port checks (use `core-port-safety`).
 
 Read first: tasks.md §G8 (the full procedure: read-only sqlite backup copy to
 textclone-wt\preview-data, TEXTCLONE_DATA_DIR, dev.ps1 -ApiPort 8010 -WebPort 3010 -NoBrowser,
@@ -132,7 +132,7 @@ Build the skill textclone-dictation. Follow prompts/00-BUILD-PROTOCOL.md and pro
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when working on Textclone voice-to-text: local Whisper in a web worker, the browser engine fallback, microphone permissions, dictation states, and the orb's listening state. Not for orb visuals (use `orion-orb-states`). Runs only when invoked by name. Writes .agents/runs/textclone-dictation/.
+Use when working on Textclone voice-to-text: local Whisper in a web worker, the browser engine fallback, microphone permissions, dictation states, and the orb's listening state. Not for orb visuals (use `orion-orb-states`).
 
 Read first (UI branch): TASKS-UI.md Phase UI-4 (VoiceEngineId "local-whisper" | "browser",
 useDictation with useStored("tc.voice.engine", "local-whisper"), @huggingface/transformers exact
@@ -172,7 +172,7 @@ Build the skill textclone-codebase-map. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when you need to know where something lives in Textclone or what calls what: packages, routes, jobs, UI pages, tests, scripts, and which doc owns which rule. Not for reading strategy on huge files (use `core-context-budget`). Runs only when invoked by name. Writes .agents/runs/textclone-codebase-map/.
+Use when you need to know where something lives in Textclone or what calls what: packages, routes, jobs, UI pages, tests, scripts, and which doc owns which rule. Not for reading strategy on huge files (use `core-context-budget`).
 
 Read first: docs/AI_WORKFLOW.md source map; README layout; `git ls-files` of textclone/, web/,
 tests/, scripts/; textclone/api/routes/; web/app/.
@@ -208,7 +208,7 @@ Build the skill textclone-voice-glossary. Follow prompts/00-BUILD-PROTOCOL.md an
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a Textclone term needs a precise meaning (register, target, band, stage, best-so-far, tell, exemplar, neutral paraphrase, unverified, partial): definitions tied to code. Not for code locations (use `textclone-codebase-map`). Runs only when invoked by name. Writes .agents/runs/textclone-voice-glossary/.
+Use when a Textclone term needs a precise meaning (register, target, band, stage, best-so-far, tell, exemplar, neutral paraphrase, unverified, partial): definitions tied to code. Not for code locations (use `textclone-codebase-map`).
 
 Read first: README.md, plan.md §2, textclone/profile/targets.py, generate/types.py, generate/report.py,
 detect/tells.py, docs/ui-redesign/UI-SPEC.md labels.

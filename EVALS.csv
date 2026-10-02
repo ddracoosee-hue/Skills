@@ -1,1 +1,1 @@
-date,skill,version,skills_sha,muse_version,model,lane,fixture,runs,passes,mean_steps,approvals,artifacts_ok,routing_t,routing_n,export_sha256,notes
+date,skill,version,model,lane,fixture,runs,passes,notes

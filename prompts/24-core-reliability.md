@@ -11,7 +11,7 @@ Build the skill core-windows-env. Follow prompts/00-BUILD-PROTOCOL.md and prompt
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when running commands on Windows/PowerShell: npm.cmd, venv paths, quoting, junctions, env vars per block, stopping process trees, path length. Not for port ownership (use `core-port-safety`). Runs only when invoked by name. Writes .agents/runs/core-windows-env/.
+Use when running commands on Windows/PowerShell: npm.cmd, venv paths, quoting, junctions, env vars per block, stopping process trees, path length. Not for port ownership (use `core-port-safety`).
 
 Purpose: commands that work first time on the user's Windows 11 PC.
 
@@ -19,10 +19,8 @@ Read first: textclone tasks.md §G2 and §G8 (PowerShell blocks, junctions, $env
 block, taskkill /T /F), docs/AI_WORKFLOW.md commands (npm.cmd, .\node_modules\.bin\tsc.cmd),
 scripts/dev.ps1, scripts/setup.ps1.
 
-Muse host: read VERIFIED.md #1. Native Windows Muse is PowerShell-fluent; Muse in WSL runs bash
-and reaches Windows tools through interop (powershell.exe -NoProfile -Command …, cmd.exe /c npm …,
-wslpath -w / -u, /mnt/c paths; git on /mnt/c is slow; CRLF/LF). Cover both in the cheatsheet,
-with project.json "shell" deciding which commands a project's skills emit.
+Muse itself runs natively in PowerShell on this PC (VERIFIED.md #1), so every command in the
+cheatsheet is a PowerShell command Muse can run directly.
 Content (references/windows-cheatsheet.md): npm.cmd not npm in non-interactive shells; venv
 interpreter path .venv\Scripts\python.exe; $env:X lasts only for that invocation; junctions
 (New-Item -ItemType Junction) need no admin, symlinks may; quoting paths with spaces;
@@ -62,7 +60,7 @@ Build the skill core-port-safety. Follow prompts/00-BUILD-PROTOCOL.md and prompt
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use before starting or stopping any server: use only the project's owned ports, never touch forbidden ones (the user's live apps, Ollama), and free ports only from processes you started. Not for general Windows commands (use `core-windows-env`). Runs only when invoked by name. Writes .agents/runs/core-port-safety/.
+Use before starting or stopping any server: use only the project's owned ports, never touch forbidden ones (the user's live apps, Ollama), and free ports only from processes you started. Not for general Windows commands (use `core-windows-env`).
 
 Purpose: never break the user's running Textclone, Orion or Ollama.
 
@@ -104,7 +102,7 @@ Build the skill core-privacy-guard. Follow prompts/00-BUILD-PROTOCOL.md and prom
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use before committing, writing handoffs, logs, skills or reports, and when tests need text: keep personal writing, databases, .env, tokens and logs out; use synthetic data. Not for security bugs in code (use `core-security-review`). Runs only when invoked by name. Writes .agents/runs/core-privacy-guard/.
+Use before committing, writing handoffs, logs, skills or reports, and when tests need text: keep personal writing, databases, .env, tokens and logs out; use synthetic data. Not for security bugs in code (use `core-security-review`).
 
 Purpose: the user's writing and secrets never leave the machine or enter Git.
 
@@ -148,7 +146,7 @@ Build the skill core-backup-drill. Follow prompts/00-BUILD-PROTOCOL.md and promp
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use to prove backups work: back up an isolated copy, restore it, compare integrity and counts, and test rotation keeps manual backups. Not for schema migrations (use `core-migration-rehearsal`). Runs only when invoked by name. Writes .agents/runs/core-backup-drill/.
+Use to prove backups work: back up an isolated copy, restore it, compare integrity and counts, and test rotation keeps manual backups. Not for schema migrations (use `core-migration-rehearsal`).
 
 Purpose: a backup that was never restored is unproven.
 
@@ -186,7 +184,7 @@ Build the skill core-migration-rehearsal. Follow prompts/00-BUILD-PROTOCOL.md an
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use before any database schema change ships: run the migration on a copy, compare counts and integrity, test the old-to-new path and the rollback. Not for writing Textclone's migration code (use `textclone-db-migration`). Runs only when invoked by name. Writes .agents/runs/core-migration-rehearsal/.
+Use before any database schema change ships: run the migration on a copy, compare counts and integrity, test the old-to-new path and the rollback. Not for writing Textclone's migration code (use `textclone-db-migration`).
 
 Purpose: migrations never surprise existing data.
 
@@ -225,7 +223,7 @@ Build the skill core-crash-recovery. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use to test that long work survives crashes: kill the app mid-job and check resume, best-so-far results, no duplicates and no corruption. Not for job state design (use `core-state-machines`). Runs only when invoked by name. Writes .agents/runs/core-crash-recovery/.
+Use to test that long work survives crashes: kill the app mid-job and check resume, best-so-far results, no duplicates and no corruption. Not for job state design (use `core-state-machines`).
 
 Purpose: recoverable jobs that really recover.
 
@@ -265,7 +263,7 @@ Build the skill core-local-observability. Follow prompts/00-BUILD-PROTOCOL.md an
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a failure needs a timeline or logging needs improving: structured local logs with request ids, no personal text, and a "what happened" reconstruction. Not for debugging method (use `core-debug-method`). Runs only when invoked by name. Writes .agents/runs/core-local-observability/.
+Use when a failure needs a timeline or logging needs improving: structured local logs with request ids, no personal text, and a "what happened" reconstruction. Not for debugging method (use `core-debug-method`).
 
 Purpose: every failure can be explained from local logs.
 
@@ -302,7 +300,7 @@ Build the skill core-ci-setup. Follow prompts/00-BUILD-PROTOCOL.md and prompts/0
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when setting up or fixing continuous integration: GitHub Actions running the project's fast checks on push without GPUs, models or personal data. Not for local recheck loops (use `core-recheck-loop`). Runs only when invoked by name. Writes .agents/runs/core-ci-setup/.
+Use when setting up or fixing continuous integration: GitHub Actions running the project's fast checks on push without GPUs, models or personal data. Not for local recheck loops (use `core-recheck-loop`).
 
 Purpose: regressions caught automatically.
 
@@ -343,7 +341,7 @@ Build the skill core-release. Follow prompts/00-BUILD-PROTOCOL.md and prompts/01
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when shipping a version: bump the version, write the changelog and release notes, tag, and smoke-test the built release. Not for packaging installers (use `core-windows-packaging`). Runs only when invoked by name. Writes .agents/runs/core-release/.
+Use when shipping a version: bump the version, write the changelog and release notes, tag, and smoke-test the built release. Not for packaging installers (use `core-windows-packaging`).
 
 Purpose: releases that are traceable and tested.
 
@@ -379,7 +377,7 @@ Build the skill core-windows-packaging. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when making the app installable or launchable on Windows: shortcuts, launch scripts, first-run checks, uninstall, tested on a clean user profile. Not for version tagging (use `core-release`). Runs only when invoked by name. Writes .agents/runs/core-windows-packaging/.
+Use when making the app installable or launchable on Windows: shortcuts, launch scripts, first-run checks, uninstall, tested on a clean user profile. Not for version tagging (use `core-release`).
 
 Purpose: one-click start and stop that works on a fresh machine.
 

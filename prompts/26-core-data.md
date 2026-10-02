@@ -11,7 +11,7 @@ Build the skill core-stats-sanity. Follow prompts/00-BUILD-PROTOCOL.md and promp
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use before stating any quantitative claim (improved, worse, faster, more accurate): check sample size, spread, confidence interval and effect size. Not for designing the benchmark run (use `core-llm-eval`). Runs only when invoked by name. Writes .agents/runs/core-stats-sanity/.
+Use before stating any quantitative claim (improved, worse, faster, more accurate): check sample size, spread, confidence interval and effect size. Not for designing the benchmark run (use `core-llm-eval`).
 
 Purpose: numbers that mean what they say. The user works best with statistics, so claims must be
 statistically honest.
@@ -60,7 +60,7 @@ Build the skill core-dataset-hygiene. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when preparing data for training, calibration or evaluation: dedupe, split by document to prevent leakage, balance, record provenance, freeze manifests. Not for growing Textclone's corpus (use `textclone-corpus-growth`). Runs only when invoked by name. Writes .agents/runs/core-dataset-hygiene/.
+Use when preparing data for training, calibration or evaluation: dedupe, split by document to prevent leakage, balance, record provenance, freeze manifests. Not for growing Textclone's corpus (use `textclone-corpus-growth`).
 
 Purpose: datasets whose results can be trusted and reproduced.
 

@@ -11,7 +11,7 @@ Build the skill textclone-error-contract. Follow prompts/00-BUILD-PROTOCOL.md an
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when raising, mapping or displaying a Textclone error: TextcloneError subclasses with code, hint, retryability, exit code and request id, kept identical across API, CLI and UI. Not for general API design (use `core-api-design`). Runs only when invoked by name. Writes .agents/runs/textclone-error-contract/.
+Use when raising, mapping or displaying a Textclone error: TextcloneError subclasses with code, hint, retryability, exit code and request id, kept identical across API, CLI and UI. Not for general API design (use `core-api-design`).
 
 Read first: textclone/errors.py (TextcloneError; ConfigError CFG_INVALID_001 exit 2; DependencyError
 DEP_MISSING_001 exit 3; IngestError ING_* exit 1; LLMError LLM_* exit 4 including
@@ -53,7 +53,7 @@ Build the skill textclone-sse-contract. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when changing Textclone streaming: event kinds and order, payloads, heartbeats, terminal events, reconnects and how web/lib/sse.ts consumes them. Not for job state design (use `core-state-machines`). Runs only when invoked by name. Writes .agents/runs/textclone-sse-contract/.
+Use when changing Textclone streaming: event kinds and order, payloads, heartbeats, terminal events, reconnects and how web/lib/sse.ts consumes them. Not for job state design (use `core-state-machines`).
 
 Read first: textclone/api/sse.py (event(), error_event(), done kinds), api/routes/generate.py,
 api/routes/jobs.py, web/lib/sse.ts (listens for status, progress, log, done, error, end, stage,
@@ -90,7 +90,7 @@ Build the skill textclone-api-contract. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when Textclone API request or response shapes change or need verifying: snapshot the OpenAPI schema, contract tests, and the UI's request parity. Not for designing new endpoints (use `core-api-design`). Runs only when invoked by name. Writes .agents/runs/textclone-api-contract/.
+Use when Textclone API request or response shapes change or need verifying: snapshot the OpenAPI schema, contract tests, and the UI's request parity. Not for designing new endpoints (use `core-api-design`).
 
 Read first: textclone/api/app.py, routes/*.py, docs/roadmap/12-testing-ci/PLAN.md step 6 (contract
 tests from OpenAPI), docs/ui-redesign/guardrails/request-parity.json (13 golden request cases) and
@@ -126,7 +126,7 @@ Build the skill textclone-db-migration. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring. Build after core-migration-rehearsal.
 
 Description (verbatim; change only if R2 fails):
-Use when writing a Textclone schema migration: a new db/schema/vNNN.sql, PRAGMA user_version, compatibility with existing data, first-connect race, backup first. Not for the rehearsal method alone (use `core-migration-rehearsal`). Runs only when invoked by name. Writes .agents/runs/textclone-db-migration/.
+Use when writing a Textclone schema migration: a new db/schema/vNNN.sql, PRAGMA user_version, compatibility with existing data, first-connect race, backup first. Not for the rehearsal method alone (use `core-migration-rehearsal`).
 
 Read first: textclone/db/connection.py, db/schema/v001.sql, db/backup.py, db/integrity.py,
 plan.md §2 invariant 6 and B-3, tasks.md G7 (a migration not in the task is a stop condition),
@@ -164,7 +164,7 @@ Build the skill textclone-ingest-pipeline. Follow prompts/00-BUILD-PROTOCOL.md a
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when changing Textclone's shared ingest stages: cleaning, segmentation, dedup, role classification, quality scoring, quarantine and corpus health. Not for one source format (use `textclone-ingest-adapter`). Runs only when invoked by name. Writes .agents/runs/textclone-ingest-pipeline/.
+Use when changing Textclone's shared ingest stages: cleaning, segmentation, dedup, role classification, quality scoring, quarantine and corpus health. Not for one source format (use `textclone-ingest-adapter`).
 
 Read first: textclone/ingest/pipeline.py, cleaning.py, segment.py, dedup.py (LSH),
 classify_role.py, quality.py, paste.py; textclone/db/repo_corpus.py; docs/roadmap/03-corpus-ingestion/PLAN.md steps
@@ -200,7 +200,7 @@ Build the skill textclone-profile-feature. Follow prompts/00-BUILD-PROTOCOL.md a
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when adding a profile-level capability end to end in Textclone (builder stage, stored field, API, UI display, rebuild trigger). Not for a single style metric (use `textclone-stylometry-metric`) or registers (use `textclone-registers`). Runs only when invoked by name. Writes .agents/runs/textclone-profile-feature/.
+Use when adding a profile-level capability end to end in Textclone (builder stage, stored field, API, UI display, rebuild trigger). Not for a single style metric (use `textclone-stylometry-metric`) or registers (use `textclone-registers`).
 
 Read first: textclone/profile/builder.py, aggregate.py, style_card.py, api/routes/profile.py,
 web/app/profile, resources/jobs.py (profile build job), tests/unit/test_profile.py.
@@ -236,7 +236,7 @@ Build the skill textclone-synthetic-fixtures. Follow prompts/00-BUILD-PROTOCOL.m
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a Textclone test, trial or demo needs text or data: build synthetic samples, registers, exports and databases that mimic shape without real writing. Not for general privacy scans (use `core-privacy-guard`). Runs only when invoked by name. Writes .agents/runs/textclone-synthetic-fixtures/.
+Use when a Textclone test, trial or demo needs text or data: build synthetic samples, registers, exports and databases that mimic shape without real writing. Not for general privacy scans (use `core-privacy-guard`).
 
 Read first: tests/conftest.py (TEXTCLONE_DATA_DIR isolation; fails tests that open
 data/textclone.db), tests/fixtures/ (existing synthetic files), tests/fault_injection/mock_router.py,
@@ -274,7 +274,7 @@ Build the skill textclone-doctor-check. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when adding or changing a `textclone doctor` check: ok/warn/fail with detail and hint, and a --fix only when the repair is safe and reversible. Not for first-run UX (use `core-onboarding`). Runs only when invoked by name. Writes .agents/runs/textclone-doctor-check/.
+Use when adding or changing a `textclone doctor` check: ok/warn/fail with detail and hint, and a --fix only when the repair is safe and reversible. Not for first-run UX (use `core-onboarding`).
 
 Read first: textclone/health.py (CheckResult with fixable/fixed; check_python, check_config,
 check_api_routers, check_dirs, check_long_paths, check_sqlite_vec, check_database, …),
@@ -310,7 +310,7 @@ Build the skill textclone-jobs-recovery. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring. Build after core-crash-recovery.
 
 Description (verbatim; change only if R2 fails):
-Use when Textclone jobs need recovering or their recovery changed: jobs list/show/resume, partial results (exit 6), watchdog, GPU lock, and resume after crashes. Not for the generic crash-test method (use `core-crash-recovery`). Runs only when invoked by name. Writes .agents/runs/textclone-jobs-recovery/.
+Use when Textclone jobs need recovering or their recovery changed: jobs list/show/resume, partial results (exit 6), watchdog, GPU lock, and resume after crashes. Not for the generic crash-test method (use `core-crash-recovery`).
 
 Read first: textclone/resources/jobs.py, watchdog.py, vram.py; api/routes/jobs.py;
 cli/local_job.py; README jobs commands and exit code 6; tests/unit/test_jobs.py; tasks.md UI-CP2
@@ -345,7 +345,7 @@ Build the skill textclone-launcher. Follow prompts/00-BUILD-PROTOCOL.md and prom
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when changing how Textclone starts and stops: dev.ps1, desktop.ps1, shortcuts, port selection around Orion, reopening an existing instance. Not for generic Windows packaging (use `core-windows-packaging`). Runs only when invoked by name. Writes .agents/runs/textclone-launcher/.
+Use when changing how Textclone starts and stops: dev.ps1, desktop.ps1, shortcuts, port selection around Orion, reopening an existing instance. Not for generic Windows packaging (use `core-windows-packaging`).
 
 Read first: scripts/dev.ps1 (ApiPort 8000, WebPort 3000 with fallback when taken; reuses an
 existing instance; -NoBrowser), desktop.ps1, install-desktop-shortcuts.ps1, setup.ps1;

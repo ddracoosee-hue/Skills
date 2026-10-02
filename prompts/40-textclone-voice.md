@@ -22,7 +22,7 @@ prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring. Build after core-l
 core-stats-sanity.
 
 Description (verbatim; change only if R2 fails):
-Use when measuring Textclone's voice fidelity: build the frozen benchmark, run it, compare to a baseline with confidence intervals. Not for generic eval method (use `core-llm-eval`) or blind tests (use `textclone-blind-voice-test`). Runs only when invoked by name. Writes .agents/runs/textclone-eval-harness/.
+Use when measuring Textclone's voice fidelity: build the frozen benchmark, run it, compare to a baseline with confidence intervals. Not for generic eval method (use `core-llm-eval`) or blind tests (use `textclone-blind-voice-test`).
 
 Purpose: a repeatable answer to "does it sound more like me now?"
 
@@ -68,7 +68,7 @@ Build the skill textclone-blind-voice-test. Follow prompts/00-BUILD-PROTOCOL.md 
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring. Build after core-stats-sanity.
 
 Description (verbatim; change only if R2 fails):
-Use when the user wants to judge the voice themselves: a blind test pairing their real text with generated text, shuffled, scored by whether they can tell which is theirs. Not for automatic metrics (use `textclone-eval-harness`). Runs only when invoked by name. Writes .agents/runs/textclone-blind-voice-test/.
+Use when the user wants to judge the voice themselves: a blind test pairing their real text with generated text, shuffled, scored by whether they can tell which is theirs. Not for automatic metrics (use `textclone-eval-harness`).
 
 Purpose: the truest measure of the product. If the user can't tell, the voice is right.
 
@@ -118,7 +118,7 @@ Build the skill textclone-corpus-growth. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when planning how to grow the user's writing corpus: which sources, which importers, quality gates, register balance, consent, and progress toward thresholds. Not for writing one new importer (use `textclone-ingest-adapter`). Runs only when invoked by name. Writes .agents/runs/textclone-corpus-growth/.
+Use when planning how to grow the user's writing corpus: which sources, which importers, quality gates, register balance, consent, and progress toward thresholds. Not for writing one new importer (use `textclone-ingest-adapter`).
 
 Purpose: the single biggest accuracy lever (roadmap 03).
 
@@ -161,7 +161,7 @@ Build the skill textclone-ingest-adapter. Follow prompts/00-BUILD-PROTOCOL.md an
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when adding or fixing a Textclone importer for a source format (chat export, email, docx, social, notes): extract, clean, segment, role detection, fixtures, tests. Not for planning which sources to collect (use `textclone-corpus-growth`). Runs only when invoked by name. Writes .agents/runs/textclone-ingest-adapter/.
+Use when adding or fixing a Textclone importer for a source format (chat export, email, docx, social, notes): extract, clean, segment, role detection, fixtures, tests. Not for planning which sources to collect (use `textclone-corpus-growth`).
 
 Read first: textclone/ingest/pipeline.py, types.py, cleaning.py, segment.py, classify_role.py,
 quality.py, dedup.py, chat/whatsapp.py (a full example), extract/docx.py; tests/unit/test_ingest.py;
@@ -203,7 +203,7 @@ Build the skill textclone-provenance. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when any text enters Textclone's corpus or learning loop: label where it came from (human, edited model draft, approved output, imported) so model text is never learned as the user's. Not for dedup or splits (use `core-dataset-hygiene`). Runs only when invoked by name. Writes .agents/runs/textclone-provenance/.
+Use when any text enters Textclone's corpus or learning loop: label where it came from (human, edited model draft, approved output, imported) so model text is never learned as the user's. Not for dedup or splits (use `core-dataset-hygiene`).
 
 Purpose: stop the voice drifting toward the model's.
 
@@ -244,7 +244,7 @@ Build the skill textclone-stylometry-metric. Follow prompts/00-BUILD-PROTOCOL.md
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when adding or changing a Textclone style feature or check (sentence shape, punctuation, casing, function words, vocabulary): compute it, band it from the user's writing, test it. Not for AI-likeness tells (use `textclone-ai-tells`). Runs only when invoked by name. Writes .agents/runs/textclone-stylometry-metric/.
+Use when adding or changing a Textclone style feature or check (sentence shape, punctuation, casing, function words, vocabulary): compute it, band it from the user's writing, test it. Not for AI-likeness tells (use `textclone-ai-tells`).
 
 Read first: textclone/profile/features.py, aggregate.py, targets.py (build_targets, _band p10/p90,
 _widen, ROBUST_KEYS), textclone/generate/checks/style.py, textclone/nlp/, docs/roadmap/04-voice-profile/PLAN.md
@@ -284,7 +284,7 @@ Build the skill textclone-registers. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when working on Textclone registers, neutralising or the style card: how contexts like work vs casual are detected, separated, described with evidence and used as targets. Not for single metric formulas (use `textclone-stylometry-metric`). Runs only when invoked by name. Writes .agents/runs/textclone-registers/.
+Use when working on Textclone registers, neutralising or the style card: how contexts like work vs casual are detected, separated, described with evidence and used as targets. Not for single metric formulas (use `textclone-stylometry-metric`).
 
 Read first: textclone/profile/registers.py, neutralize.py, style_card.py, builder.py, lexicon.py;
 docs/roadmap/04-voice-profile/PLAN.md steps 2–6, 9 (small-corpus registers, card edits,
@@ -322,7 +322,7 @@ Build the skill textclone-ai-tells. Follow prompts/00-BUILD-PROTOCOL.md and prom
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when working on Textclone's AI-likeness tells, heatmap or Analyze results, always relative to the user's own baseline. Not for calibrating thresholds (use `textclone-detect-calibration`). Runs only when invoked by name. Writes .agents/runs/textclone-ai-tells/.
+Use when working on Textclone's AI-likeness tells, heatmap or Analyze results, always relative to the user's own baseline. Not for calibrating thresholds (use `textclone-detect-calibration`).
 
 Read first: textclone/detect/tells.py, heatmap.py, classifiers.py, textclone/generate/checks/ai.py,
 textclone/metrics/lm.py, docs/roadmap/07-detection-calibration/PLAN.md steps 5, 7 (heatmap consistency, GLTR z-score vs
@@ -359,7 +359,7 @@ Build the skill textclone-detect-calibration. Follow prompts/00-BUILD-PROTOCOL.m
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring. Build after core-judge-calibration.
 
 Description (verbatim; change only if R2 fails):
-Use when calibrating Textclone's AI-likeness score or the P(user) classifier: held-out human and model samples, activation gates, staleness, health checks. Not for designing tells (use `textclone-ai-tells`). Runs only when invoked by name. Writes .agents/runs/textclone-detect-calibration/.
+Use when calibrating Textclone's AI-likeness score or the P(user) classifier: held-out human and model samples, activation gates, staleness, health checks. Not for designing tells (use `textclone-ai-tells`).
 
 Read first: docs/roadmap/07-detection-calibration/PLAN.md (steps 1–11), textclone/detect/calibrate.py,
 textclone/classifier/ (data, features, registry, train), tests/unit/test_classifier_registry.py.
@@ -395,7 +395,7 @@ Build the skill textclone-finetune-safety. Follow prompts/00-BUILD-PROTOCOL.md a
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when preparing, running or promoting a Textclone fine-tune: data minimums, prompt parity, masking, exemplar exclusion, VRAM discipline, A/B against base, rollback. Not for prompt template changes (use `textclone-prompt-parity`). Runs only when invoked by name. Writes .agents/runs/textclone-finetune-safety/.
+Use when preparing, running or promoting a Textclone fine-tune: data minimums, prompt parity, masking, exemplar exclusion, VRAM discipline, A/B against base, rollback. Not for prompt template changes (use `textclone-prompt-parity`).
 
 Read first: textclone/finetune/README.md (200+ samples, ideally 3k–10k; unsloth; ~25 GB disk;
 Ollama unloaded), dataset.py, train_qlora.py, export_gguf.py; docs/roadmap/08-learning-finetune/PLAN.md steps 5–11;

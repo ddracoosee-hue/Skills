@@ -1,220 +1,194 @@
-# Refinement: the evaluate-and-revise loop for every skill
+# Refinement: the post-build training for every skill
 
-Skills do not train Muse. A skill improves only when its SKILL.md text is edited because of
-measured evidence:
-- Does it load when named, and stay unloaded otherwise?
-- Does following it produce a correct result, repeatedly, on a fixture where the right answer can
-  only come from reading the files?
-- What went wrong in real use?
+"Training" a skill does not change Muse's model. Muse's weights stay the same. What improves is the
+skill's text, and it improves only from measured evidence: did Muse pick the skill at the right
+moments, did following it produce the right result, and what went wrong in real use.
 
-This loop replaces the idea of "post-training".
-
-Every skill climbs this ladder. Its status is the newest heading in `CHANGELOG.md`.
+Every skill moves up this ladder. Its current status is the newest heading in its `CHANGELOG.md`.
 
 | Status | Reached when | Stages |
 | --- | --- | --- |
 | `draft` | Built and committed | R1 |
-| `tested` | Routes correctly, and its fixture passes the ship rule | R1, R2, R3 |
-| `reviewed` | A second agent verified every fact | R4 |
+| `tested` | Triggers correctly and passed its trial | R1, R2, R3 |
+| `reviewed` | A second agent verified every fact and rule | R4 |
 | `stable` | 3 real uses in a row with no miss | R5, R6 |
 
-**Ship rule:** a version ships only if its fixture pass rate is at least 4/5 and at least the
-previous version's. The P1 traceability skills (`core-trace-report`, `core-session-audit`,
-`core-project-profile`) need 5/5 on Lane A.
-
-**Scorecard:** one row per run batch goes in [`EVALS.csv`](../EVALS.csv). The columns are: date,
-skill, version, skills_sha, muse_version, model, lane, fixture, runs, passes, mean_steps,
-approvals, artifacts_ok, routing_t, routing_n, export_sha256, notes.
+The build (protocol §4) runs R1–R3. R4 runs per batch. R5 and R6 run for as long as the skill exists.
+Paste the prompts below as they are, filling in only the `<…>` parts.
 
 ---
 
-## R1. Structure check
+## R1. Structure check (automatic)
 
-1. `python tools/check_skills.py skills/<name>` exits 0. It checks:
-   - the frontmatter and name;
-   - the description's four parts (≤350 chars);
-   - the heading version against CHANGELOG;
-   - the nine sections in order, and `Done when:` on every step;
-   - the gate wording, the re-invoke line, the Outputs path and the Trace block fields;
-   - no dates in the body, and that referenced files exist;
-   - the evals.md and CHANGELOG.md formats;
-   - fixtures (no `.git`, prompt.txt, a verify script);
-   - the secret and personal-path scan;
-   - description overlap with other skills.
-2. `muse skills validate skills/<name>` passes. This is Muse's own check (VERIFIED.md #21).
+`node tools/check-skills.mjs skills/<name>` exits 0. This covers the frontmatter, the description
+rules, the eight sections in order, `Done when:` on every step, links to existing files, the formats
+of `evals.md` and `CHANGELOG.md`, a privacy scan, and description overlap with other skills.
+
+*Supplement:* once VERIFIED.md confirms `muse skills validate`, also run
+`muse skills validate skills/<name>`. That is Muse's own check, and both must pass.
 
 ---
 
-## R2. Routing check
+## R2. Trigger check
 
-**Why:** the description is the routing contract. Skills are explicit-invocation only, so two
-things must hold. When the skill is named or suggested for its job, it is the right one. On
-ordinary or near-miss requests, it never loads by itself.
+**Why:** a skill that never fires is useless, and one that fires on the wrong request does damage.
+This check is a proxy: Muse states which skill it *would* load. It is not a measurement of live
+routing, so R5 keeps watching for misses.
 
 `evals.md` format:
 
 ```markdown
 # Evals: <name>
 
-## Should route here
-- T1: "<a request a user would really type for this job>"
+## Should trigger
+- T1: "<a request a user would really type>"
+- T2: "…"
+- T3: "…"
 
-## Must not load
+## Should not trigger
 - N1: "<a near-miss request>" → `<the skill that should take it>`
-- N2: "<an ordinary request>" → none
+- N2: "<a request no skill should take>" → none
 
 ## Results
-| Date | Round | Method | Should route | Must not load | Changed |
-| --- | --- | --- | --- | --- | --- |
+| Date | Round | Should trigger | Should not | Changed |
+| --- | --- | --- | --- | --- |
 ```
 
-Write the requests in different words from the description. Use at least 3 T and 2 N lines; aim
-for 5 and 3.
+Write the requests in different words from the description, so the check is not just string
+matching. Use at least 3 should-trigger and 2 should-not lines; aim for 5 and 3.
 
-**R2a. Routing proxy** (fresh session, run in the batch worktree):
+**Prompt (run in a fresh Muse session, opened in the batch worktree):**
 
 ```text
-This is a skill routing test. Do not perform any request.
-Read every skills/*/SKILL.md frontmatter here (descriptions only).
-For each "- T" and "- N" line of skills/<name>/evals.md, choose from the quoted request text only:
-request id | the one skill you would name or suggest (or "none") | the description phrase that
-decided it. Ignore everything after the closing quote until your table is complete, then add a
-column: matches expected? (yes/no).
+This is a skill trigger test. Do not perform any of the requests.
+Read every skills/*/SKILL.md frontmatter in this folder (descriptions only).
+Then, for each line of skills/<name>/evals.md under "Should trigger" and "Should not trigger",
+answer in a table: request id | the one skill you would load (or "none") | the phrase in that
+skill's description that decided it.
+Choose from the quoted request text only. Ignore everything after the closing quote (the expected
+answer) until your table is complete, then add a final column: matches expected? (yes/no).
 ```
 
-**R2b. Explicit-only check** (log-based; needs VERIFIED.md #13 and #17). Run each N request
-headlessly in a fixture copy, without naming the skill. Then search the run's JSON stream or
-`session.jsonl` for a load of `<name>`, using the event recorded in VERIFIED.md #13. There must
-be **zero** loads. If #13 is still unverified, record "R2b skipped: load event unverified".
+**Pass:** every T line picks `<name>`, and every N line picks its arrow target (or none).
 
-**Pass:** every T routes to `<name>`, every N to its target (or none), and R2b shows zero
-unrequested loads.
+**On a failure:** change only the description and the `## Use when` / `## Not for` sections, never the
+test lines, to make the result pass. Re-run in a new session. Use at most 3 rounds, recording each in
+`## Results`. If round 3 still fails, stop and report the competing skill: the two may need merging.
 
-**On a failure:** change only the description and the Trigger contract, never the test lines.
-Re-run in a new session. Use at most 3 rounds, and record each in Results and in EVALS.csv
-(`routing_t`, `routing_n`). If round 3 still fails, report the competing skill as a merge
-candidate.
+*Supplement (optional, once VERIFIED.md shows how a skill load appears in Muse's session log):* the
+proxy above shows what Muse *says* it would pick. For stronger evidence, run each "Should not
+trigger" request in a throwaway folder. Then search that session's log for a load of `<name>`. There
+should be none. Record it in Results as "log check".
 
 ---
 
-## R3. Fixture runs (grounding), plus project trial
+## R3. Trial run
 
-**Why:** a skill can route perfectly and still give bad instructions. The fixture uses invented
-terms, so a correct result can only come from reading the files. This is Meta's own cookbook
-method ("Glimber", "Quokkascale", "Frobnitz-9").
+**Why:** a skill can trigger perfectly and still give bad instructions. The trial makes Muse follow the
+skill on a realistic task and grades each step.
 
-**Fixture layout** (plain files in the skill folder; the harness copies them to a temporary folder
-and runs `git init` plus one commit):
+Each skill prompt names its trial task. Run it in a trial folder or a project worktree, with synthetic
+data only.
 
-```
-fixtures/<case>/
-  prompt.txt     starts by invoking the skill by name: "/<name> …"
-  verify.py      exits 0 only if the expected files and content exist (or verify.ps1 / verify.sh)
-  <files>        the tiny invented-term repo, including .muse/project.json and AGENTS.md
-```
-
-**Headless run** (through `tools/run_fixture`, built in Phase 1; flags per VERIFIED.md #17):
-
-```
-muse exec --model <model from VERIFIED.md #3> --max-model-steps 60 --json --prompt-file prompt.txt > run.jsonl
-```
-
-- **The verify script decides pass or fail**, never the exit code.
-- **Drafts load as project skills.** The harness copies the draft into the fixture's
-  `.agents/skills/<name>/` and confirms with `muse skills inspect <name>` that the draft is the
-  one resolved. If VERIFIED.md #10 shows user skills beat project skills, it uses a temporary id
-  `<name>-draft` instead.
-- **Trust.** The fixture folder is trusted per VERIFIED.md #19.
-
-**Runs:**
-- 5 runs (the model is non-deterministic) on Lane B. Fixtures are invented data, so this is
-  allowed by `LANES.md`.
-- Plus 1 cross-lane run on Lane A. Both lanes should pass; if only one does, record it in
-  VERIFIED.md.
-
-**Record in EVALS.csv:** passes/runs, mean model steps, approvals requested, artifacts written
-correctly (`artifacts_ok`), and the SHA-256 of `muse export --last --redacted` for the reference
-passing run (the regression pin).
-
-**Project trial** (project skills, in a project worktree on Lane A, synthetic data only). Paste
-this in a fresh session:
+**Prompt (fresh session):**
 
 ```text
-Invoke /<name> and follow it exactly on this task: <the trial task from the skill's prompt>.
-Work only in <worktree>. Synthetic data only.
-Then grade every Procedure step: step | Done-when met? | evidence (command + exit code, file, quote) |
-instruction clear / wrong / missing something. List any step you improvised, any instruction that
-was wrong for this project, any "Do not" you nearly broke. Append to skills/<name>/TRIALS.md under
-"## Trials" with today's date and the run file path. No private data.
+Load the skill <name> from the batch worktree (skills/<name>/SKILL.md) and follow it exactly on
+this task: <the trial task from the skill's prompt>.
+Work only in <trial folder or worktree>. Synthetic data only.
+After the task, grade every step of the skill: step number | Done-when met? (yes/no) | evidence
+(command + exit code, file path, or quote) | was the instruction clear, wrong, or missing something?
+Then list: (1) any step you had to improvise because the skill did not say, (2) any instruction that
+was wrong for this project, (3) any anti-pattern you nearly committed.
+Append the result to skills/<name>/TRIALS.md under "## Trials" with today's date. No private data.
 ```
 
-**On a failure:** fix SKILL.md or `references/`, re-run R1, and run the fixture again. Use at most
-3 cycles. When the ship rule passes, add `## 0.2.0 — <date> — tested` to CHANGELOG.md and bump the
-heading.
+**Pass:** every `Done when` was met, and no improvised step changed the outcome.
+
+**On a failure:** fix `SKILL.md` (or `references/`), re-run R1, and run the trial again in a new
+session. Use at most 3 cycles. When it passes, add `## 0.2.0 — <date> — tested` to `CHANGELOG.md`.
+
+*Supplement (optional): fixture runs.* This is Meta's cookbook method, from
+`docs/MUSE-REFERENCE.md` §8, and needs the harness from prompt E1. Rewrite the trial task as a
+tiny folder in `skills/<name>/fixtures/<case>/` that uses invented words (for example "Glimber").
+With invented words, a correct result can only come from reading the files. Each case holds:
+
+- `prompt.txt`, which invokes the skill by name;
+- a `verify.ps1` that checks the result from the files.
+
+`tools\run_fixture.ps1` then runs it headlessly 5 times. The verify script decides pass or fail,
+never Muse's exit code. Runs go on Lane B (invented data only), plus one on Lane A, and each
+result is a row in `EVALS.csv`. Pass mark: 4 of 5, and no worse than the previous version.
+Fixtures add evidence to the trial above; they do not replace it.
 
 ---
 
 ## R4. Cross-review (once per batch)
 
-Give this to Codex (or Claude Code) in the batch worktree:
+**Why:** the author of a skill is the worst checker of its facts. A second agent (Codex, or Claude
+Code) checks every claim against the sources.
+
+**Prompt (to Codex or Claude, in the batch worktree):**
 
 ```text
 Review the skills changed on branch muse/skills-<batch> (git diff origin/main...HEAD -- skills/).
 For each skill, check against the real files:
-1. Every path, command, port, key and rule exists and says what the skill says (cite file:line;
-   compare with the skill's references/sources.md).
-2. Every Muse feature used is verified in VERIFIED.md or tagged [Certain]; flag anything else.
-3. Rules never contradict the touched project's AGENTS.md, CLAUDE.md, tasks.md G1–G8, GUARDRAILS.md.
-4. The nine sections are complete: could an agent with no other context reach every Done-when?
-   Gates use the exact question; multi-turn skills save state and print the re-invoke line.
-5. Descriptions do not overlap (python tools/check_skills.py; read warnings).
-6. No private data, no personal paths, no invented numbers. Fixtures use invented terms only.
-Report findings by severity with file:line, evidence and the exact fix. Do not edit.
+1. Every path, command, port, key and rule exists and says what the skill says (cite file:line).
+2. Decision rules never contradict AGENTS.md, CLAUDE.md, tasks.md G1–G8 or GUARDRAILS.md of the
+   project they touch.
+3. Steps are complete: could an agent with no other context follow them to the Done-when?
+4. Descriptions do not overlap other skills (run node tools/check-skills.mjs and read warnings).
+5. No private data, no invented numbers.
+Report findings ordered by severity with file:line, the evidence, and the exact fix. Do not edit.
 ```
 
-Muse applies the fixes (one commit per skill: "Fix skill <name> from review"), re-runs R1–R3 for
-each changed skill, and adds `## 0.3.0 — <date> — reviewed`.
+Muse then applies the fixes (one commit per skill: `Fix skill <name> from review`), re-runs R1 and
+R2 for each changed skill, and adds `## 0.3.0 — <date> — reviewed`.
 
 ---
 
-## R5. Field use (every real use)
+## R5. Field use (every real use, for the life of the skill)
 
-Every skill run already writes `.agents/runs/<name>/…` with its Trace block. Field use adds one line
-that links that run to the skill. Paste this at the end of a normal task message until `core-retro`
-exists:
+**Why:** real tasks find what trials miss. The record is 3 lines, so it costs nothing.
+
+**Prompt (append to the end of any normal task message, once skills exist):**
 
 ```text
-When you finish, for each skill you invoked, append to skills/<name>/TRIALS.md in
+When you finish, for each skill you loaded this task, append to skills/<name>/TRIALS.md in
 C:\Users\ddrac\muse-skills-wt\field (branch muse/skills-field) under "## Field use":
-- <date> | <task type in 5 words> | run file <path> | session <id or unknown> | helped: <step> |
-  missed: <what it did not cover, or none>
-Note any moment where a skill should have been named or suggested and wasn't in
-C:\Users\ddrac\muse-skills-wt\field\MISSES.md. Commit "Field log <date>". No private data.
+- <date> | <task type in 5 words> | helped: <step> | missed: <what it did not cover, or none>
+Also note any request where you expected a skill to fire and none did, in
+C:\Users\ddrac\muse-skills-wt\field\MISSES.md. Commit with "Field log <date>". No private data.
 ```
 
 Create the field worktree once:
 `git -C C:\Users\ddrac\muse-skills worktree add C:\Users\ddrac\muse-skills-wt\field -b muse/skills-field origin/main`.
 
+After `core-retro` is built, it does this step itself.
+
 ---
 
 ## R6. Revision (after 3 field uses, or after any miss)
 
+**Prompt:**
+
 ```text
-Revise the skill <name>. Read its SKILL.md, references/, TRIALS.md ("Watch for", trials and field
-entries), MISSES.md lines naming it, and its EVALS.csv rows. For each miss decide: add a Procedure
-step, a gate, a failure case, a Do-not line, a sharper description, a new fixture case, or no change
-(say why). Make the smallest edit that covers the evidence; add a fixture case that would have
-caught the miss. Run R1, R2 and R3. Apply the ship rule against the previous version's pass rate.
-Bump the version (minor for new steps or rules, patch for wording) in the heading and CHANGELOG.md.
-Mark "stable" only if the last 3 field uses had no miss and R1–R3 pass. Report what changed and which
-entries caused it.
+Revise the skill <name>. Read its SKILL.md, references/, TRIALS.md (all field entries) and
+MISSES.md lines that mention it. For each "missed" entry decide: add a step, add a decision rule,
+add an anti-pattern, sharpen the description, or no change (say why). Make the smallest edit that
+covers the evidence. Then run R1, R2 and R3 again (use the most recent field task as the new trial).
+Bump CHANGELOG.md: minor version for new steps or rules, patch for wording. Status:
+- "stable" if the last 3 field uses had no miss and R1–R3 pass;
+- otherwise keep the current status.
+Report what changed, linked to the entries that caused it.
 ```
 
-## R7. Regression and drift
+## R7. Regression rule
 
-- **A change to any skill:** re-run R1 and R3 for that skill, and R2 for every skill in its
-  catalog group, because descriptions compete.
-- **A change to the `.muse/project.json` schema:** re-run R3 for every core skill that reads the
-  changed keys.
-- **Monthly, or after a Muse update** (Muse docs and defaults drift; `muse --version` changes):
-  re-run every fixture, append the rows to EVALS.csv, and update VERIFIED.md.
+A change to any skill re-runs R1 and R3 for that skill, and R2 for every skill in the same catalog
+group, because descriptions compete. A change to `.muse/project.json`'s schema re-runs R3 for every
+core skill that reads the changed keys.
+
+*Supplement:* Muse's docs and defaults change between versions. After a Muse update (when
+`muse --version` changes), re-run the trials and any fixtures for the P1 skills, and update
+VERIFIED.md.

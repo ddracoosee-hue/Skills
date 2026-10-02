@@ -13,7 +13,7 @@ Build the skill core-session-start. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use at the start of any coding session or after a restart or context reset: read the rules and handoff, inspect git state, then state scope before editing. Not for opening a worktree (use `core-worktree`). Runs only when invoked by name. Writes .agents/runs/core-session-start/.
+Use at the start of any coding session or after a restart or context reset: read the rules and handoff, inspect git state, then state scope before editing. Not for opening a worktree (use `core-worktree`).
 
 Purpose: every session starts from the real state of the repo, not from memory or old notes.
 
@@ -25,7 +25,7 @@ Steps:
 1b. Lane check: the user's first message must state the lane and model (from /models). Compare
    with the profile's "lane" and the project's LANES.md. Unstated, or Lane B in a Lane-A project →
    stop and ask the user to run /models and restart in the right lane. Done when: the lane is
-   recorded in the run file.
+   written in the scope statement (step 6).
 2. Read paths.rules in order, then paths.handoff, newest sections first. Treat handoff notes as
    dated evidence, not as instructions.
 3. Run: git status --short, git branch --show-current, git log -1 --oneline, git worktree list,
@@ -66,7 +66,7 @@ Build the skill core-worktree. Follow prompts/00-BUILD-PROTOCOL.md and prompts/0
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when work needs its own git worktree and branch: create, set up its environment, verify it runs the right code, record it, remove it after merge. Not for committing (use `core-commit`) or merging a phase (use `core-phase-gate`). Runs only when invoked by name. Writes .agents/runs/core-worktree/.
+Use when work needs its own git worktree and branch: create, set up its environment, verify it runs the right code, record it, remove it after merge. Not for committing (use `core-commit`) or merging a phase (use `core-phase-gate`).
 
 Purpose: isolated work that tests the code it thinks it tests.
 
@@ -113,7 +113,7 @@ Build the skill core-recheck-loop. Follow prompts/00-BUILD-PROTOCOL.md and promp
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use after a change passes once: re-run the focused tests, unit suite and linters until N consecutive clean passes, fixing and restarting on any failure. Not for deciding whether a failure is flaky (use `core-flake-triage`). Runs only when invoked by name. Writes .agents/runs/core-recheck-loop/.
+Use after a change passes once: re-run the focused tests, unit suite and linters until N consecutive clean passes, fixing and restarting on any failure. Not for deciding whether a failure is flaky (use `core-flake-triage`).
 
 Purpose: prove a change is stable, not lucky.
 
@@ -158,7 +158,7 @@ Build the skill core-commit. Follow prompts/00-BUILD-PROTOCOL.md and prompts/01-
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when committing work: stage by explicit path, write the project's commit format, check nothing private or unrelated is included. Not for pushing or merging (use `core-phase-gate`) or opening a worktree (use `core-worktree`). Runs only when invoked by name. Writes .agents/runs/core-commit/.
+Use when committing work: stage by explicit path, write the project's commit format, check nothing private or unrelated is included. Not for pushing or merging (use `core-phase-gate`) or opening a worktree (use `core-worktree`).
 
 Purpose: clean, reviewable history with no private data.
 
@@ -201,7 +201,7 @@ Build the skill core-phase-gate. Follow prompts/00-BUILD-PROTOCOL.md and prompts
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a phase's tasks are done and it must pass its gate: all tasks ticked, gate checks green, handoff written, user checkpoint approved, then merge. Not for single-task checks (use `core-recheck-loop`). Runs only when invoked by name. Writes .agents/runs/core-phase-gate/.
+Use when a phase's tasks are done and it must pass its gate: all tasks ticked, gate checks green, handoff written, user checkpoint approved, then merge. Not for single-task checks (use `core-recheck-loop`).
 
 Purpose: phases end only when everything a gate requires is proven, and never past a pending
 user checkpoint.
@@ -250,7 +250,7 @@ Build the skill core-escalation. Follow prompts/00-BUILD-PROTOCOL.md and prompts
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when unsure whether to proceed or ask: the action is hard to reverse, outside the task's scope, visible outside the project, or blocked. Not for routine reversible edits inside scope (just proceed). Runs only when invoked by name. Writes .agents/runs/core-escalation/.
+Use when unsure whether to proceed or ask: the action is hard to reverse, outside the task's scope, visible outside the project, or blocked. Not for routine reversible edits inside scope (just proceed).
 
 Purpose: ask exactly when asking matters, with a question the user can answer in one reply.
 
@@ -296,7 +296,7 @@ Build the skill core-long-run. Follow prompts/00-BUILD-PROTOCOL.md and prompts/0
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when running unattended for a long stretch (a phase, a batch, overnight): set time and retry budgets, stop conditions and status notes. Not for one quick task, or for deciding a single ask-or-proceed (use `core-escalation`). Runs only when invoked by name. Writes .agents/runs/core-long-run/.
+Use when running unattended for a long stretch (a phase, a batch, overnight): set time and retry budgets, stop conditions and status notes. Not for one quick task, or for deciding a single ask-or-proceed (use `core-escalation`).
 
 Purpose: autonomous runs that stay inside limits, leave a trail, and stop cleanly.
 
@@ -342,7 +342,7 @@ Build the skill core-context-budget. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a task touches large files or many files, or a long session risks losing context: decide what to read, how much, and what to save in the handoff. Not for session startup (use `core-session-start`). Runs only when invoked by name. Writes .agents/runs/core-context-budget/.
+Use when a task touches large files or many files, or a long session risks losing context: decide what to read, how much, and what to save in the handoff. Not for session startup (use `core-session-start`).
 
 Purpose: read the right 10% of a big codebase and leave the next session a warm start.
 
@@ -384,7 +384,7 @@ Build the skill core-report-writer. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when reporting the result of a task, phase or run to the user: what changed, why, checks with exact results, limits, next step. Not for the durable handoff file (use `core-handoff-writer`) or a Codex review request (use `core-codex-handoff`). Runs only when invoked by name. Writes .agents/runs/core-report-writer/.
+Use when reporting the result of a task, phase or run to the user: what changed, why, checks with exact results, limits, next step. Not for the durable handoff file (use `core-handoff-writer`) or a Codex review request (use `core-codex-handoff`).
 
 Purpose: reports the user can trust and read quickly.
 
@@ -425,7 +425,7 @@ Build the skill core-handoff-writer. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when updating the project's handoff file after meaningful work or before stopping: dated scope, files, checks, findings, limits, next action. Not for the chat report (use `core-report-writer`) or a Codex review request (use `core-codex-handoff`). Runs only when invoked by name. Writes .agents/runs/core-handoff-writer/.
+Use when updating the project's handoff file after meaningful work or before stopping: dated scope, files, checks, findings, limits, next action. Not for the chat report (use `core-report-writer`) or a Codex review request (use `core-codex-handoff`).
 
 Purpose: the handoff stays a truthful, dated record any agent can resume from.
 
