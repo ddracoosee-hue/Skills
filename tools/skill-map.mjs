@@ -51,8 +51,14 @@ function built(cat, name) {
   const notFor = [...section('Not for').matchAll(NAME)].map((x) => x[1]);
   const related = [...(section('References').match(/^.*Related:.*$/m) ?? [''])[0].matchAll(NAME)].map((x) => x[1]);
   const log = join(dir, 'CHANGELOG.md');
-  const head = existsSync(log) ? read(log).match(/^## (\d+\.\d+\.\d+) — [\d-]+ — ([a-z]+)/m) : null;
-  return { desc, notFor, related, status: head ? `v${head[1]} ${head[2]}` : 'built' };
+  let status = 'built';
+  if (existsSync(log)) {
+    const firstHead = read(log).match(/^## .+$/m)?.[0];
+    const v = firstHead?.match(/^## (\d+\.\d+\.\d+) — [\d-]+ — ([a-z]+)$/);
+    if (!v) problems.push(`${name}: newest CHANGELOG.md entry is not "## x.y.z — YYYY-MM-DD — <status>"`);
+    else status = `v${v[1]} ${v[2]}`;
+  }
+  return { desc, notFor, related, status };
 }
 
 // 3. Consistency: every skill in exactly one category, every skill has a prompt, catalog agrees.
@@ -93,7 +99,7 @@ function categoryTable(c) {
     const p = prompts[s] ?? { pri: '?', desc: '', works: [], notFor: [] };
     const b = built(c.id, s);
     const works = [...new Set([...(b?.related ?? []), ...p.works])].filter((n) => seen.has(n) && n !== s).slice(0, 6);
-    const notFor = [...new Set([...(b?.notFor ?? []), ...p.notFor])].filter((n) => seen.has(n) && n !== s && !works.includes(n)).slice(0, 3);
+    const notFor = [...new Set([...(b?.notFor ?? []), ...p.notFor])].filter((n) => seen.has(n) && n !== s).slice(0, 3);
     rows.push(`| \`/${s}\` | ${p.pri} | ${b ? b.status : 'planned'} | ${useFor(b?.desc ?? p.desc).replace(/\|/g, '\\|')} | ${calls(works)} | ${calls(notFor)} | ${(inFlows[s] ?? []).join(', ') || '—'} |`);
   }
   return rows.join('\n');
@@ -138,13 +144,19 @@ for (const c of MAP.categories) {
 
 const check = process.argv.includes('--check');
 let stale = 0;
+// Invalid input fails before any output is written: a failed run must leave the
+// previous valid map untouched.
+if (problems.length) {
+  for (const problem of problems) console.log(`ERROR ${problem}`);
+  process.exit(1);
+}
 for (const [path, text] of Object.entries(files)) {
   const old = existsSync(path) ? read(path) : null;
   if (old === text) continue;
   stale++;
   if (!check) { mkdirSync(dirname(path), { recursive: true }); writeFileSync(path, text); }
 }
-for (const p of problems) console.log(`ERROR ${p}`);
+
 if (check) console.log(stale ? `${stale} map file(s) out of date: run node tools/skill-map.mjs` : 'map files up to date');
 else console.log(`wrote ${stale} file(s); ${total} skills in ${MAP.categories.length} categories`);
-process.exit(problems.length || (check && stale) ? 1 : 0);
+process.exit(check && stale ? 1 : 0);
