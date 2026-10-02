@@ -30,7 +30,7 @@ Rules:
 | commands.test_all | string \| null | Whole suite, or null when test_unit already runs everything. |
 | commands.lint_web | string \| null | Web lint run inside web_dir, e.g. "npm.cmd run lint". Null when the manifest has no lint script. |
 | commands.typecheck_web | string \| null | Web type check inside web_dir, or null. |
-| commands.build_web | string \| null | Web production build, e.g. "npm.cmd run build" (include any needed cd when the root has its own build). |
+| commands.build_web | string \| null | Web production build, e.g. "npm.cmd run build" (no cd: web commands always run inside web_dir). |
 | commands.test_web | string \| null | Web tests, or null when the manifest has no test script. |
 | web_dir | string | Web root, relative, e.g. "web". |
 | worktrees.root | string \| null | Worktree dir pattern, e.g. "../textclone-wt/<slug>". Null when the project names no convention. |

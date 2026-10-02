@@ -35,6 +35,7 @@ The missing prompt source docs/ui-redesign/GUARDRAILS.md was replaced by
       {"port": 3000, "label": "ORION web dev"},
       {"port": 8787, "label": "Orion host"},
       {"port": 8791, "label": "Orion music loopback"},
+      {"port": 8788, "label": "Orion voice"},
       {"port": 11434, "label": "Ollama (shared)"}
     ]
   },
@@ -90,7 +91,7 @@ The missing prompt source docs/ui-redesign/GUARDRAILS.md was replaced by
 | worktrees.setup_ref | tasks.md G2 (env setup a–e plus verify). |
 | ports.owned | .env.example (API 8000); tasks.md G8 (live UI 3001). The .env default WEB_PORT=3000 is overridden in practice; actual wins. |
 | ports.forbidden 3000 | tasks.md G8 ("ORION (3000)"); scripts/dev.ps1 ("3000 may belong to another app"). |
-| ports.forbidden 8787, 8791 | orion .env.example (PORT, ORION_MUSIC_PORT). |
+| ports.forbidden 8787, 8791, 8788 | orion .env.example (PORT, ORION_MUSIC_PORT); 8788 is the voice FastAPI in orion CLAUDE.md ("Voice" bullet) with browser /listen on 127.0.0.1:8788. |
 | ports.forbidden 11434 | .env.example (TEXTCLONE_OLLAMA_HOST); tasks.md G8 (never stop Ollama). |
 | paths.rules | AGENTS.md (read order incl. web/AGENTS.md). |
 | paths.handoff, plan, tasks | AGENTS.md; plan.md; tasks.md. |
