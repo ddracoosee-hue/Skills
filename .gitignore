@@ -1,3 +1,9 @@
+# Local traces and run state (never committed)
+trace/
+.agents/runs/
+.agents/state/
+__pycache__/
+*.pyc
 # Never commit private material
 .env
 *.env

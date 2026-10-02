@@ -24,7 +24,7 @@ Build the skill orion-orb-integration. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when the Orion orb engine is used in another project or re-synced: vendoring by copy, hash checks, provenance, the public handle only, and re-applying recorded local changes. Not for mapping app states to orb visuals (use `orion-orb-states`).
+Use when the Orion orb engine is used in another project or re-synced: vendoring by copy, hash checks, provenance, the public handle only, and re-applying recorded local changes. Not for mapping app states to orb visuals (use `orion-orb-states`). Runs only when invoked by name. Writes .agents/runs/orion-orb-integration/.
 
 Read first: textclone (UI branch) web/components/orb/README.md, docs/ui-redesign/guardrails/
 orb-engine.sha256, check-ui.mjs G3 (engine hashes, no Orion imports); orion web/components/orion/
@@ -68,7 +68,7 @@ Build the skill orion-orb-states. Follow prompts/00-BUILD-PROTOCOL.md and prompt
 (R1–R3). Use core-skill-authoring. Build after orion-orb-integration.
 
 Description (verbatim; change only if R2 fails):
-Use when deciding what the orb shows for an app's activity: mapping app phases to idle, listening, thinking, speaking, pulses and amplitude, with reduced motion and a frame-time budget. Not for vendoring the engine (use `orion-orb-integration`).
+Use when deciding what the orb shows for an app's activity: mapping app phases to idle, listening, thinking, speaking, pulses and amplitude, with reduced motion and a frame-time budget. Not for vendoring the engine (use `orion-orb-integration`). Runs only when invoked by name. Writes .agents/runs/orion-orb-states/.
 
 Read first: orion web/components/orion/engine/types.ts (OrbState), driver.ts (MAX_DPR 2, reduced
 motion: one static frame with a live media-query watch), orb.ts (state behaviours), CelestialStage.tsx;

@@ -17,7 +17,7 @@ Build the skill core-product-brief. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a new feature or change is requested and nobody has written who it is for, what problem it solves and how success is measured. Not for splitting work into slices (use `core-scope-slicer`).
+Use when a new feature or change is requested and nobody has written who it is for, what problem it solves and how success is measured. Not for splitting work into slices (use `core-scope-slicer`). Runs only when invoked by name. Writes .agents/runs/core-product-brief/.
 
 Purpose: one page that stops Muse building what was literally asked instead of what was needed.
 
@@ -35,7 +35,9 @@ Steps:
 2. Find evidence for the problem in the repo (roadmap, handoff, errors, measurements).
 3. Fill the template; mark every unknown "open question" instead of inventing.
 4. Check against project constraints (paths.rules); flag conflicts.
-5. Ask the user the open questions that change the design (at most 3).
+5. Ask the open questions that change the design one at a time, recommended answer first; save
+   answers to .agents/state/core-product-brief.json and end each turn with
+   "Re-invoke: /core-product-brief continue". Write only settled answers into the brief.
 Decision rules: no success measure → the brief is not done; a request that conflicts with a
 project rule → surface it before anything else; if the request is a bug fix → use
 core-flow-bugfix instead.
@@ -67,7 +69,7 @@ Build the skill core-acceptance-criteria. Follow prompts/00-BUILD-PROTOCOL.md an
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a brief or task needs testable acceptance criteria: given/when/then cases covering the happy path, errors, limits and states. Not for writing the test code (use `core-test-first`).
+Use when a brief or task needs testable acceptance criteria: given/when/then cases covering the happy path, errors, limits and states. Not for writing the test code (use `core-test-first`). Runs only when invoked by name. Writes .agents/runs/core-acceptance-criteria/.
 
 Purpose: "done" is defined before code, in statements a test can check.
 
@@ -111,7 +113,7 @@ Build the skill core-scope-slicer. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a feature is too big for one task: cut it into thin end-to-end slices that each ship alone, riskiest first, with done-when per slice. Not for defining the feature (use `core-product-brief`) or writing task files (use `core-task-authoring`).
+Use when a feature is too big for one task: cut it into thin end-to-end slices that each ship alone, riskiest first, with done-when per slice. Not for defining the feature (use `core-product-brief`) or writing task files (use `core-task-authoring`). Runs only when invoked by name. Writes .agents/runs/core-scope-slicer/.
 
 Purpose: small, shippable steps that reveal risk early.
 
@@ -154,7 +156,7 @@ Build the skill core-premortem. Follow prompts/00-BUILD-PROTOCOL.md and prompts/
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use before building something risky: imagine it has already failed, list the most likely causes, and turn each into a guard, test or decision. Not for reviewing finished code (use `core-diff-self-review`).
+Use before building something risky: imagine it has already failed, list the most likely causes, and turn each into a guard, test or decision. Not for reviewing finished code (use `core-diff-self-review`). Runs only when invoked by name. Writes .agents/runs/core-premortem/.
 
 Purpose: find failure modes while they are still cheap.
 
@@ -195,7 +197,7 @@ Build the skill core-decision-record. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a significant choice is made or reopened (architecture, library, data format, UX rule): record context, options, decision and revisit trigger. Not for task status (use `core-handoff-writer`).
+Use when a significant choice is made or reopened (architecture, library, data format, UX rule): record context, options, decision and revisit trigger. Not for task status (use `core-handoff-writer`). Runs only when invoked by name. Writes .agents/runs/core-decision-record/.
 
 Purpose: settled decisions stay settled, and anyone can see why.
 
@@ -237,7 +239,7 @@ Build the skill core-user-journey-walk. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use after building a user-facing change: walk the real flow end to end in the running app as the user would, logging friction, dead ends and confusing states. Not for automated layout checks (use `core-layout-audit`).
+Use after building a user-facing change: walk the real flow end to end in the running app as the user would, logging friction, dead ends and confusing states. Not for automated layout checks (use `core-layout-audit`). Runs only when invoked by name. Writes .agents/runs/core-user-journey-walk/.
 
 Purpose: catch the problems unit tests can't see.
 
@@ -281,7 +283,7 @@ Build the skill core-dogfood. Follow prompts/00-BUILD-PROTOCOL.md and prompts/01
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use for a timed session using the product on a realistic task with synthetic data, to produce a ranked friction backlog. Not for checking one new change (use `core-user-journey-walk`).
+Use for a timed session using the product on a realistic task with synthetic data, to produce a ranked friction backlog. Not for checking one new change (use `core-user-journey-walk`). Runs only when invoked by name. Writes .agents/runs/core-dogfood/.
 
 Purpose: a broad usability sweep, done regularly.
 

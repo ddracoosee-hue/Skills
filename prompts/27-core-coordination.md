@@ -11,7 +11,7 @@ Build the skill core-codex-handoff. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when handing work to Codex (or another agent) for review or fixes: intended behaviour, commit or diff, files, checks run, uncertainties, and exactly where to look. Not for the general handoff log (use `core-handoff-writer`).
+Use when handing work to Codex (or another agent) for review or fixes: intended behaviour, commit or diff, files, checks run, uncertainties, and exactly where to look. Not for the general handoff log (use `core-handoff-writer`). Runs only when invoked by name. Writes .agents/runs/core-codex-handoff/.
 
 Purpose: a reviewer with no access to this conversation can review well.
 
@@ -52,7 +52,7 @@ Build the skill core-roadmap-sync. Follow prompts/00-BUILD-PROTOCOL.md and promp
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when work lands that a roadmap or plan tracks: tick the right steps with date and task id, and check plan files still match the code. Not for writing new tasks (use `core-task-authoring`).
+Use when work lands that a roadmap or plan tracks: tick the right steps with date and task id, and check plan files still match the code. Not for writing new tasks (use `core-task-authoring`). Runs only when invoked by name. Writes .agents/runs/core-roadmap-sync/.
 
 Purpose: plans stay true.
 
@@ -89,7 +89,7 @@ Build the skill core-task-authoring. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when writing executable tasks for an agent (Muse or Codex): target files, pre-check, regression test, steps, post-check, done-when, stop conditions. Not for slicing a feature (use `core-scope-slicer`).
+Use when writing executable tasks for an agent (Muse or Codex): target files, pre-check, regression test, steps, post-check, done-when, stop conditions. Not for slicing a feature (use `core-scope-slicer`). Runs only when invoked by name. Writes .agents/runs/core-task-authoring/.
 
 Purpose: tasks precise enough that an autonomous agent can't misread them.
 
@@ -130,7 +130,7 @@ Build the skill core-research-sources. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a task needs facts from outside the repo (library behaviour, standards, tools): search, prefer primary sources, date them, label confidence, separate fact from inference. Not for reading the project's own docs (use `core-context-budget`).
+Use when a task needs facts from outside the repo (library behaviour, standards, tools): search, prefer primary sources, date them, label confidence, separate fact from inference. Not for reading the project's own docs (use `core-context-budget`). Runs only when invoked by name. Writes .agents/runs/core-research-sources/.
 
 Purpose: researched facts the user can check.
 

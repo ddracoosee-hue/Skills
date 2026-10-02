@@ -13,7 +13,7 @@ Build the skill textclone-generation-loop. Follow prompts/00-BUILD-PROTOCOL.md a
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when changing or explaining Textclone's checked generation loop: stages, targets, checks, best-so-far, budgets, cancellation, the report. Not for diagnosing a run that missed target (use `textclone-convergence-debug`).
+Use when changing or explaining Textclone's checked generation loop: stages, targets, checks, best-so-far, budgets, cancellation, the report. Not for diagnosing a run that missed target (use `textclone-convergence-debug`). Runs only when invoked by name. Writes .agents/runs/textclone-generation-loop/.
 
 Read first: textclone/generate/loop.py, planner.py, critic.py, repair.py, failsafe.py, report.py,
 types.py, retrieval.py, checks/{base,content,style,fluency,ai}.py; textclone/metrics/composite.py;
@@ -52,7 +52,7 @@ Build the skill textclone-convergence-debug. Follow prompts/00-BUILD-PROTOCOL.md
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring. Build after textclone-generation-loop.
 
 Description (verbatim; change only if R2 fails):
-Use when a Textclone generation stops short of target or reports misleadingly: inflated stage scores, fallbacks reported as passes, repairs on wrong sentences, length bands vs a terse voice. Not for general bugs (use `core-flow-bugfix`).
+Use when a Textclone generation stops short of target or reports misleadingly: inflated stage scores, fallbacks reported as passes, repairs on wrong sentences, length bands vs a terse voice. Not for general bugs (use `core-flow-bugfix`). Runs only when invoked by name. Writes .agents/runs/textclone-convergence-debug/.
 
 Purpose: the loop "never reaches target live" (roadmap problem 3); find out why per run.
 
@@ -95,7 +95,7 @@ Build the skill textclone-critic-repair. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when changing Textclone's critic, revise or surgery repair: check priority order, which problems are sent to the model, and rolling back repairs that break a higher-priority check. Not for overall loop budgets (use `textclone-generation-loop`).
+Use when changing Textclone's critic, revise or surgery repair: check priority order, which problems are sent to the model, and rolling back repairs that break a higher-priority check. Not for overall loop budgets (use `textclone-generation-loop`). Runs only when invoked by name. Writes .agents/runs/textclone-critic-repair/.
 
 Read first: textclone/generate/critic.py, repair.py, orthography.py; textclone/llm/prompts.py
 (REVISE, SURGERY — never edit in place); docs/roadmap/05-generation-accuracy/PLAN.md step 3 (targeted surgery mapping
@@ -132,7 +132,7 @@ Build the skill textclone-new-task-type. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when adding a new Textclone task (variants, continue writing, edit in place, email, summarise): reuse the checked loop; new template, API, CLI, Studio option, tests. Not for formats or audiences (use `textclone-compose-registry`).
+Use when adding a new Textclone task (variants, continue writing, edit in place, email, summarise): reuse the checked loop; new template, API, CLI, Studio option, tests. Not for formats or audiences (use `textclone-compose-registry`). Runs only when invoked by name. Writes .agents/runs/textclone-new-task-type/.
 
 Read first: docs/roadmap/09-new-capabilities/PLAN.md ("Pattern for every new task", steps 1–11),
 textclone/generate/types.py (GenerationRequest.task Literal), loop.py, llm/prompts.py,
@@ -168,7 +168,7 @@ Build the skill textclone-latency. Follow prompts/00-BUILD-PROTOCOL.md and promp
 (R1–R3). Use core-skill-authoring. Build after core-latency-budget and core-perf-profiling.
 
 Description (verbatim; change only if R2 fails):
-Use when Textclone generation, profile builds or analysis are too slow: per-stage timing, warm models, batching, call counts, VRAM swaps. Not for generic profiling method (use `core-perf-profiling`).
+Use when Textclone generation, profile builds or analysis are too slow: per-stage timing, warm models, batching, call counts, VRAM swaps. Not for generic profiling method (use `core-perf-profiling`). Runs only when invoked by name. Writes .agents/runs/textclone-latency/.
 
 Read first: docs/roadmap/05-generation-accuracy/PLAN.md step 11 (19–128 s rewrites; keep metric models warm; batch),
 docs/roadmap/README.md (first-event latency 35.7 s → 0.2 s fix), textclone/resources/vram.py,
@@ -205,7 +205,7 @@ Build the skill textclone-prompt-parity. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring. Build after core-prompt-versioning.
 
 Description (verbatim; change only if R2 fails):
-Use when touching Textclone prompt templates or the fine-tune dataset: training and serving must render identical prompts; existing templates are never edited in place. Not for generic prompt versioning (use `core-prompt-versioning`).
+Use when touching Textclone prompt templates or the fine-tune dataset: training and serving must render identical prompts; existing templates are never edited in place. Not for generic prompt versioning (use `core-prompt-versioning`). Runs only when invoked by name. Writes .agents/runs/textclone-prompt-parity/.
 
 Read first: textclone/llm/prompts.py (templates and _T registry), textclone/finetune/dataset.py,
 plan.md §2 invariant 5, tasks.md G7 (stop condition), tests/unit/test_finetune_dataset.py.
@@ -240,7 +240,7 @@ Build the skill textclone-llm-router. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when changing Textclone's model routing: model order, fallbacks, circuit breaker, smaller-context retry, timeouts, JSON repair and their error codes. Not for choosing models for the GPU (use `core-ollama-models`).
+Use when changing Textclone's model routing: model order, fallbacks, circuit breaker, smaller-context retry, timeouts, JSON repair and their error codes. Not for choosing models for the GPU (use `core-ollama-models`). Runs only when invoked by name. Writes .agents/runs/textclone-llm-router/.
 
 Read first: textclone/llm/router.py (num_ctx 4096 retry), ollama.py, breaker.py, json_repair.py,
 base.py; textclone/api/router_status.py; textclone/errors.py (LLM_* codes); docs/roadmap/08-learning-finetune/PLAN.md
@@ -275,7 +275,7 @@ Build the skill textclone-compose-registry. Follow prompts/00-BUILD-PROTOCOL.md 
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when working on Textclone compose: formats, audiences, modifiers, regenerate modes (quick, balanced, thorough, different) and the registry endpoint. Not for new task types (use `textclone-new-task-type`).
+Use when working on Textclone compose: formats, audiences, modifiers, regenerate modes (quick, balanced, thorough, different) and the registry endpoint. Not for new task types (use `textclone-new-task-type`). Runs only when invoked by name. Writes .agents/runs/textclone-compose-registry/.
 
 Read first: textclone/compose/ (audiences.py, formats.py, models.py, modifiers.py, runtime.py),
 textclone/api/routes/compose.py (GET /api/compose/registry), docs/roadmap/06-compose-longform/PLAN.md
@@ -312,7 +312,7 @@ Build the skill textclone-multi-profile. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when Textclone needs more than one voice profile ("me at work", or another consenting author): separate corpus scope, profile switching, privacy boundaries. Not for registers within one profile (use `textclone-registers`).
+Use when Textclone needs more than one voice profile ("me at work", or another consenting author): separate corpus scope, profile switching, privacy boundaries. Not for registers within one profile (use `textclone-registers`). Runs only when invoked by name. Writes .agents/runs/textclone-multi-profile/.
 
 Read first: docs/roadmap/09-new-capabilities/PLAN.md step 10 (personas; schema already has profile_id),
 textclone/db/schema/v001.sql (profile_id uses), textclone/db/repo_corpus.py, profile/builder.py.

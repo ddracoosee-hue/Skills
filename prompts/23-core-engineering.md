@@ -21,7 +21,7 @@ Build the skill core-test-first. Follow prompts/00-BUILD-PROTOCOL.md and prompts
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when fixing a bug or adding behaviour: write the regression or acceptance test first, watch it fail for the stated reason, then change code. Not for proving stability after (use `core-recheck-loop`).
+Use when fixing a bug or adding behaviour: write the regression or acceptance test first, watch it fail for the stated reason, then change code. Not for proving stability after (use `core-recheck-loop`). Runs only when invoked by name. Writes .agents/runs/core-test-first/.
 
 Purpose: every behaviour change is pinned by a test that was seen failing.
 
@@ -65,7 +65,7 @@ Build the skill core-debug-method. Follow prompts/00-BUILD-PROTOCOL.md and promp
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when something fails and the cause is unknown: reproduce, shrink to the smallest failing case, log hypotheses, test one variable at a time, find the first wrong state. Not for finding the breaking commit (use `core-git-bisect`).
+Use when something fails and the cause is unknown: reproduce, shrink to the smallest failing case, log hypotheses, test one variable at a time, find the first wrong state. Not for finding the breaking commit (use `core-git-bisect`). Runs only when invoked by name. Writes .agents/runs/core-debug-method/.
 
 Purpose: replace guess-and-patch with a method that converges.
 
@@ -110,7 +110,7 @@ Build the skill core-git-bisect. Follow prompts/00-BUILD-PROTOCOL.md and prompts
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when something used to work and now doesn't: find the first bad commit with a scripted git bisect in a worktree. Not for unknown failures with no known-good point (use `core-debug-method`).
+Use when something used to work and now doesn't: find the first bad commit with a scripted git bisect in a worktree. Not for unknown failures with no known-good point (use `core-debug-method`). Runs only when invoked by name. Writes .agents/runs/core-git-bisect/.
 
 Purpose: find the breaking change in log2(n) steps.
 
@@ -148,7 +148,7 @@ Build the skill core-diff-self-review. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use before any commit, handoff or review request: re-read your own diff as a hostile reviewer — edge cases, error paths, scope creep, leftover debug code, broken contracts. Not for reviewing someone else's PR (use `core-codex-handoff`).
+Use before any commit, handoff or review request: re-read your own diff as a hostile reviewer — edge cases, error paths, scope creep, leftover debug code, broken contracts. Not for reviewing someone else's PR (use `core-codex-handoff`). Runs only when invoked by name. Writes .agents/runs/core-diff-self-review/.
 
 Purpose: catch your own mistakes before anyone else has to.
 
@@ -192,7 +192,7 @@ Build the skill core-refactor-safely. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when restructuring code without changing behaviour: pin current behaviour with tests first, change in small steps, prove nothing changed. Not for fixing bugs (use `core-flow-bugfix`).
+Use when restructuring code without changing behaviour: pin current behaviour with tests first, change in small steps, prove nothing changed. Not for fixing bugs (use `core-flow-bugfix`). Runs only when invoked by name. Writes .agents/runs/core-refactor-safely/.
 
 Purpose: cleaner code, same behaviour, proven.
 
@@ -231,7 +231,7 @@ Build the skill core-api-design. Follow prompts/00-BUILD-PROTOCOL.md and prompts
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when adding or changing an API endpoint, CLI command or public function: naming, request/response shapes, errors, versioning, backward compatibility. Not for Textclone's existing error rules (use `textclone-error-contract`).
+Use when adding or changing an API endpoint, CLI command or public function: naming, request/response shapes, errors, versioning, backward compatibility. Not for Textclone's existing error rules (use `textclone-error-contract`). Runs only when invoked by name. Writes .agents/runs/core-api-design/.
 
 Purpose: interfaces that are consistent and don't break callers.
 
@@ -271,7 +271,7 @@ Build the skill core-state-machines. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when something has a lifecycle (jobs, runs, uploads, UI modes): model states and transitions explicitly so none are impossible, stuck or unreachable. Not for UI visual states only (use `core-states-design`).
+Use when something has a lifecycle (jobs, runs, uploads, UI modes): model states and transitions explicitly so none are impossible, stuck or unreachable. Not for UI visual states only (use `core-states-design`). Runs only when invoked by name. Writes .agents/runs/core-state-machines/.
 
 Purpose: no stuck jobs, no impossible states.
 
@@ -310,7 +310,7 @@ Build the skill core-concurrency-review. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when code uses threads, async tasks, background workers or shared connections: review for races, shared state, cancellation and cleanup. Not for lifecycle modelling (use `core-state-machines`).
+Use when code uses threads, async tasks, background workers or shared connections: review for races, shared state, cancellation and cleanup. Not for lifecycle modelling (use `core-state-machines`). Runs only when invoked by name. Writes .agents/runs/core-concurrency-review/.
 
 Purpose: concurrency bugs found by review, not by users.
 
@@ -350,7 +350,7 @@ Build the skill core-property-tests. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a function has rules that hold for all inputs (parsers, chunkers, dedup, scoring): write property-based tests with generated inputs. Not for single regression cases (use `core-test-first`).
+Use when a function has rules that hold for all inputs (parsers, chunkers, dedup, scoring): write property-based tests with generated inputs. Not for single regression cases (use `core-test-first`). Runs only when invoked by name. Writes .agents/runs/core-property-tests/.
 
 Purpose: find edge cases nobody writes by hand.
 
@@ -387,7 +387,7 @@ Build the skill core-mutation-check. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when asking whether tests would actually catch bugs in critical code: make small deliberate code mutations and check that tests fail. Not for coverage numbers alone or writing new tests from criteria (use `core-test-first`).
+Use when asking whether tests would actually catch bugs in critical code: make small deliberate code mutations and check that tests fail. Not for coverage numbers alone or writing new tests from criteria (use `core-test-first`). Runs only when invoked by name. Writes .agents/runs/core-mutation-check/.
 
 Purpose: measure test strength where it matters.
 
@@ -424,7 +424,7 @@ Build the skill core-type-hardening. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when raising type safety one module at a time: add or tighten type hints and checks without behaviour change. Not for general refactors (use `core-refactor-safely`).
+Use when raising type safety one module at a time: add or tighten type hints and checks without behaviour change. Not for general refactors (use `core-refactor-safely`). Runs only when invoked by name. Writes .agents/runs/core-type-hardening/.
 
 Purpose: fewer runtime type bugs, gradually.
 
@@ -461,7 +461,7 @@ Build the skill core-perf-profiling. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when something is slow: measure before optimising — profile, find the hot spots, change one thing, measure again with a before/after table. Not for setting time budgets (use `core-latency-budget`).
+Use when something is slow: measure before optimising — profile, find the hot spots, change one thing, measure again with a before/after table. Not for setting time budgets (use `core-latency-budget`). Runs only when invoked by name. Writes .agents/runs/core-perf-profiling/.
 
 Purpose: speed work driven by measurements.
 
@@ -499,7 +499,7 @@ Build the skill core-dependency-audit. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a new package or upgrade is proposed: check need, licence, size, maintenance, lockfile diff and whether something installed already does it. Not for security reviews of our code (use `core-security-review`).
+Use when a new package or upgrade is proposed: check need, licence, size, maintenance, lockfile diff and whether something installed already does it. Not for security reviews of our code (use `core-security-review`). Runs only when invoked by name. Writes .agents/runs/core-dependency-audit/.
 
 Purpose: few, deliberate dependencies.
 
@@ -538,7 +538,7 @@ Build the skill core-flake-triage. Follow prompts/00-BUILD-PROTOCOL.md and promp
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a test fails intermittently or in code you didn't touch: decide with evidence whether it's a known flake, an environment problem, or a real bug. Not for debugging a known real bug (use `core-debug-method`).
+Use when a test fails intermittently or in code you didn't touch: decide with evidence whether it's a known flake, an environment problem, or a real bug. Not for debugging a known real bug (use `core-debug-method`). Runs only when invoked by name. Writes .agents/runs/core-flake-triage/.
 
 Purpose: "flake" is never a root cause; every intermittent failure gets classified with evidence.
 
@@ -577,7 +577,7 @@ Build the skill core-web-test. Follow prompts/00-BUILD-PROTOCOL.md and prompts/0
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a UI behaviour needs an automated browser check: drive a production build against a mock API on owned ports and assert the interaction. Not for layout geometry (use `core-layout-audit`).
+Use when a UI behaviour needs an automated browser check: drive a production build against a mock API on owned ports and assert the interaction. Not for layout geometry (use `core-layout-audit`). Runs only when invoked by name. Writes .agents/runs/core-web-test/.
 
 Purpose: real interactions tested without the live backend.
 
@@ -618,7 +618,7 @@ Build the skill core-security-review. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when reviewing code for security: input handling, file paths, uploads, local server exposure, host/CSRF guards, secrets, and data leaks. Not for evaluating a new package (use `core-dependency-audit`).
+Use when reviewing code for security: input handling, file paths, uploads, local server exposure, host/CSRF guards, secrets, and data leaks. Not for evaluating a new package (use `core-dependency-audit`). Runs only when invoked by name. Writes .agents/runs/core-security-review/.
 
 Purpose: a local app that is still safe against malicious files, pages and inputs.
 

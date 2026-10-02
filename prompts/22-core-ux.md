@@ -17,7 +17,7 @@ Build the skill core-information-architecture. Follow prompts/00-BUILD-PROTOCOL.
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when designing or reviewing where things live in a UI: one home per action, one job per page, navigation and grouping. Not for the states of one screen (use `core-states-design`) or wording (use `core-microcopy`).
+Use when designing or reviewing where things live in a UI: one home per action, one job per page, navigation and grouping. Not for the states of one screen (use `core-states-design`) or wording (use `core-microcopy`). Runs only when invoked by name. Writes .agents/runs/core-information-architecture/.
 
 Purpose: no duplicated controls, no orphan features, and every action findable.
 
@@ -62,7 +62,7 @@ Build the skill core-states-design. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when building or reviewing a screen or component: design every state — empty, loading, partial, success, error, offline/unavailable, cancelled. Not for where controls live (use `core-information-architecture`).
+Use when building or reviewing a screen or component: design every state — empty, loading, partial, success, error, offline/unavailable, cancelled. Not for where controls live (use `core-information-architecture`). Runs only when invoked by name. Writes .agents/runs/core-states-design/.
 
 Purpose: no screen looks unfinished or lies about what is happening.
 
@@ -106,7 +106,7 @@ Build the skill core-microcopy. Follow prompts/00-BUILD-PROTOCOL.md and prompts/
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when writing or reviewing UI text: button labels, error messages, hints, empty states, tooltips, confirmations. Not for long docs or reading layout (use `core-readability`).
+Use when writing or reviewing UI text: button labels, error messages, hints, empty states, tooltips, confirmations. Not for long docs or reading layout (use `core-readability`). Runs only when invoked by name. Writes .agents/runs/core-microcopy/.
 
 Purpose: every word in the UI tells the user what it does or what to do next.
 
@@ -153,7 +153,7 @@ Build the skill core-readability. Follow prompts/00-BUILD-PROTOCOL.md and prompt
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when text must be easy to read, especially for dyslexic readers: UI reading areas, docs, reports, handoffs. Covers line length, spacing, fonts, plain language, structure. Not for button and error wording (use `core-microcopy`).
+Use when text must be easy to read, especially for dyslexic readers: UI reading areas, docs, reports, handoffs. Covers line length, spacing, fonts, plain language, structure. Not for button and error wording (use `core-microcopy`). Runs only when invoked by name. Writes .agents/runs/core-readability/.
 
 Purpose: the user reads with dyslexia; everything we produce should read easily.
 
@@ -200,7 +200,7 @@ Build the skill core-ux-heuristics. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when reviewing a screen's usability against the 10 usability heuristics, with scored evidence and fixes. Not for a hands-on flow walk (use `core-user-journey-walk`) or accessibility (use `core-a11y-review`).
+Use when reviewing a screen's usability against the 10 usability heuristics, with scored evidence and fixes. Not for a hands-on flow walk (use `core-user-journey-walk`) or accessibility (use `core-a11y-review`). Runs only when invoked by name. Writes .agents/runs/core-ux-heuristics/.
 
 Purpose: structured, evidence-based UX review instead of opinions.
 
@@ -238,7 +238,7 @@ Build the skill core-motion. Follow prompts/00-BUILD-PROTOCOL.md and prompts/01-
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when adding or reviewing animation and transitions: purpose, duration and easing tokens, reduced-motion alternatives, never blocking input. Not for the orb engine itself (use `orion-orb-states`).
+Use when adding or reviewing animation and transitions: purpose, duration and easing tokens, reduced-motion alternatives, never blocking input. Not for the orb engine itself (use `orion-orb-states`). Runs only when invoked by name. Writes .agents/runs/core-motion/.
 
 Purpose: motion that explains change and never gets in the way.
 
@@ -277,7 +277,7 @@ Build the skill core-onboarding. Follow prompts/00-BUILD-PROTOCOL.md and prompts
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when designing the first-run experience: what a new user sees, setup checks, sample data, and a first success within two minutes. Not for general flow walks (use `core-user-journey-walk`).
+Use when designing the first-run experience: what a new user sees, setup checks, sample data, and a first success within two minutes. Not for general flow walks (use `core-user-journey-walk`). Runs only when invoked by name. Writes .agents/runs/core-onboarding/.
 
 Purpose: new users (or a fresh install) reach value fast.
 
@@ -314,7 +314,7 @@ Build the skill core-visual-design-method. Follow prompts/00-BUILD-PROTOCOL.md a
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when making a UI beautiful in a controlled way: define tokens, measurable visual rules, a reference target page and a scored rubric, then build to them. Not for layout overflow checks (use `core-layout-audit`).
+Use when making a UI beautiful in a controlled way: define tokens, measurable visual rules, a reference target page and a scored rubric, then build to them. Not for layout overflow checks (use `core-layout-audit`). Runs only when invoked by name. Writes .agents/runs/core-visual-design-method/.
 
 Purpose: "pretty" that is defined, measured and repeatable, not taste.
 
@@ -360,7 +360,7 @@ Build the skill core-layout-audit. Follow prompts/00-BUILD-PROTOCOL.md and promp
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when checking a web UI for layout defects across viewports and themes: off-screen boxes, clipped or overflowing text, overlaps, duplicate controls, misplaced anchors. Not for visual taste scoring (use `core-visual-design-method`).
+Use when checking a web UI for layout defects across viewports and themes: off-screen boxes, clipped or overflowing text, overlaps, duplicate controls, misplaced anchors. Not for visual taste scoring (use `core-visual-design-method`). Runs only when invoked by name. Writes .agents/runs/core-layout-audit/.
 
 Purpose: automated proof that every element is where the spec says and fits.
 
@@ -405,7 +405,7 @@ Build the skill core-a11y-review. Follow prompts/00-BUILD-PROTOCOL.md and prompt
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when checking accessibility: keyboard paths, focus order and visibility, contrast, labels and accessible names, live regions, reduced motion. Not for layout overflow (use `core-layout-audit`).
+Use when checking accessibility: keyboard paths, focus order and visibility, contrast, labels and accessible names, live regions, reduced motion. Not for layout overflow (use `core-layout-audit`). Runs only when invoked by name. Writes .agents/runs/core-a11y-review/.
 
 Purpose: the app works without a mouse and with assistive technology.
 
@@ -448,7 +448,7 @@ Build the skill core-nextjs16. Follow prompts/00-BUILD-PROTOCOL.md and prompts/0
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use before writing or changing Next.js code: check the installed Next.js docs (version from project.json), not memory — routing, server/client components, config, build. Not for styling (use `core-visual-design-method`).
+Use before writing or changing Next.js code: check the installed Next.js docs (version from project.json), not memory — routing, server/client components, config, build. Not for styling (use `core-visual-design-method`). Runs only when invoked by name. Writes .agents/runs/core-nextjs16/.
 
 Purpose: Next.js 16 has breaking changes from what models remember; read the installed docs.
 

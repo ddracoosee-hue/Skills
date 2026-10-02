@@ -22,7 +22,7 @@ Build the skill core-ollama-models. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when choosing, loading or troubleshooting local Ollama models: VRAM budget, quantisation, context length, keep_alive, one-model-at-a-time limits, timeouts. Not for prompt wording (use `core-prompt-versioning`).
+Use when choosing, loading or troubleshooting local Ollama models: VRAM budget, quantisation, context length, keep_alive, one-model-at-a-time limits, timeouts. Not for prompt wording (use `core-prompt-versioning`). Runs only when invoked by name. Writes .agents/runs/core-ollama-models/.
 
 Purpose: local models that fit the GPU and fail predictably.
 
@@ -65,7 +65,7 @@ Build the skill core-prompt-versioning. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when adding or changing an LLM prompt template: add a new versioned template instead of editing one that training or evaluations depend on, and record why. Not for Textclone train/serve parity details (use `textclone-prompt-parity`).
+Use when adding or changing an LLM prompt template: add a new versioned template instead of editing one that training or evaluations depend on, and record why. Not for Textclone train/serve parity details (use `textclone-prompt-parity`). Runs only when invoked by name. Writes .agents/runs/core-prompt-versioning/.
 
 Purpose: prompts change safely and traceably.
 
@@ -106,7 +106,7 @@ Build the skill core-structured-output. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when an LLM must return JSON or another structure: schema, validation, repair, bounded retries, and failing loudly instead of guessing. Not for prompt wording (use `core-prompt-versioning`).
+Use when an LLM must return JSON or another structure: schema, validation, repair, bounded retries, and failing loudly instead of guessing. Not for prompt wording (use `core-prompt-versioning`). Runs only when invoked by name. Writes .agents/runs/core-structured-output/.
 
 Purpose: machine-readable model output you can trust.
 
@@ -145,7 +145,7 @@ Build the skill core-llm-eval. Follow prompts/00-BUILD-PROTOCOL.md and prompts/0
 (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when judging whether an LLM change (prompt, model, settings, retrieval) helped: fixed benchmark, baseline run, change, paired comparison with confidence intervals. Not for logging the experiment (use `core-experiment-log`).
+Use when judging whether an LLM change (prompt, model, settings, retrieval) helped: fixed benchmark, baseline run, change, paired comparison with confidence intervals. Not for logging the experiment (use `core-experiment-log`). Runs only when invoked by name. Writes .agents/runs/core-llm-eval/.
 
 Purpose: no tuning without measurement.
 
@@ -189,7 +189,7 @@ Build the skill core-judge-calibration. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when a model or metric scores outputs (a grader, critic or detector): check it against human labels, measure agreement and bias, decide if it can be trusted. Not for comparing two system versions (use `core-llm-eval`).
+Use when a model or metric scores outputs (a grader, critic or detector): check it against human labels, measure agreement and bias, decide if it can be trusted. Not for comparing two system versions (use `core-llm-eval`). Runs only when invoked by name. Writes .agents/runs/core-judge-calibration/.
 
 Purpose: scores that mean something.
 
@@ -229,7 +229,7 @@ Build the skill core-retrieval-quality. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when checking whether retrieval finds the right examples: recall@k on labelled queries, diversity of results, distance-score correctness, leakage. Not for overall output quality (use `core-llm-eval`).
+Use when checking whether retrieval finds the right examples: recall@k on labelled queries, diversity of results, distance-score correctness, leakage. Not for overall output quality (use `core-llm-eval`). Runs only when invoked by name. Writes .agents/runs/core-retrieval-quality/.
 
 Purpose: the model sees the best and most varied examples.
 
@@ -268,7 +268,7 @@ Build the skill core-latency-budget. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use when setting or checking time budgets for a pipeline: per-stage targets (first event, plan, draft, checks, total), measured with medians, and alerts when exceeded. Not for finding hot spots (use `core-perf-profiling`).
+Use when setting or checking time budgets for a pipeline: per-stage targets (first event, plan, draft, checks, total), measured with medians, and alerts when exceeded. Not for finding hot spots (use `core-perf-profiling`). Runs only when invoked by name. Writes .agents/runs/core-latency-budget/.
 
 Purpose: speed goals the user can feel, tracked per stage.
 
@@ -306,7 +306,7 @@ Build the skill core-experiment-log. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring.
 
 Description (verbatim; change only if R2 fails):
-Use whenever trying an idea to improve quality or speed: log hypothesis, change, metric, result, verdict and keep/revert, so failed ideas aren't repeated. Not for running the measurement itself (use `core-llm-eval`).
+Use whenever trying an idea to improve quality or speed: log hypothesis, change, metric, result, verdict and keep/revert, so failed ideas aren't repeated. Not for running the measurement itself (use `core-llm-eval`). Runs only when invoked by name. Writes .agents/runs/core-experiment-log/.
 
 Purpose: institutional memory for experiments.
 

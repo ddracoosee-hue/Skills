@@ -3,7 +3,15 @@
 Flows are the entry points you call by name. Each one chains core skills in a fixed order. Build a
 flow only after every skill in its chain is at least `tested`. Batch name: `flows`.
 
-Every flow SKILL.md has the same extra rule: **a flow never repeats a chained skill's instructions.**
+Two more rules apply to every flow, because a skill applies to one turn (docs/MUSE-REFERENCE.md §2.5):
+
+- A flow invokes each chained skill **by name** ("Invoke /core-test-first"). This depends on
+  VERIFIED.md #14; if a skill cannot load another, the flow becomes a checklist the user steps
+  through.
+- A flow keeps its ledger in `.agents/state/<flow>.json`. At every gate it ends the turn with
+  `Re-invoke: /<flow> continue`, and on re-invoke it resumes from the ledger.
+
+Every flow SKILL.md also has this rule: **a flow never repeats a chained skill's instructions.**
 It names the skill, says what that step must hand to the next one, and gives the stage's
 "done when". This keeps flows short and stops them drifting from the skills they call.
 
@@ -17,7 +25,7 @@ Build the skill core-flow-feature. Follow prompts/00-BUILD-PROTOCOL.md and promp
 if one is not, stop and list which.
 
 Description (verbatim; change only if R2 fails):
-Use when building a new feature end to end: brief, criteria, slices, test-first build, self-review, journey walk, handoff. Not for bug fixes (use `core-flow-bugfix`) or purely visual UI changes (use `core-flow-ui-change`).
+Use when building a new feature end to end: brief, criteria, slices, test-first build, self-review, journey walk, handoff. Not for bug fixes (use `core-flow-bugfix`) or purely visual UI changes (use `core-flow-ui-change`). Runs only when invoked by name. Writes .agents/runs/core-flow-feature/.
 
 Chain and hand-offs (each step is "use <skill>; hand on <output>; done when <condition>"):
 1. core-session-start → scope statement.
@@ -59,7 +67,7 @@ Build the skill core-flow-bugfix. Follow prompts/00-BUILD-PROTOCOL.md and prompt
 (R1–R3). Use core-skill-authoring. Chained skills must be "tested" or better.
 
 Description (verbatim; change only if R2 fails):
-Use when something is broken and needs fixing: reproduce, find the cause, regression test first, minimal fix, recheck, handoff. Not for new features (use `core-flow-feature`) or test flakiness only (use `core-flake-triage`).
+Use when something is broken and needs fixing: reproduce, find the cause, regression test first, minimal fix, recheck, handoff. Not for new features (use `core-flow-feature`) or test flakiness only (use `core-flake-triage`). Runs only when invoked by name. Writes .agents/runs/core-flow-bugfix/.
 
 Chain and hand-offs:
 1. core-session-start → scope.
@@ -98,7 +106,7 @@ Build the skill core-flow-ui-change. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring. Chained skills must be "tested".
 
 Description (verbatim; change only if R2 fails):
-Use when changing what a UI looks like or how it is arranged without changing what the app does: placement, states, wording, look, then audits and rubric. Not for features with new backend behaviour (use `core-flow-feature`).
+Use when changing what a UI looks like or how it is arranged without changing what the app does: placement, states, wording, look, then audits and rubric. Not for features with new backend behaviour (use `core-flow-feature`). Runs only when invoked by name. Writes .agents/runs/core-flow-ui-change/.
 
 Chain and hand-offs:
 1. core-session-start → scope, including the project's UI rules (textclone: UI track rules
@@ -139,7 +147,7 @@ Build the skill core-flow-experiment. Follow prompts/00-BUILD-PROTOCOL.md and
 prompts/01-REFINEMENT.md (R1–R3). Use core-skill-authoring. Chained skills must be "tested".
 
 Description (verbatim; change only if R2 fails):
-Use when trying an idea to improve output quality or speed (prompt, model, setting, retrieval, metric): log, baseline, change one thing, measure, check stats, keep or revert. Not for building features (use `core-flow-feature`).
+Use when trying an idea to improve output quality or speed (prompt, model, setting, retrieval, metric): log, baseline, change one thing, measure, check stats, keep or revert. Not for building features (use `core-flow-feature`). Runs only when invoked by name. Writes .agents/runs/core-flow-experiment/.
 
 Chain and hand-offs:
 1. core-experiment-log → hypothesis entry; duplicate check done.
@@ -174,7 +182,7 @@ Build the skill core-flow-release. Follow prompts/00-BUILD-PROTOCOL.md and promp
 (R1–R3). Use core-skill-authoring. Chained skills must be "tested".
 
 Description (verbatim; change only if R2 fails):
-Use when preparing a release end to end: backup drill, migration rehearsal, green CI, version and notes, smoke test. Not for only writing release notes (use `core-release`).
+Use when preparing a release end to end: backup drill, migration rehearsal, green CI, version and notes, smoke test. Not for only writing release notes (use `core-release`). Runs only when invoked by name. Writes .agents/runs/core-flow-release/.
 
 Chain and hand-offs:
 1. core-session-start → scope (version target).

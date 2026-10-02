@@ -1,12 +1,13 @@
 # Muse skills catalog
 
-This is the full list of skills planned for this repo. It is a list only: no skill is written yet.
-Build prompts for Muse come later, in batches, starting with the P1 skills.
+This is the full list of skills planned for this repo: 117 skills. No skill is written yet. The
+build prompts are in [`prompts/`](prompts/README.md), one per skill, run in batches starting with
+the P1 skills.
 
 The list is ordered so it reads top to bottom as one path:
 
 1. how every skill is built;
-2. the foundation that makes skills portable;
+2. the foundation that makes skills portable and traceable;
 3. the shared core, from planning a product to releasing it;
 4. the flows that chain core skills together;
 5. the Textclone pack;
@@ -19,29 +20,35 @@ Each table row is one skill, with what it does and why it matters for building b
 
 ## 1. How every skill is built
 
-Adding more skills is not automatically better. Muse reads every skill's description to decide which
-one to use. Many skills with overlapping descriptions make it pick the wrong one or none at all. So
-each skill must be narrow, and each must follow the same anatomy:
+Adding more skills is not automatically better. At session open, Muse loads only the descriptions.
+A skill is then invoked by name, its full text loads for that one turn, and the tier (Standard or
+Contributor) travels with every request. That shapes every skill.
+
+The full rules are in [`prompts/00-BUILD-PROTOCOL.md`](prompts/00-BUILD-PROTOCOL.md) and the source
+is [`docs/MUSE-REFERENCE.md`](docs/MUSE-REFERENCE.md). In short:
 
 | Part | Rule |
 | --- | --- |
-| Frontmatter | `name` matches the folder name. `description` is at most 250 characters and has two parts: "Use when …" and "Not for … (use `<other-skill>`)". |
-| Inputs | Project facts come from `.muse/project.json` and are never hard-coded. |
-| Steps | Numbered steps, each with a "done when" condition that can be checked. |
-| Decision rules | The judgement calls written as if-then rules: when to stop, when to ask, which option wins. |
-| Anti-patterns | The specific mistakes this skill exists to prevent. |
-| Evidence | What the final report must show: the commands run, their output, and anything that could not be checked. |
-| `references/` | Long material, such as checklists, examples and tables, goes in separate files. Muse reads them only when a step needs them, which keeps `SKILL.md` short (at most about 150 lines). |
-| `evals.md` | 3 to 5 requests that should trigger the skill and 2 or 3 near-misses that should not. `core-skill-evals` runs these. |
+| Invocation | Explicit only. A skill runs when the user types `/<name>`, or a prompt, task file, `AGENTS.md` or flow names it. Never on its own. |
+| Description | The routing contract, at most 350 characters: "Use when …", "Not for … (use `other`)", "Runs only when invoked by name", "Writes .agents/runs/<name>/". |
+| Frontmatter | Only `name` (equal to the folder) and `description`, until `VERIFIED.md` shows Muse accepts more. |
+| Body | Heading `# <name> — v<x.y.z>`, then nine sections in this order: Purpose, Trigger contract, Inputs, Procedure, Gates, Outputs, Trace block, Failure handling, Do not. At most about 150 lines, with no dates. |
+| Procedure | Numbered steps naming exact commands, each with a checkable "Done when". |
+| Gates | The exact question "Approve, request changes, or cancel?" (or the project's own approval phrase). A skill lasts one turn, so gated skills save state and print "Re-invoke: /<name> continue". |
+| Traceability | Every run writes `.agents/runs/<name>/<YYYYMMDD-HHMM>-<slug>.md` with a Trace block: version, lane, model, session, commands, gates, checks. |
+| Privacy | Written as if published. No secrets, private text or personal paths; a pre-commit scan enforces it. |
+| Testing | `evals.md` routing tests, plus invented-term `fixtures/` run headlessly 5 times. Scores go in `EVALS.csv`, and a version ships only if it scores at least as well as the last one. |
 
-## 2. Foundation: building, testing and improving skills
+## 2. Foundation: building, testing, tracing and improving skills
 
 | Skill | Pri | What it does and why |
 | --- | --- | --- |
-| `core-project-profile` | P1 | Creates and validates `.muse/project.json`: venv, commands, ports, protected paths, handoff files, known flakes, privacy patterns. Every shared skill reads it. |
+| `core-project-profile` | P1 | Creates and validates `.muse/project.json` (commands, ports, paths, lane, worktrees, known flakes, privacy patterns) and the project's `LANES.md`. Every shared skill reads it. |
 | `core-skill-authoring` **New** | P1 | The anatomy above, as a procedure. Muse uses it to write every other skill, so all of them come out consistent. |
-| `core-skill-evals` **New** | P1 | Runs each skill's `evals.md` and reports when the skill fires and when it misfires. A skill edit is not done until its evals pass. |
+| `core-skill-evals` **New** | P1 | Runs the routing tests and the fixture runs on both lanes, then records the scorecard. A skill edit is not done until it passes the ship rule. |
 | `core-skill-maintenance` | P2 | Keeps skills in step with project changes and retires stale ones. Changes go to the `skills` repo (`ddracoosee-hue/skills`) as commits. |
+| `core-trace-report` **New** | P1 | Writes the end-of-task trace: what ran, lane and model, gates and answers, checks, and a redacted `muse export` with its SHA-256. It is the join between Muse's event log and the skill text that ran. |
+| `core-session-audit` **New** | P1 | Reads a session export and lists approvals (and who decided them), side effects, skill loads and failed tools. It flags anything that wrote without approval. |
 | `core-retro` **New** | P2 | After each phase, records what failed or wasted time and proposes an edit to the skill that should have prevented it. Proposals only; the user approves them. |
 
 ## 3. Shared core
@@ -242,14 +249,14 @@ The rest of the Orion pack will be scoped from the Orion repo itself, not guesse
 
 | Group | From first list | New | Total |
 | --- | --- | --- | --- |
-| Foundation | 2 | 3 | 5 |
+| Foundation and traceability | 2 | 5 | 7 |
 | Shared core (3.1–3.8) | 23 | 45 | 68 |
 | Flows | 0 | 5 | 5 |
 | Textclone pack | 20 | 15 | 35 |
 | Orion pack | 1 | 1 | 2 |
-| **All** | **46** | **69** | **115** |
+| **All** | **46** | **71** | **117** |
 
 The first list had 45 skills plus #0 `core-project-profile`.
 
-P1 count: 58. The first build batch is the foundation P1s, so every later skill is written and
+P1 count: 60. The first build batch is the foundation P1s, so every later skill is written and
 tested the same way. Then the core P1s, the five flows, and the Textclone voice-quality P1s.
