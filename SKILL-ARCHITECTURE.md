@@ -117,9 +117,10 @@ These are grouped by the function categories in `SKILLS-MAP.md`. For each:
 | `core-cost-estimate` | Estimate tokens and cost for a model call or run before it happens | Tool | M |
 
 That is 25 small capabilities:
-- 13 micro-skills;
-- 7 tools;
-- 5 rules, plus 6 more pieces that are a combination of rule, tool and micro-skill.
+- 11 micro-skills;
+- 5 tools;
+- 3 rules;
+- 6 that combine a rule or a tool with a micro-skill.
 
 The rules cost nothing to route. The tools never route at all. Only the micro-skills add
 descriptions, and most are called by other skills rather than by you, so their descriptions can
