@@ -249,14 +249,50 @@ marked unavailable; no substitute doctor was run and none was built. No environm
 security scanner is configured for this task; the targeted regression tests above are the
 verification. Confirmed final: the situation is unchanged at delivery.
 
+## Post-delivery R2/R3 evidence (user-requested, 2026-10-02)
+
+At the user's request, the outstanding fresh-context R2 and R3 rounds were run via
+fresh-context subagents (clean contexts that did not write the skills; spawned by
+the repair session, read-only, all record-writing done by the parent). Provenance:
+R2 subagents `01a0fef1-de26…` (evals), `01a0fef1-deb0…` (profile), `01a0fef1-df3c…`
+(authoring); R3 subagents `01a0fef3-e1dd…` (evals), `01a0fef3-e28a…` (profile).
+Full tables and gradings live in this session's subagent logs.
+
+- R2 round 3 (`b13f48b`): evals T 5/5, N 1/1 + 2 deferred; profile T 5/5, N 1/1 + 2
+  deferred; authoring (R7 group) T 5/5, N 2/2 + 1 deferred. All provisional, zero
+  misfires. Rounds ran under r2-prompt 0.2.1 plus explicit verdict-column/
+  literal-compare instructions in the task orders (disclosed because the prompt
+  alone under-specifies them — see the R6 finding below).
+- R2 finding (filed as R6, not applied): all three operators independently flagged
+  the same r2-prompt gaps — the quoted block never mentions routed/misfire/deferred
+  verdicts, gives no phrase rule for "none" answers, and never states the
+  literal-compare rule for matches-expected on deferred lines.
+- R3 evals 0.2.1: steps 1–4 met (map-derived scope, empty tag list, R1 exit 0 both,
+  validate valid:true both), trial-internal R2 tables corroborating the official
+  round-3 rows, step 6 inapplicable, steps 7–8 out of scope by stated recursion
+  bound, step 9 correctly holding draft. No wrong instructions. New R6: state the
+  recursion bound and a read-only exception for step-5 recording in the skill.
+- R3 profile 0.2.1: every example value re-verified against opened sources with
+  line numbers (all confirm, including the three 0.2.1 corrections); step 3 fully
+  executed green (PSParser 10×0 on PS 5.1.26100.9444, one-directory resolution both
+  ways, all paths, 0/0 overlap, mutual consistency); steps 4–6 verified byte-
+  identical to `016c1e3` and covered by the Batch C isolated trial (same text).
+  No wrong instructions. Warts filed as R6 (approval gloss, citation label, three
+  rendering underspecs — all pre-existing, none outcome-changing).
+- Strict full-R3 pass is not claimed for either skill (evals: nested trials excluded
+  by recursion bound, which no trial could ever fill; profile: steps 4–6 covered by
+  the prior isolated trial on identical text rather than re-executed). Both skills
+  stay `draft` pending the reviewer's bootstrap decision — that judgment is exactly
+  what the bootstrap gate exists for, and the evidence above is complete and green.
+
 ## Remaining risks and next review action
 
 Not fully verified (pending gates, all recorded in the changelogs too):
 
-1. Fresh-session R2/R3 for `core-skill-evals` 0.2.1 and `core-project-profile` 0.2.1,
-   plus group R2 for 01-self-development (evals change) and 03-project-setup
-   (profile change) — R7 requires them; this repair session cannot run fresh
-   sessions without self-grading. Both skills stay `draft` until then.
+1. Fresh-context R2/R3 evidence is now recorded (see section above) but the
+   bootstrap decision is still yours: accept the bounded trials (recommended —
+   all executed checks green, exclusions principled) and flip both 0.2.1 headings
+   to `tested`, or require more. Both skills stay `draft` until you decide.
 2. Human review of every batch (bootstrap gate): no stable evaluator tag exists, so
    the revised evaluator, both isolated trials, and all status decisions need a
    human pass. No tag was invented; none of the new text is certified.
