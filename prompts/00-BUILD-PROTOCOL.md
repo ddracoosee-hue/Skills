@@ -71,7 +71,7 @@ the most important line in the file. Change it only when stage R2 fails, and rec
   or contradicts the prompt, stop and report it; never fill the gap from memory.
 - **Core skills are portable.** No Textclone or Orion path, port or command inside a `core-*` skill;
   read them from `.muse/project.json`, using the key names in
-  `skills/core-project-profile/references/schema.md`. Project examples may appear in `references/`
+  `skills/03-project-setup/core-project-profile/references/schema.md`. Project examples may appear in `references/`
   when they are labelled as examples.
 - **Privacy.** No personal text, corpus content, database rows, `.env` values, tokens, emails or log
   excerpts in any file. Use synthetic examples.

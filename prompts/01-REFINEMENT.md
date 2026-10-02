@@ -71,6 +71,19 @@ answer) until your table is complete, then add a final column: matches expected?
 
 **Pass:** every T line picks `<name>`, and every N line picks its arrow target (or none).
 
+**One N line, one verdict.** Score each N line as routed, misfire, or deferred:
+- routed: it picked the expected target, and that target is built (or the target is none).
+- misfire: it picked anything else.
+- deferred: the expected target is not built yet. Record the observed choice, but do
+  not count the line as exercised. The expected request and target stay unchanged.
+  Deferred lines never trigger a description edit and never consume a round.
+
+**Round verdict.** Pass: every T routed and every N routed. Provisional: every
+exercised line routed, zero misfires, at least one N deferred. Anything else fails.
+A provisional round is not a full pass: it says "no misfire seen; the full check
+waits for targets". Write scores as "N x/y exercised, z deferred", never "x/y" alone.
+Record each deferred line's rerun dependency: re-run it when its target exists.
+
 **On a failure:** change only the description and the `## Use when` / `## Not for` sections, never the
 test lines, to make the result pass. Re-run in a new session. Use at most 3 rounds, recording each in
 `## Results`. If round 3 still fails, stop and report the competing skill: the two may need merging.
