@@ -11,6 +11,13 @@ answer in a table: request id | the one skill you would load (or "none") | the p
 skill's description that decided it.
 Choose from the quoted request text only. Ignore everything after the closing quote (the expected
 answer) until your table is complete, then add a final column: matches expected? (yes/no).
+For "none", give the reason no available description fits instead of a description quote.
+Compare the chosen name literally with the arrow target for matches expected, even when that target
+is unbuilt. Then add a verdict column: routed, misfire, or deferred. An N line with an unbuilt target
+is deferred regardless of the chosen name; record the observed choice and its rerun dependency.
+An exercised N line is routed only if it picks its target; any wrong T or exercised N is a misfire.
+Report T x/y and N x/y exercised, z deferred. Pass means every line routed; provisional means zero
+misfires with at least one deferred line; otherwise fail. Do not perform requests or change tests.
 ```
 
 Placeholders:

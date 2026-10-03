@@ -2,7 +2,7 @@
 // full R7 regression scope before testing, and selects the trusted evaluator ahead
 // of any grading, repair, or promotion. Text pins guard the rules' presence; the
 // scope-data cases prove the procedure's sources support them.
-import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { assert, assertEq, assertMatch, assertNotMatch, REPO_ROOT } from './helpers.mjs';
 
@@ -75,15 +75,23 @@ export const cases = [
   },
   {
     id: 'F21c',
-    name: 'catalog group for a synthetic change comes from the map, not the folder (control)',
+    name: 'catalog regression group includes foundation skills in different function folders',
     run: async () => {
       const map = JSON.parse(readFileSync(join(REPO_ROOT, 'skills-map.json'), 'utf8'));
-      const group = map.categories.find((c) => c.skills.includes('core-skill-evals'));
-      assertEq(group.id, '01-self-development', 'changed skill maps to its catalog group');
-      assertEq(group.skills.join(','), 'core-skill-authoring,core-skill-evals,core-skill-maintenance,core-retro', 'group lists every member including unbuilt skills');
-      const built = readdirSync(join(REPO_ROOT, 'skills', group.id))
-        .filter((d) => existsSync(join(REPO_ROOT, 'skills', group.id, d, 'SKILL.md')));
-      assert(built.length < group.skills.length, `folder listing (${built.length}) is narrower than the catalog group (${group.skills.length})`);
+      const catalog = readFileSync(join(REPO_ROOT, 'SKILLS-CATALOG.md'), 'utf8');
+      const section = catalog.split(/^## 2\. Foundation[^\n]*\n/m)[1]?.split(/^## 3\./m)[0];
+      assert(section, 'catalog Foundation group exists');
+      const names = [...section.matchAll(/^\| `([^`]+)`/gm)].map((m) => m[1]);
+      assert(names.includes('core-skill-evals') && names.includes('core-project-profile'),
+        'evaluator and profile share the catalog group despite different folders');
+      const members = names.map((name) => {
+        const category = map.categories.find((c) => c.skills.includes(name));
+        assert(category, `${name} has a function-folder mapping`);
+        return { name, category: category.id, built: existsSync(join(REPO_ROOT, 'skills', category.id, name, 'SKILL.md')) };
+      });
+      assertEq(members.filter((m) => m.built).map((m) => m.name).sort().join(','),
+        'core-project-profile,core-skill-authoring,core-skill-evals', 'all built foundation skills enter regression scope');
+      assertEq(members.filter((m) => !m.built).length, 4, 'four planned catalog members remain explicitly pending');
     },
   },
   {

@@ -16,7 +16,7 @@
 ## Results
 | Date | Round | Should trigger | Should not | Changed |
 | --- | --- | --- | --- | --- |
-| <date> | 1 | 5/5 | 3/3 | <what changed, or none> |
+| <date> | 1 | 5/5 | 3/3 exercised, 0 deferred | <what changed, or none> |
 ```
 
 Write the requests in different words from the description. Use at least
