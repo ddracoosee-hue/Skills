@@ -12,6 +12,11 @@ description: Use when linting the project before a commit, to list violations by
 ---
 ```
 
+Use unique top-level `name` and `description` fields with single-line string
+values. Quote a description containing `: ` or ` #` so YAML keeps it as text.
+Double-quoted strings use JSON-compatible escaping; in single-quoted strings,
+write an apostrophe twice. The 250-character limit counts the decoded value.
+
 ## 1. Use when
 
 3–6 bullets with the words a user would type. Always end with:

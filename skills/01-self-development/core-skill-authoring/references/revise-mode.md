@@ -10,13 +10,14 @@ Revise mode applies proposals the user already approved (usually from
 3. Apply only the approved proposals. Make the smallest edit that covers the evidence. Done when: no unapproved change exists in the diff.
 4. Add the trial or eval case that would have caught the miss. Done when: the new case fails on the old text and passes on the new text.
 5. Record lineage. Every change gets a CHANGELOG.md line "Because: <TRIALS.md / MISSES.md entry ids>". Done when: each changed section traces to evidence.
-6. Bump the version: minor for new steps or rules, patch for wording. Done when: CHANGELOG.md carries the new entry.
+6. Bump the version: minor for new steps or rules, patch for wording. Start the new entry as draft; preserve earlier versions and their evidence. Done when: CHANGELOG.md carries a new draft entry with the pending checks listed.
 7. Hand over to /core-skill-evals. Done when: R1–R3 records exist for the new version.
 
 ## Recursion rules (SELF-DEVELOPMENT.md §3)
 
-These apply whenever the skill under revision is a self-development skill
-(core-skill-authoring, core-skill-evals, core-skill-maintenance, core-retro):
+These apply to every revision. The previous-stable-evaluator rule specifically
+protects self-development skills (core-skill-authoring, core-skill-evals,
+core-skill-maintenance, core-retro):
 
 1. No self-grading. Test the new version with the previous stable version of
    core-skill-evals and the checker from its git tag, never with itself.
