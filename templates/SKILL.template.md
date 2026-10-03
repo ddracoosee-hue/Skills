@@ -1,6 +1,6 @@
 ---
 name: core-example-skill
-description: Use when <the situation, in the words a user would type>, to produce <result>. Not for <near-miss> (use `core-other-skill`).
+description: "Use when <the situation, in the words a user would type>, to produce <result>. Not for <near-miss> (use `core-other-skill`)."
 ---
 # core-example-skill
 

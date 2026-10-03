@@ -9,6 +9,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { frontmatter } from './lib/skill-frontmatter.mjs';
 
 const ROOT = process.env.SKILLS_REPO_ROOT ? resolve(process.env.SKILLS_REPO_ROOT) : resolve(dirname(fileURLToPath(import.meta.url)), '..');
 // Read text with CRLF normalized to LF: Windows checkouts (core.autocrlf) store CRLF on disk,
@@ -46,7 +47,14 @@ function built(cat, name) {
   const md = join(dir, 'SKILL.md');
   if (!existsSync(md)) return null;
   const text = read(md);
-  const desc = (text.match(/^description:\s*(.+)$/m) ?? [])[1]?.trim();
+  let desc;
+  try {
+    const { fields } = frontmatter(text);
+    if (fields.name !== name || !fields.description) throw new Error('name mismatch or missing description');
+    desc = fields.description;
+  } catch (e) {
+    problems.push(`${name}: ${e.message}`);
+  }
   const section = (h) => (text.match(new RegExp(`^## ${h}\\s*$([\\s\\S]*?)(?=^## |(?![\\s\\S]))`, 'm')) ?? [])[1] ?? '';
   const notFor = [...section('Not for').matchAll(NAME)].map((x) => x[1]);
   const related = [...(section('References').match(/^.*Related:.*$/m) ?? [''])[0].matchAll(NAME)].map((x) => x[1]);
@@ -56,6 +64,7 @@ function built(cat, name) {
     const firstHead = read(log).match(/^## .+$/m)?.[0];
     const v = firstHead?.match(/^## (\d+\.\d+\.\d+) — [\d-]+ — ([a-z]+)$/);
     if (!v) problems.push(`${name}: newest CHANGELOG.md entry is not "## x.y.z — YYYY-MM-DD — <status>"`);
+    else if (!['draft', 'tested', 'reviewed', 'stable'].includes(v[2])) problems.push(`${name}: unsupported CHANGELOG.md status`);
     else status = `v${v[1]} ${v[2]}`;
   }
   return { desc, notFor, related, status };

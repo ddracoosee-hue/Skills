@@ -13,6 +13,7 @@ import { tmpdir } from 'node:os';
 import { join, basename, resolve, dirname, sep, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync, spawnSync } from 'node:child_process';
+import { frontmatter } from './lib/skill-frontmatter.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = process.env.SKILLS_REPO_ROOT ? resolve(process.env.SKILLS_REPO_ROOT) : resolve(HERE, '..');
@@ -42,17 +43,6 @@ const SECRET_OK = /^noreply@anthropic\.com$/i;
 const errors = [], warnings = [];
 const err = (s, m) => errors.push(`${s}: ${m}`);
 const warn = (s, m) => warnings.push(`${s}: ${m}`);
-
-function frontmatter(text) {
-  const m = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
-  if (!m) return null;
-  const out = {};
-  for (const line of m[1].split(/\r?\n/)) {
-    const kv = line.match(/^([a-z_-]+):\s*(.*)$/i);
-    if (kv) out[kv[1]] = kv[2].replace(/^["']|["']$/g, '').trim();
-  }
-  return { fields: out, body: text.slice(m[0].length) };
-}
 
 function words(s) {
   return new Set(s.toLowerCase().replace(/`[^`]*`/g, ' ').match(/[a-z]{4,}/g) ?? []);
@@ -134,8 +124,9 @@ function checkSkill(dir) {
   const md = join(dir, 'SKILL.md');
   if (!existsSync(md)) { err(name, 'SKILL.md missing'); return null; }
   const text = readFileSync(md, 'utf8');
-  const fm = frontmatter(text);
-  if (!fm) { err(name, 'no YAML frontmatter'); return null; }
+  let fm;
+  try { fm = frontmatter(text); }
+  catch (e) { err(name, e.message); return null; }
   const { fields, body } = fm;
 
   if (!NAME_RE.test(name) || name.length > 64) err(name, 'folder name must match (core|textclone|orion)-<kebab-case>, max 64 chars');
@@ -248,8 +239,14 @@ function listSkills(skillsRoot) {
 
 function readDesc(skillDir) {
   const f = join(skillDir, 'SKILL.md');
-  const fm = existsSync(f) ? frontmatter(readFileSync(f, 'utf8')) : null;
-  return fm ? { name: basename(skillDir), desc: fm.fields.description ?? '' } : null;
+  if (!existsSync(f)) return null;
+  try {
+    const fm = frontmatter(readFileSync(f, 'utf8'));
+    return { name: basename(skillDir), desc: fm.fields.description ?? '' };
+  } catch (e) {
+    err(basename(skillDir), e.message);
+    return null;
+  }
 }
 
 function reportOverlap(results, pool) {
@@ -327,7 +324,10 @@ function stagedMain() {
     if (failed) console.error('pre-commit: remove the flagged content (see above)');
     const results = [];
     for (const skillRel of [...skillDirs].sort()) {
-      if (!existsSync(join(snap, skillRel, 'SKILL.md'))) continue;
+      const dir = join(snap, skillRel);
+      // A fully removed folder is valid; a surviving folder without SKILL.md
+      // is broken. Category README files are not skill directories.
+      if (!existsSync(dir) || !statSync(dir).isDirectory()) continue;
       const r = checkSkill(join(snap, skillRel));
       if (r) results.push(r);
     }
