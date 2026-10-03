@@ -289,13 +289,14 @@ Full tables and gradings live in this session's subagent logs.
 
 Not fully verified (pending gates, all recorded in the changelogs too):
 
-1. Fresh-context R2/R3 evidence is now recorded (see section above) but the
-   bootstrap decision is still yours: accept the bounded trials (recommended —
-   all executed checks green, exclusions principled) and flip both 0.2.1 headings
-   to `tested`, or require more. Both skills stay `draft` until you decide.
+1. Bootstrap decision — ACCEPTED 2026-10-02. The human reviewer accepted the
+   bounded fresh trials; both skills flipped 0.2.1 draft→tested with evidence
+   citations in the entries (evals `fb8c5a2`, profile `0665a20`, maps
+   regenerated each time). Rerun dependencies below still stand.
 2. Human review of every batch (bootstrap gate): no stable evaluator tag exists, so
-   the revised evaluator, both isolated trials, and all status decisions need a
-   human pass. No tag was invented; none of the new text is certified.
+   the repair code, the revised evaluator text, and both isolated trials still
+   need a human pass before merge. The two skill status decisions are now
+   human-accepted (item 1). No tag was invented; nothing is certified stable.
 3. R2 rerun dependencies now on record: evals N2/N3 (core-retro, core-recheck-loop),
    profile N2/N3 (core-port-safety, core-worktree), authoring N2 (core-retro).
 4. Doctor verification unavailable (see above); live routing, real field use (R5),
