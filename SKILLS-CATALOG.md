@@ -1,7 +1,8 @@
 # Muse skills catalog
 
-This is the full list of skills planned for this repo: 128 skills. No skill is written yet.
-Build prompts for Muse come later, in batches, starting with the P1 skills.
+This catalog plans 128 skills. The three P1 foundation skills are built; the generated
+[SKILLS-MAP.md](SKILLS-MAP.md) shows each skill's current status. Build prompts live in
+prompts/, in batches starting with the P1 skills.
 
 The list is ordered so it reads top to bottom as one path:
 

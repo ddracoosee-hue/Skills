@@ -43,7 +43,9 @@ description: <the description given in the prompt, verbatim>
 ---
 ```
 
-Only `name` and `description`. Muse decides when to use a skill by reading the description, so it is
+Only unique `name` and `description` fields, each a single-line string. Quote values containing
+YAML punctuation such as colon-space; double-quoted values use JSON-compatible escapes.
+Muse decides when to use a skill by reading the decoded description, so it is
 the most important line in the file. Change it only when stage R2 fails, and record why in
 `CHANGELOG.md`.
 
@@ -91,10 +93,12 @@ the most important line in the file. Change it only when stage R2 fails, and rec
    description overlap it reports.
 4. Run stage R2 (trigger check) and stage R3 (trial) from `01-REFINEMENT.md`. Done when: both are
    recorded and passed, or 3 fix cycles are used up (then report and stop).
-5. Commit only that skill's folder:
+5. Commit that skill's folder and required metadata:
    `node tools/skill-map.mjs` (regenerates SKILLS-MAP.md and the category README), then
-   `git add skills/<category>/<name> SKILLS-MAP.md skills/<category>/README.md` then `git commit -m "Add skill <name> (draft)"`. Done when: `git status`
-   shows nothing else staged.
+   `git add skills/<category>/<name> SKILLS-MAP.md skills/<category>/README.md`; also stage changed
+   catalog, skills-map.json, and build-prompt entries needed for a newly approved name. Inspect the
+   staged diff before committing; preserve unrelated staged work. Use a message naming the actual
+   status. Done when: the index contains only the intended skill and metadata, and its hook passes.
 6. Report (section 5). Done when: the report is sent.
 
 One skill per user message, unless the user writes otherwise.
