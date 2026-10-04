@@ -6,6 +6,11 @@ bootstrap review. Automated checks do not establish that the revised instruction
 work in a fresh agent session. Do not treat the older tested versions' acceptance
 as acceptance of these revisions.
 
+**Update (same day):** steps 1–3 of the remaining release work are done. All three skills
+are now **0.3.0 tested** on fresh R2/R3 evidence and explicit bootstrap acceptance; see
+[Post-audit validation](#post-audit-validation). The findings and audit-time validation
+below are kept unchanged as the historical record.
+
 ## GitHub and local scope
 
 - `git ls-remote origin HEAD refs/heads/*` found only published main at
@@ -77,19 +82,51 @@ outside the repository. No validator runtime was added to the project.
 
 ## Remaining release work
 
+As written at audit time; status follows each item.
+
 1. Fresh R2 for all three built skills in catalog section 2, using the revised prompt.
    Preserve existing T/N requests. Current deferred dependencies remain authoring N2
    (retro), evals N2/N3 (retro/recheck-loop), profile N2/N3 (port-safety/worktree).
+   **Done:** round 1 (0.3.0), provisional for all three, zero misfires.
 2. Fresh R3 for each revised skill. Include a new-name authoring case with metadata;
    an evaluator leaf trial, missing-evidence promotion attempt and read-only case;
    profile create/check/update, non-web null values, invalid profile and dirty-worktree
    cases. The profile schema revision also brings authoring/evals into reader R3 scope.
+   **Done:** all three passed, with every listed case covered.
 3. Bootstrap review: `git tag --list` returned no stable evaluator tag. Preserve the
    prior accepted tested versions; promote these new drafts only against their own
    trial evidence and explicit review. This audit is not independent behavioral
    grading of the instructions it changed.
+   **Done:** accepted by the human reviewer; profile accepted after an extra example recheck.
 4. Field routing, installation discovery and stable certification remain separate.
    Four P2 foundation skills and the rest of the planned catalog were not built here.
+   **Open.**
+
+## Post-audit validation
+
+All runs below were fresh Muse sessions (Muse 1.4.2, Lane A) that did not write the
+skills. Trial and test sessions were read-only toward this repository; a separate
+fresh session verified and recorded their results. The model name was not shown in
+any session and is not recorded.
+
+| Stage | Result | Evidence |
+| --- | --- | --- |
+| R2 round 1 (0.3.0) | authoring T 5/5, N 2/2 exercised + 1 deferred; evals T 5/5, N 1/1 + 2 deferred; profile T 5/5, N 1/1 + 2 deferred. All provisional, zero misfires, no corrections on re-check. | each `evals.md` Results; commits 22f1d86, 91ab5d8, f8f70db |
+| R3 authoring | Pass, first cycle: throwaway core-trial-hello plus a new approved name committed through the real hook in a disposable clone; profile-reader and hard-dependency cases held. | `TRIALS.md`; 57f6586 |
+| R3 evals (bounded self-trial) | Pass: read-only subjects, leaf R1+R3 with a schema-reading leaf, failing-R1 stop, promotion refused without evidence. Steps 6 and 8 not exercised (nothing failed). | `TRIALS.md`; 5f1816a |
+| R3 profile | Pass on six synthetic cases: create (web and non-web), check, update (only stale keys changed), invalid profile, dirty/occupied worktree. | `TRIALS.md`; 87dce53 |
+| Profile example recheck | Pass: read-only check of the Textclone and Orion examples against 0.3.0 rules and current sources; 70 keys, 0 mismatches, 0 parse errors, 0 port overlaps. Project repos untouched. | `TRIALS.md`; 16acbad |
+| Bootstrap review | Accepted by the human reviewer, with evals' bounded coverage and the deferred R2 lines stated explicitly. | `CHANGELOG.md` 0.3.0 entries; 9f8f97f, 0192c87, a49c537 |
+
+Remaining items for these skills:
+
+- Re-run the deferred R2 lines when their targets exist: authoring N2 and evals N2
+  (core-retro), evals N3 (core-recheck-loop), profile N2 (core-port-safety), profile N3
+  (core-worktree).
+- Stable status requires R5: three consecutive real field uses with no miss. A stable
+  evaluator tag would then replace bootstrap review for later promotions.
+- Two trial records and the recheck are dated 2026-10-04 (session clock past midnight);
+  everything else is 2026-10-03.
 
 ## Security scan limit
 
