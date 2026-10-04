@@ -8,3 +8,4 @@ R1 passes (checker 0/0, validate valid:true); fresh R2 round 1 provisional
 (foreign owner on owned port detected and preserved, alternate owned port
 used). No stable evaluator tag: bootstrap review required, status stays
 draft. Because: evals.md Results round 1, TRIALS.md R3 fresh trial of 0.1.0.
+Accepted by user in the build session (2026-10-03).

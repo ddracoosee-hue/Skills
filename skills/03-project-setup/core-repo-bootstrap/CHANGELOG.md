@@ -10,3 +10,4 @@ prompt's .gitignore backslashes wrong, fixed to forward slashes plus git
 init for non-repos). No stable evaluator tag: bootstrap review required,
 status stays draft. Because: evals.md Results round 1, TRIALS.md R3 fresh
 trial runs 1-2.
+Accepted by user in the build session (2026-10-03).
