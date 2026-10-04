@@ -16,6 +16,8 @@ phase's checks pass and before any merge.
    alone. If the run cannot wait for a reply, end the run here; the
    user resumes it.
 4. On the reply:
+   - If `checkpoints.approval_phrase` is null, the exact words are
+     "Approve, request changes, or cancel?" and only "Approve" counts.
    - The exact approval phrase (the user's explicit words, never an
      inference): record the approval with its date and words, mark the
      section `APPROVED`, clean up anything the preview made, then merge.
