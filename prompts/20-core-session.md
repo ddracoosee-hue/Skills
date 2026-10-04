@@ -1,7 +1,7 @@
 # Prompts: 3.1 Session, judgement and autonomy
 
 Core skills: portable across projects. They read project facts from `.muse/project.json` using the
-keys in `skills/core-project-profile/references/schema.md`. Batch name: `core-session`.
+keys in `skills/03-project-setup/core-project-profile/references/schema.md`. Batch name: `core-session`.
 Build after the foundation batch is merged. Paste one block per message.
 
 ---
