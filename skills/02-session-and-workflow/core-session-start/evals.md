@@ -17,3 +17,4 @@
 | --- | --- | --- | --- | --- |
 | 2026-10-03 | 1 | 5/5 | 0/0 exercised, 3 deferred | none — provisional; reruns: N1→core-worktree, N2→core-handoff-writer, N3→textclone-codebase-map |
 | 2026-10-03 | 2 | 5/5 | 2/2 exercised, 1 deferred | R4 null rules — provisional (N1/N2 newly exercised); fresh session 01a104ea-ab7e-7491-b028-aea50414655b, Lane A, HEAD a6dec9e + uncommitted R4 text; output trials/core-session-start/r2-output-r4group.md; rerun: N3→textclone-codebase-map (observed none) |
+| 2026-10-04 | 3 | 5/5 | 2/2 exercised, 1 deferred | none — provisional; batch close, fresh session 01a1052c-1c8d-78a2-b250-eaf7dc4202c6, Lane A, HEAD c4aabfa (skill text unchanged since); rerun: N3→textclone-codebase-map (observed none) |
