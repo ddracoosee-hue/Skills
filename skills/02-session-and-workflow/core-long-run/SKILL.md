@@ -32,6 +32,7 @@ description: "Use when running unattended for a long stretch (a phase, a batch, 
 - If a task fails, then record every retry and never pass the budget silently.
 - If one task stops, then independent tasks continue.
 - If an action is irreversible, then it never runs unattended; it waits for the user.
+- If `paths.handoff` is null, then stop and ask where to keep the run plan; a run without a trail never starts.
 - If the status note cannot be written (disk or permissions), then stop the run.
 
 ## Anti-patterns

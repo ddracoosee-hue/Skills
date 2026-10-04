@@ -16,3 +16,4 @@
 | Date | Round | Should trigger | Should not | Changed |
 | --- | --- | --- | --- | --- |
 | 2026-10-04 | 1 | 5/5 | 2/2 exercised, 1 deferred | none — provisional; rerun: N3→core-report-writer |
+| 2026-10-03 | 2 | 5/5 | 2/2 exercised, 1 deferred | R4 null rules — provisional; fresh session 01a104eb-13ff-71e0-96a6-7307e438589b, Lane A, HEAD a6dec9e + uncommitted R4 text; output trials/core-long-run/r2-output-r4group.md; rerun: N3→core-report-writer (observed none) |
