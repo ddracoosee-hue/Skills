@@ -41,3 +41,48 @@
   - Nearly left checks without exact commands; recorded command + exit 0 + exact output instead (avoids All-tests-pass-without-command).
   - Nearly left vague next action; wrote specific second look at widget count per prior unresolved note.
   - Test append added a stray blank line to the handoff; caught by diff check, restored via git checkout before the real edit, so final diff shows only the new section.
+
+- 2026-10-04 | R4 null-handoff stop-and-ask (Phase A) + ST2 synthetic handoff section (Phase B), Lane A muse-spark-1.3 | Phase A PASS: stopped on null paths.handoff with where-is-the-handoff question, changed nothing; Phase B: added dated ST2 section with completed/proposals separated | trial folder retained for evaluator verification
+  git diff -- docs/HANDOFF.md exit 0, numstat 15 additions 0 deletions | 5/5 steps met, 0 missed, Phase A R4 rule PASS | no fixes, no status change
+
+  Trial: load skills/04-records-and-handoff/core-handoff-writer/SKILL.md, exercise the R4 fix (null paths.handoff stops and asks) in Phase A, then add a dated handoff section for synthetic task ST2 in Phase B; check diff shows only the new section and proposals separated from completed changes. Demo repo trials/core-handoff-writer/demo-hand (git init -b master, commit 78e752d trial scaffolding, synthetic identity per command). Synthetic data only.
+
+  Phase A: set paths.handoff to null (setup); re-read via ConvertFrom-Json exit 0 showed null. Per step 1, stopped before editing and asked the exact question: "paths.handoff is null in .muse/project.json - where does the handoff live?" Changed nothing: docs/HANDOFF.md SHA256 08302F4553397187C467A74EBAF7281FA232169E1292E8D7CB88404D085AC502 before and after (Get-FileHash exit 0); git status --short exit 0 unchanged (only the setup edit M .muse/project.json). Headless rule: ended Phase A at the stop, invented no answer. R4 rule grade: PASS.
+
+  Phase B: restored paths.handoff to docs/HANDOFF.md (separate continuation); git status --short exit 0 clean. Added dated ST2 section; prior section ## Mara prior widget work (2026-10-03) kept intact including unresolved widget-count note (diff shows 0 deletions, Mara lines as context).
+
+  Section added (docs/HANDOFF.md):
+  ## Trial ST2 synthetic shelf count (2026-10-04)
+  - Scope: ST2 synthetic - recount the synthetic shelf labels in the demo handoff.
+  - Branch: master; Worktree: trials/core-handoff-writer/demo-hand; Commit: 78e752d trial scaffolding.
+  - Files changed: docs/HANDOFF.md (this section only; uncommitted diff of docs/HANDOFF.md).
+  - Checks: git status --short exit 0 with empty output (clean tree before edit); git log --oneline -1 exit 0 with output "78e752d trial scaffolding".
+  - Findings / Limits / Next action present; Completed (2 items) and Proposals (1 item) in separate lists.
+
+  Step grades (step | Done-when met? | evidence | clear/wrong/missing):
+
+  | Step | Done-when met? | Evidence | Instruction verdict |
+  | --- | --- | --- | --- |
+  | 1 | yes | Phase A: ConvertFrom-Json read exit 0 showed null; stopped, asked where-is-the-handoff question; handoff hash unchanged, git status unchanged. Phase B: read docs/HANDOFF.md before edit; Mara section and Unresolved note retained, verified by diff context with 0 deletions | clear |
+  | 2 | yes | New header ## Trial ST2 synthetic shelf count (2026-10-04); date 2026-10-04 per trial instruction | clear (minor gap: agent-name source unspecified; used Trial, same as ST1 trial) |
+  | 3 | yes | New section contains Scope, Branch+Worktree+Commit, Files changed, Checks with exact results, Findings, Limits, Next action (7/7 present) | missing something: branch/worktree/commit vs or-clause ambiguous (included all plus uncommitted-diff note); no fallback when project.json commands are all null (used git status/log); worktree format unspecified (used relative path, no personal data) |
+  | 4 | yes | - Completed: (2 items) separate from - Proposals: (1 item); no crossover | clear |
+  | 5 | yes | git diff -- docs/HANDOFF.md exit 0 shows only + lines for new section; --numstat 15 0 docs/HANDOFF.md; git status --short shows only M docs/HANDOFF.md | clear |
+
+  (1) Improvised because skill did not say:
+  - Step 1: exact wording of the stop-and-ask question; used "paths.handoff is null in .muse/project.json - where does the handoff live?"
+  - Step 1: how to prove "changed nothing"; used Get-FileHash before/after plus git status --short.
+  - Step 2: agent name for trial context; used Trial.
+  - Step 3: whether branch/worktree/commit are one item or three and whether the or-clause replaces or supplements; included all plus uncommitted-diff note.
+  - Step 3: which checks count when no test/lint commands are configured; used git status --short and git log --oneline -1 with exit codes and exact outputs.
+  - Step 3: worktree format (full vs relative path); used relative trials/core-handoff-writer/demo-hand to avoid personal data.
+  - Step 5: exact diff invocation; used git diff -- docs/HANDOFF.md plus --numstat for count evidence.
+
+  (2) Wrong for this project:
+  - None blocking. Observation (same as ST1 trial): full worktree path from git would contain the OS username, which conflicts with the no-personal-data decision rule; skill does not specify a redacted/relative form, so used relative path.
+
+  (3) Anti-patterns nearly committed:
+  - Nearly wrote full worktree path with username (personal data in handoff); caught by decision rule and replaced with relative path.
+  - Nearly left checks without exact commands; recorded command + exit 0 + exact output instead (avoids All-tests-pass-without-command).
+  - Nearly left vague next action; wrote specific re-read plus decide on Mara's widget-count note.
+  - Nearly answered my own Phase A stop-and-ask question to keep moving; headless rule forbids inventing an answer inside Phase A, so ended Phase A at the stop.
