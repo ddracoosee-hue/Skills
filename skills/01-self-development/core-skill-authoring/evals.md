@@ -1,0 +1,21 @@
+# Evals: core-skill-authoring
+
+## Should trigger
+- T1: "write a new skill that teaches you how we do commits"
+- T2: "this skill is too long and messy, restructure it"
+- T3: "make a skill for checking ports"
+- T4: "turn our release checklist into a skill"
+- T5: "add the evals and changelog that this skill is missing"
+
+## Should not trigger
+- N1: "check whether the commit skill fires when I ask to commit" → `core-skill-evals`
+- N2: "the worktree skill missed something last week, update it from the log" → `core-retro`
+- N3: "write a README for the textclone repo" → none
+
+## Results
+| Date | Round | Should trigger | Should not | Changed |
+| --- | --- | --- | --- | --- |
+| 2026-10-02 | 1 | 5/5 | 1/3 (N1,N2 → none; targets core-skill-evals, core-retro unbuilt, routing correct, no misfire) | none — re-run N1 at batch close, N2 when core-retro exists |
+| 2026-10-02 | 2 | 5/5 | 2/3 (N1 → core-skill-evals ✓; N2 → none, target core-retro unbuilt, routing correct) | none — re-run N2 when core-retro exists |
+| 2026-10-02 | 3 | 5/5 | 2/2 exercised, 1 deferred (N2 → none, target core-retro unbuilt, routing correct) | none — provisional; re-run N2 when core-retro exists; fresh-context subagent round |
+| 2026-10-03 | 1 (0.3.0) | 5/5 | 2/2 exercised, 1 deferred (N2 → none, target core-retro unbuilt, routing correct) | none — provisional; fresh Muse session, HEAD 57ec25f, muse 1.4.2; re-run N2 when core-retro exists |

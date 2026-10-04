@@ -3,19 +3,26 @@
 // any built SKILL.md files. Node 20+, no dependencies.
 //   node tools/skill-map.mjs          write the map and the category READMEs
 //   node tools/skill-map.mjs --check  exit 1 if they are out of date or the map is inconsistent
+//
+// SKILLS_REPO_ROOT overrides the repo root (used by the pre-commit snapshot gate
+// and by tests); it defaults to the checkout holding this script.
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { frontmatter } from './lib/skill-frontmatter.mjs';
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const MAP = JSON.parse(readFileSync(join(ROOT, 'skills-map.json'), 'utf8'));
+const ROOT = process.env.SKILLS_REPO_ROOT ? resolve(process.env.SKILLS_REPO_ROOT) : resolve(dirname(fileURLToPath(import.meta.url)), '..');
+// Read text with CRLF normalized to LF: Windows checkouts (core.autocrlf) store CRLF on disk,
+// while the prompt/section patterns below expect LF. Generated output always uses LF.
+const read = (p) => readFileSync(p, 'utf8').replace(/\r\n/g, '\n');
+const MAP = JSON.parse(read(join(ROOT, 'skills-map.json')));
 const NAME = /\b((?:core|textclone|orion)-[a-z0-9]+(?:-[a-z0-9]+)*)\b/g;
 const problems = [];
 
 // 1. Read every build prompt block.
 const prompts = {};
 for (const f of readdirSync(join(ROOT, 'prompts')).filter((f) => /^[1-9]\d-.*\.md$/.test(f)).sort()) {
-  const text = readFileSync(join(ROOT, 'prompts', f), 'utf8');
+  const text = read(join(ROOT, 'prompts', f));
   const re = /^## (?:[\d.]+ )?`([a-z0-9-]+)` · (P\d)[^\n]*\n+```text\n([\s\S]*?)```/gm;
   for (const m of text.matchAll(re)) {
     const [, name, pri, block] = m;
@@ -30,7 +37,7 @@ for (const f of readdirSync(join(ROOT, 'prompts')).filter((f) => /^[1-9]\d-.*\.m
     for (const x of nPart.matchAll(/→\s*`?([a-z0-9-]+)`?/g)) if (x[1] !== 'none') notFor.add(x[1]);
     const works = [];
     for (const x of body.matchAll(NAME)) if (x[1] !== name && !works.includes(x[1])) works.push(x[1]);
-    prompts[name] = { name, pri, desc, file: f, notFor: [...notFor].filter((n) => n !== name), works };
+    prompts[name] = { pri, desc, notFor: [...notFor].filter((n) => n !== name), works };
   }
 }
 
@@ -39,18 +46,32 @@ function built(cat, name) {
   const dir = join(ROOT, 'skills', cat, name);
   const md = join(dir, 'SKILL.md');
   if (!existsSync(md)) return null;
-  const text = readFileSync(md, 'utf8');
-  const desc = (text.match(/^description:\s*(.+)$/m) ?? [])[1]?.trim();
+  const text = read(md);
+  let desc;
+  try {
+    const { fields } = frontmatter(text);
+    if (fields.name !== name || !fields.description) throw new Error('name mismatch or missing description');
+    desc = fields.description;
+  } catch (e) {
+    problems.push(`${name}: ${e.message}`);
+  }
   const section = (h) => (text.match(new RegExp(`^## ${h}\\s*$([\\s\\S]*?)(?=^## |(?![\\s\\S]))`, 'm')) ?? [])[1] ?? '';
   const notFor = [...section('Not for').matchAll(NAME)].map((x) => x[1]);
   const related = [...(section('References').match(/^.*Related:.*$/m) ?? [''])[0].matchAll(NAME)].map((x) => x[1]);
   const log = join(dir, 'CHANGELOG.md');
-  const head = existsSync(log) ? readFileSync(log, 'utf8').match(/^## (\d+\.\d+\.\d+) — [\d-]+ — ([a-z]+)/m) : null;
-  return { desc, notFor, related, status: head ? `v${head[1]} ${head[2]}` : 'built' };
+  let status = 'built';
+  if (existsSync(log)) {
+    const firstHead = read(log).match(/^## .+$/m)?.[0];
+    const v = firstHead?.match(/^## (\d+\.\d+\.\d+) — [\d-]+ — ([a-z]+)$/);
+    if (!v) problems.push(`${name}: newest CHANGELOG.md entry is not "## x.y.z — YYYY-MM-DD — <status>"`);
+    else if (!['draft', 'tested', 'reviewed', 'stable'].includes(v[2])) problems.push(`${name}: unsupported CHANGELOG.md status`);
+    else status = `v${v[1]} ${v[2]}`;
+  }
+  return { desc, notFor, related, status };
 }
 
 // 3. Consistency: every skill in exactly one category, every skill has a prompt, catalog agrees.
-const catalog = new Set([...readFileSync(join(ROOT, 'SKILLS-CATALOG.md'), 'utf8').matchAll(/^\| `([a-z0-9-]+)`/gm)].map((m) => m[1]));
+const catalog = new Set([...read(join(ROOT, 'SKILLS-CATALOG.md')).matchAll(/^\| `([a-z0-9-]+)`/gm)].map((m) => m[1]));
 const seen = new Map();
 for (const c of MAP.categories) for (const s of c.skills) {
   if (seen.has(s)) problems.push(`${s} is in both ${seen.get(s)} and ${c.id}`);
@@ -87,7 +108,7 @@ function categoryTable(c) {
     const p = prompts[s] ?? { pri: '?', desc: '', works: [], notFor: [] };
     const b = built(c.id, s);
     const works = [...new Set([...(b?.related ?? []), ...p.works])].filter((n) => seen.has(n) && n !== s).slice(0, 6);
-    const notFor = [...new Set([...(b?.notFor ?? []), ...p.notFor])].filter((n) => seen.has(n) && n !== s && !works.includes(n)).slice(0, 3);
+    const notFor = [...new Set([...(b?.notFor ?? []), ...p.notFor])].filter((n) => seen.has(n) && n !== s).slice(0, 3);
     rows.push(`| \`/${s}\` | ${p.pri} | ${b ? b.status : 'planned'} | ${useFor(b?.desc ?? p.desc).replace(/\|/g, '\\|')} | ${calls(works)} | ${calls(notFor)} | ${(inFlows[s] ?? []).join(', ') || '—'} |`);
   }
   return rows.join('\n');
@@ -132,13 +153,19 @@ for (const c of MAP.categories) {
 
 const check = process.argv.includes('--check');
 let stale = 0;
+// Invalid input fails before any output is written: a failed run must leave the
+// previous valid map untouched.
+if (problems.length) {
+  for (const problem of problems) console.log(`ERROR ${problem}`);
+  process.exit(1);
+}
 for (const [path, text] of Object.entries(files)) {
-  const old = existsSync(path) ? readFileSync(path, 'utf8') : null;
+  const old = existsSync(path) ? read(path) : null;
   if (old === text) continue;
   stale++;
   if (!check) { mkdirSync(dirname(path), { recursive: true }); writeFileSync(path, text); }
 }
-for (const p of problems) console.log(`ERROR ${p}`);
+
 if (check) console.log(stale ? `${stale} map file(s) out of date: run node tools/skill-map.mjs` : 'map files up to date');
 else console.log(`wrote ${stale} file(s); ${total} skills in ${MAP.categories.length} categories`);
-process.exit(problems.length || (check && stale) ? 1 : 0);
+process.exit(check && stale ? 1 : 0);

@@ -67,9 +67,29 @@ answer in a table: request id | the one skill you would load (or "none") | the p
 skill's description that decided it.
 Choose from the quoted request text only. Ignore everything after the closing quote (the expected
 answer) until your table is complete, then add a final column: matches expected? (yes/no).
+For "none", give the reason no available description fits instead of a description quote.
+Compare the chosen name literally with the arrow target for matches expected, even when that target
+is unbuilt. Then add a verdict column: routed, misfire, or deferred. An N line with an unbuilt target
+is deferred regardless of the chosen name; record the observed choice and its rerun dependency.
+An exercised N line is routed only if it picks its target; any wrong T or exercised N is a misfire.
+Report T x/y and N x/y exercised, z deferred. Pass means every line routed; provisional means zero
+misfires with at least one deferred line; otherwise fail. Do not perform requests or change tests.
 ```
 
 **Pass:** every T line picks `<name>`, and every N line picks its arrow target (or none).
+
+**One N line, one verdict.** Score each N line as routed, misfire, or deferred:
+- routed: it picked the expected target, and that target is built (or the target is none).
+- misfire: it picked anything else.
+- deferred: the expected target is not built yet. Record the observed choice, but do
+  not count the line as exercised. The expected request and target stay unchanged.
+  Deferred lines never trigger a description edit and never consume a round.
+
+**Round verdict.** Pass: every T routed and every N routed. Provisional: every
+exercised line routed, zero misfires, at least one N deferred. Anything else fails.
+A provisional round is not a full pass: it says "no misfire seen; the full check
+waits for targets". Write scores as "N x/y exercised, z deferred", never "x/y" alone.
+Record each deferred line's rerun dependency: re-run it when its target exists.
 
 **On a failure:** change only the description and the `## Use when` / `## Not for` sections, never the
 test lines, to make the result pass. Re-run in a new session. Use at most 3 rounds, recording each in
@@ -101,12 +121,17 @@ After the task, grade every step of the skill: step number | Done-when met? (yes
 Then list: (1) any step you had to improvise because the skill did not say, (2) any instruction that
 was wrong for this project, (3) any anti-pattern you nearly committed.
 Append the result to skills/<category>/<name>/TRIALS.md under "## Trials" with today's date. No private data.
+If the task is read-only, return the complete record to the caller and mark saving it pending.
+Report evidence and a verdict only; do not change CHANGELOG.md status from inside a trial.
 ```
 
 **Pass:** every `Done when` was met, and no improvised step changed the outcome.
 
 **On a failure:** fix `SKILL.md` (or `references/`), re-run R1, and run the trial again in a new
-session. Use at most 3 cycles. When it passes, add `## 0.2.0 — <date> — tested` to `CHANGELOG.md`.
+session. Use at most 3 cycles. Return evidence to core-skill-evals' status step; R3 alone
+does not authorize promotion. Use the actual version and require R1/R2, prior-version comparison,
+and the bootstrap review gate. When trialing core-skill-evals itself, apply the bounded leaf-trial
+procedure in its references/r3-prompt.md; never recurse into its own R3 or score exclusions as passes.
 
 *Supplement (optional): fixture runs.* This is Meta's cookbook method, from
 `docs/MUSE-REFERENCE.md` §8, and needs the harness from prompt E1. Rewrite the trial task as a
@@ -142,8 +167,10 @@ For each skill, check against the real files:
 Report findings ordered by severity with file:line, the evidence, and the exact fix. Do not edit.
 ```
 
-Muse then applies the fixes (one commit per skill: `Fix skill <name> from review`), re-runs R1 and
-R2 for each changed skill, and adds `## 0.3.0 — <date> — reviewed`.
+Muse then applies the fixes (one commit per skill: `Fix skill <name> from review`), starts a new
+draft version, and follows R7: R1/R3 for changed skills and R2 for their full catalog groups.
+Record the independent review and promote the actual version only after its checks and any
+bootstrap review gate pass. A review of the previous text does not certify the fixes.
 
 ---
 
@@ -187,7 +214,8 @@ add an anti-pattern, sharpen the description, or no change (say why). Make the s
 covers the evidence. Then run R1, R2 and R3 again (use the most recent field task as the new trial).
 Bump CHANGELOG.md: minor version for new steps or rules, patch for wording. Status:
 - "stable" if the last 3 field uses had no miss and R1–R3 pass;
-- otherwise keep the current status.
+- otherwise leave the new revision draft until its required checks pass; preserve earlier
+  versions' statuses and evidence in their own entries.
 Report what changed, linked to the entries that caused it.
 ```
 
@@ -196,6 +224,10 @@ Report what changed, linked to the entries that caused it.
 A change to any skill re-runs R1 and R3 for that skill, and R2 for every skill in the same catalog
 group, because descriptions compete. A change to `.muse/project.json`'s schema re-runs R3 for every
 core skill that reads the changed keys.
+
+Catalog groups are the skill tables under headings in SKILLS-CATALOG.md (for example §2 Foundation),
+not the function categories in skills-map.json. Use the map to locate folders. Record unbuilt
+members as pending rather than silently omitting them.
 
 *Supplement:* Muse's docs and defaults change between versions. After a Muse update (when
 `muse --version` changes), re-run the trials and any fixtures for the P1 skills, and update

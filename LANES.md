@@ -34,8 +34,9 @@ Rates per million tokens:
 ## Project lanes
 
 Each project repo keeps a `LANES.md` at its root, referenced from its `AGENTS.md`. Its `lane` value
-also goes in `.muse/project.json`. `core-project-profile` writes both files on a branch, for the
-user to merge.
+also goes in `.muse/project.json`. `core-project-profile` reads a project's existing LANES.md
+or this table and writes only `.muse/project.json`. Creating or editing a project's LANES.md
+is a separate task; the profile skill does not authorize that extra write.
 
 | Project | Lane | Reason |
 | --- | --- | --- |

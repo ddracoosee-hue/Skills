@@ -1,0 +1,447 @@
+{
+  "auditedCommit": "016c1e3fdcb9913c289b9225ab13804b36093bc8",
+  "branch": "muse/skills-foundation",
+  "date": "2026-10-02",
+  "environment": {
+    "node": "v24.18.1",
+    "powershell": "5.1.26100.9444",
+    "muse": "1.4.2 (1.4.2-R4684.1)"
+  },
+  "note": "Observed outcomes, not a claim that expected behavior passed. All secrets are synthetic; local paths and synthetic tokens are redacted.",
+  "baseline": {
+    "checker": {
+      "exit": 0,
+      "skills": 3,
+      "errors": 0,
+      "warnings": 0
+    },
+    "map": {
+      "exit": 0,
+      "status": "up to date"
+    },
+    "javascriptSyntax": {
+      "exit": 0,
+      "files": 2
+    },
+    "museValidation": {
+      "exit": 0,
+      "validSkills": 3,
+      "diagnostics": 0
+    }
+  },
+  "behaviorProbes": [
+    {
+      "id": "control-valid",
+      "expected": "exit 0",
+      "status": 0,
+      "stdout": "1 skill(s) checked: 0 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "control-invalid-name",
+      "expected": "exit 1",
+      "status": 1,
+      "stdout": "ERROR core-probe: frontmatter name \"wrong\" must equal the folder name\n1 skill(s) checked: 1 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "yaml-duplicate-description",
+      "expected": "reject invalid fixture",
+      "status": 0,
+      "stdout": "1 skill(s) checked: 0 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "yaml-unclosed-quote",
+      "expected": "reject invalid fixture",
+      "status": 0,
+      "stdout": "1 skill(s) checked: 0 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "yaml-malformed-line",
+      "expected": "reject invalid fixture",
+      "status": 0,
+      "stdout": "1 skill(s) checked: 0 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "broken-anchor-reference",
+      "expected": "reject invalid fixture",
+      "status": 0,
+      "stdout": "1 skill(s) checked: 0 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "broken-plain-reference",
+      "expected": "exit 1",
+      "status": 1,
+      "stdout": "ERROR core-probe: linked file references/absent.md does not exist\n1 skill(s) checked: 1 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "evals-missing-sections-duplicate-ids",
+      "expected": "reject invalid fixture",
+      "status": 0,
+      "stdout": "1 skill(s) checked: 0 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "changelog-malformed-latest",
+      "expected": "reject invalid fixture",
+      "status": 0,
+      "stdout": "1 skill(s) checked: 0 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "nested-reference-secret",
+      "expected": "reject invalid fixture",
+      "status": 0,
+      "stdout": "1 skill(s) checked: 0 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "top-level-reference-secret",
+      "expected": "exit 1",
+      "status": 1,
+      "stdout": "ERROR core-probe: sample.md may contain private data (\\bghp_[A-Za-z0-9]{20,}…)\n1 skill(s) checked: 1 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "fixture-directory-secret",
+      "expected": "reject invalid fixture",
+      "status": 0,
+      "stdout": "1 skill(s) checked: 0 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "control-email",
+      "expected": "exit 1",
+      "status": 1,
+      "stdout": "ERROR <AUDIT_TEMP>\\scan.txt: may contain private data (person@example.invalid)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "allowed-email-first",
+      "expected": "exit 1",
+      "status": 0,
+      "stdout": "",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "allowed-email-substring",
+      "expected": "exit 1",
+      "status": 0,
+      "stdout": "",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "forward-windows-path",
+      "expected": "exit 1",
+      "status": 0,
+      "stdout": "",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "control-backslash-path",
+      "expected": "exit 1",
+      "status": 1,
+      "stdout": "ERROR <AUDIT_TEMP>\\scan.txt: may contain private data (C:\\Users\\SyntheticUser)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "scan-discloses-token",
+      "expected": "exit 1, token redacted",
+      "status": 1,
+      "stdout": "ERROR <AUDIT_TEMP>\\scan.txt: may contain private data (<SYNTHETIC_TOKEN>)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "missing-scan-file",
+      "expected": "nonzero or explicit missing-file diagnostic",
+      "status": 0,
+      "stdout": "",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "hook-partially-staged-secret",
+      "expected": "exit 1",
+      "status": 0,
+      "stdout": "1 skill(s) checked: 0 error(s), 0 warning(s)\n",
+      "stderr": "warning: unable to access '<USER>/.config/git/ignore': Permission denied\n",
+      "detail": "index_has_synthetic_secret=true"
+    },
+    {
+      "id": "hook-spaced-filename-secret",
+      "expected": "exit 1",
+      "status": 0,
+      "stdout": "1 skill(s) checked: 0 error(s), 0 warning(s)\n",
+      "stderr": "warning: unable to access '<USER>/.config/git/ignore': Permission denied\n",
+      "detail": ""
+    },
+    {
+      "id": "hook-rename-secret",
+      "expected": "exit 1",
+      "status": 1,
+      "stdout": "ERROR skills/01-self-development/core-skill-authoring/references/renamed.md: may contain private data (<SYNTHETIC_TOKEN>)\n",
+      "stderr": "warning: unable to access '<USER>/.config/git/ignore': Permission denied\npre-commit: remove the flagged content (see above)\n",
+      "detail": "R100\tstaging-source.txt\tskills/01-self-development/core-skill-authoring/references/renamed.md"
+    },
+    {
+      "id": "hook-staged-map-diverges",
+      "expected": "exit 1",
+      "status": 0,
+      "stdout": "",
+      "stderr": "warning: unable to access '<USER>/.config/git/ignore': Permission denied\n",
+      "detail": ""
+    },
+    {
+      "id": "hook-deleted-skill-file",
+      "expected": "exit 1 with invalid folder diagnostic",
+      "status": 1,
+      "stdout": "2 map file(s) out of date: run node tools/skill-map.mjs\n",
+      "stderr": "warning: unable to access '<USER>/.config/git/ignore': Permission denied\npre-commit: run node tools/skill-map.mjs and stage the result\n",
+      "detail": ""
+    },
+    {
+      "id": "hook-control-secret",
+      "expected": "exit 1",
+      "status": 1,
+      "stdout": "ERROR skills/01-self-development/core-skill-authoring/references/plain.md: may contain private data ([synthetic token])\n",
+      "stderr": "warning: unable to access '<USER>/.config/git/ignore': Permission denied\npre-commit: remove the flagged content (see above)\n",
+      "detail": ""
+    },
+    {
+      "id": "installer-whatif-changes-hooks",
+      "expected": "exit 0 with hooksPath remaining prior-hooks",
+      "status": 0,
+      "stdout": "What if: Performing the operation \"Create Directory\" on target \"Destination: <AUDIT_TEMP>\\installer-whatif\\installed\".\r\nWhat if: Performing the operation \"junction to <AUDIT_TEMP>\\installer-whatif\\skills\\01-self-development\\core-skill-authoring\" on target \"<AUDIT_TEMP>\\installer-whatif\\installed\\core-skill-authoring\".\r\nWhat if: Performing the operation \"junction to <AUDIT_TEMP>\\installer-whatif\\skills\\01-self-development\\core-skill-evals\" on target \"<AUDIT_TEMP>\\installer-whatif\\installed\\core-skill-evals\".\r\nWhat if: Performing the operation \"junction to <AUDIT_TEMP>\\installer-whatif\\skills\\03-project-setup\\core-project-profile\" on target \"<AUDIT_TEMP>\\installer-whatif\\installed\\core-project-profile\".\r\n0 skill(s) linked into <AUDIT_TEMP>\\installer-whatif\\installed. Pre-commit scan enabled. Restart Muse, then run: muse skills list\n",
+      "stderr": "",
+      "detail": "after=.githooks"
+    },
+    {
+      "id": "installer-missing-target-whatif",
+      "expected": "successful dry-run",
+      "status": 1,
+      "stdout": "What if: Performing the operation \"Create Directory\" on target \"Destination: <AUDIT_TEMP>\\installer-missing-target-whatif\\not-created\".\r\n",
+      "stderr": "Get-ChildItem : Cannot find path '<AUDIT_TEMP>\\insta\r\nller-missing-target-whatif\\not-created' because it does not exist.\r\nAt <AUDIT_TEMP>\\installer-missing-target-whatif\\inst\r\nall.ps1:28 char:1\r\n+ Get-ChildItem -Path $Target -Force | Where-Object { $_.LinkType -eq ' ...\r\n+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\n    + CategoryInfo          : ObjectNotFound: (<USER>\\...tif\\not-created:String) [Get-ChildItem], ItemNotFound \r\n   Exception\r\n    + FullyQualifiedErrorId : PathNotFound,Microsoft.PowerShell.Commands.GetChildItemCommand\r\n \r\n",
+      "detail": ""
+    },
+    {
+      "id": "installer-normal-control",
+      "expected": "exit 0 and 3 links",
+      "status": 0,
+      "stdout": "3 skill(s) linked into <AUDIT_TEMP>\\installer-normal\\installed. Pre-commit scan enabled. Restart Muse, then run: muse skills list\n",
+      "stderr": "",
+      "detail": "count=3"
+    },
+    {
+      "id": "installer-idempotence-control",
+      "expected": "exit 0 and 3 links",
+      "status": 0,
+      "stdout": "3 skill(s) linked into <AUDIT_TEMP>\\installer-normal\\installed. Pre-commit scan enabled. Restart Muse, then run: muse skills list\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "map-ignores-built-related",
+      "expected": "regenerate with core-windows-env in authoring Pairs with",
+      "status": 0,
+      "stdout": "wrote 2 file(s); 128 skills in 13 categories\n",
+      "stderr": "",
+      "detail": "map_unchanged=false"
+    },
+    {
+      "id": "map-ignores-built-not-for",
+      "expected": "regenerate with core-security-review in authoring Instead use",
+      "status": 0,
+      "stdout": "wrote 2 file(s); 128 skills in 13 categories\n",
+      "stderr": "",
+      "detail": "map_unchanged=false"
+    },
+    {
+      "id": "map-section-extractor",
+      "expected": "nonempty existing Not for and References sections",
+      "status": 0,
+      "stdout": "{\"notFor\":\"\\n- Trigger tests or trial runs → core-skill-evals\\n- Revising a skill from field logs → core-retro\\n- Retiring or merging skills after project changes → core-skill-maintenance\\n\\n\",\"references\":\"\\n- [references/anatomy.md](references/anatomy.md): the eight sections with a filled synthetic example.\\n- [references/description-guide.md](references/description-guide.md): weak descriptions and their rewrites.\\n- [references/revise-mode.md](references/revise-mode.md): the revise procedure and recursion rules.\\n- Related: core-skill-evals, core-retro, core-skill-maintenance, core-project-profile.\\n- Sources: build protocol (prompts/00-BUILD-PROTOCOL.md), refinement stages (prompts/01-REFINEMENT.md), skill anatomy (SKILLS-CATALOG.md §1), template (templates/SKILL.template.md), checker rules (tools/check-skills.mjs).\\n\"}",
+      "detail": ""
+    },
+    {
+      "id": "invalid-map-writes-before-error",
+      "expected": "exit 1, generated output unchanged",
+      "status": 1,
+      "stdout": "ERROR core-invented-audit (01-self-development) has no build prompt\nERROR core-invented-audit is in skills-map.json but not in SKILLS-CATALOG.md\nwrote 2 file(s); 129 skills in 13 categories\n",
+      "stderr": "",
+      "detail": "map_changed=true"
+    },
+    {
+      "id": "hook-deleted-evals",
+      "expected": "exit 1 for required evals.md missing",
+      "status": 0,
+      "stdout": "",
+      "stderr": "warning: unable to access '<USER>/.config/git/ignore': Permission denied\n",
+      "detail": ""
+    },
+    {
+      "id": "checker-deleted-evals-control",
+      "expected": "exit 1",
+      "status": 1,
+      "stdout": "ERROR core-skill-authoring: evals.md missing\n3 skill(s) checked: 1 error(s), 0 warning(s)\n",
+      "stderr": "",
+      "detail": ""
+    },
+    {
+      "id": "hook-internal-rename-secret",
+      "expected": "exit 1",
+      "status": 0,
+      "stdout": "",
+      "stderr": "warning: unable to access '<USER>/.config/git/ignore': Permission denied\n",
+      "detail": "R098\tskills/01-self-development/core-skill-authoring/fixtures/original.txt\tskills/01-self-development/core-skill-authoring/fixtures/renamed.txt"
+    },
+    {
+      "id": "installer-git-failure-hidden",
+      "expected": "nonzero, no enabled claim",
+      "status": 0,
+      "stdout": "3 skill(s) linked into <AUDIT_TEMP>\\probe\\installed-nongit. Pre-commit scan enabled. Restart Muse, then run: muse skills list\n",
+      "stderr": "fatal: not in a git directory\n"
+    }
+  ],
+  "repeatVerification": [
+    {
+      "pass": 2,
+      "probes": 37,
+      "exitCodeMismatches": []
+    },
+    {
+      "pass": 3,
+      "probes": 37,
+      "exitCodeMismatches": []
+    }
+  ],
+  "powershellCommandParsing": [
+    {
+      "id": "profile-command-textclone-lint_py",
+      "errors": [],
+      "command": ".venv\\Scripts\\python.exe -m ruff check textclone tests"
+    },
+    {
+      "id": "profile-command-textclone-test_focused",
+      "errors": [],
+      "command": ".venv\\Scripts\\python.exe -m pytest {tests} -q"
+    },
+    {
+      "id": "profile-command-textclone-test_unit",
+      "errors": [],
+      "command": ".venv\\Scripts\\python.exe -m pytest tests/unit -q"
+    },
+    {
+      "id": "profile-command-textclone-test_faults",
+      "errors": [],
+      "command": ".venv\\Scripts\\python.exe -m pytest tests/fault_injection -q"
+    },
+    {
+      "id": "profile-command-textclone-test_all",
+      "errors": [],
+      "command": ".venv\\Scripts\\python.exe -m pytest -q"
+    },
+    {
+      "id": "profile-command-textclone-lint_web",
+      "errors": [],
+      "command": "npm.cmd run lint"
+    },
+    {
+      "id": "profile-command-textclone-typecheck_web",
+      "errors": [],
+      "command": ".\\node_modules\\.bin\\tsc.cmd --noEmit --incremental false"
+    },
+    {
+      "id": "profile-command-textclone-build_web",
+      "errors": [],
+      "command": "npm.cmd run build"
+    },
+    {
+      "id": "profile-command-orion-test_unit",
+      "errors": [
+        "The token '&&' is not a valid statement separator in this version."
+      ],
+      "command": "npm.cmd run build && npm.cmd test"
+    },
+    {
+      "id": "profile-command-orion-build_web",
+      "errors": [
+        "The token '&&' is not a valid statement separator in this version."
+      ],
+      "command": "cd web && npm.cmd run build"
+    }
+  ],
+  "junctionOwnership": {
+    "runs": 3,
+    "before": 1,
+    "after": 0,
+    "expectedAfter": 1
+  },
+  "windowsRepeats": {
+    "runs": 3,
+    "commandParseResultsIdentical": true,
+    "junctionReproduced": true
+  },
+  "mapAlternativeRouting": {
+    "before": "| `/core-skill-authoring` | P1 | v0.2.0 tested | Writing a new Muse skill or restructuring one in the skills repo: folder, frontmatter, the eight sections, evals and changelog. | `/core-skill-evals`, `/core-retro`, `/core-skill-maintenance`, `/core-project-profile` | — | — |",
+    "after": "| `/core-skill-authoring` | P1 | v0.2.0 tested | Writing a new Muse skill or restructuring one in the skills repo: folder, frontmatter, the eight sections, evals and changelog. | `/core-skill-evals`, `/core-retro`, `/core-skill-maintenance`, `/core-project-profile` | `/core-skill-evals`, `/core-retro`, `/core-skill-maintenance` | — |"
+  },
+  "unusedMetadata": [
+    {
+      "pass": 1,
+      "comparedOutputs": 14,
+      "identical": true
+    },
+    {
+      "pass": 2,
+      "comparedOutputs": 14,
+      "identical": true
+    },
+    {
+      "pass": 3,
+      "comparedOutputs": 14,
+      "identical": true
+    }
+  ],
+  "museMalformedFixtures": [
+    {
+      "case": "unclosed description quote",
+      "exit": 0,
+      "valid": true,
+      "diagnostics": []
+    },
+    {
+      "case": "duplicate description field",
+      "exit": 0,
+      "valid": true,
+      "diagnostics": []
+    }
+  ],
+  "limitations": [
+    "Requested repository doctor skill was not found; only TinyFish connectivity doctor was available.",
+    "Fresh-session R2/R3 and field-use R5 were not rerun.",
+    "Project applications were read as sources; their servers, databases and full test suites were not run."
+  ]
+}
