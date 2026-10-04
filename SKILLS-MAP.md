@@ -79,7 +79,7 @@ Start a session, work in isolation, prove changes, commit, pass gates, and know 
 | `/core-escalation` | P1 | planned | Unsure whether to proceed or ask: the action is hard to reverse, outside the task's scope, visible outside the project, or blocked. | — | `/core-recheck-loop`, `/core-codex-handoff` | — |
 | `/core-long-run` | P1 | planned | Running unattended for a long stretch (a phase, a batch, overnight): set time and retry budgets, stop conditions and status notes. | `/core-trace-report` | `/core-escalation`, `/core-report-writer` | — |
 | `/core-windows-env` | P1 | v0.1.0 draft | Running commands on Windows/PowerShell: npm.cmd, venv paths, quoting, junctions, env vars per block, stopping process trees, path length. | `/core-port-safety`, `/core-project-profile` | `/core-port-safety`, `/core-worktree`, `/core-project-profile` | — |
-| `/core-port-safety` | P1 | planned | Before starting or stopping any server: use only the project's owned ports, never touch forbidden ones (the user's live apps, Ollama), and free ports only from processes you started. | — | `/core-windows-env`, `/textclone-checkpoint-preview`, `/core-project-profile` | — |
+| `/core-port-safety` | P1 | v0.1.0 draft | Before starting or stopping any server: use only the project's owned ports, never touch forbidden ones (the user's live apps, Ollama), and free ports only from processes you started. | `/core-windows-env`, `/core-project-profile` | `/core-windows-env`, `/textclone-checkpoint-preview`, `/core-project-profile` | — |
 
 ## 3. Project setup and orientation
 
