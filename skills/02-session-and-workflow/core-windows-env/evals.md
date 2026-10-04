@@ -16,3 +16,4 @@
 | Date | Round | Should trigger | Should not | Changed |
 | --- | --- | --- | --- | --- |
 | 2026-10-03 | 1 | 5/5 | 1/1 exercised, 2 deferred (N1 → none, target core-port-safety unbuilt; N2 → none, target core-worktree unbuilt) | none — provisional; fresh session 01a10473-cf32-75b3-aa50-208a5464178f, muse-spark-1.3, HEAD a6583f6; re-run N1 when core-port-safety exists, N2 when core-worktree exists |
+| 2026-10-04 | 2 | 5/5 | 3/3 exercised, 0 deferred | none — pass (N1→core-port-safety, N2→core-worktree newly exercised); batch close, fresh session 01a1052c-1c8d-78a2-b250-eaf7dc4202c6, Lane A, HEAD c4aabfa (skill text unchanged since) |
