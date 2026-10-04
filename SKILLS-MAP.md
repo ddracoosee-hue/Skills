@@ -98,7 +98,7 @@ Write down what happened, what was decided and what comes next, for the user, Co
 
 | Call | Pri | Status | Use it for | Pairs with | Instead, use | In flows |
 | --- | --- | --- | --- | --- | --- | --- |
-| `/core-handoff-writer` | P1 | planned | Updating the project's handoff file after meaningful work or before stopping: dated scope, files, checks, findings, limits, next action. | — | `/core-report-writer`, `/core-codex-handoff`, `/core-roadmap-sync` | feature, bugfix, ui-change |
+| `/core-handoff-writer` | P1 | v0.1.0 tested | Updating the project's handoff file after meaningful work or before stopping: dated scope, files, checks, findings, limits, next action. | `/core-report-writer`, `/core-codex-handoff`, `/core-session-start` | `/core-report-writer`, `/core-codex-handoff`, `/core-roadmap-sync` | feature, bugfix, ui-change |
 | `/core-report-writer` | P2 | planned | Reporting the result of a task, phase or run to the user: what changed, why, checks with exact results, limits, next step. | — | `/core-handoff-writer`, `/core-codex-handoff`, `/core-release` | feature, release |
 | `/core-codex-handoff` | P1 | planned | Handing work to Codex (or another agent) for review or fixes: intended behaviour, commit or diff, files, checks run, uncertainties, and exactly where to look. | — | `/core-handoff-writer`, `/core-diff-self-review`, `/core-report-writer` | bugfix |
 | `/core-roadmap-sync` | P2 | planned | Work lands that a roadmap or plan tracks: tick the right steps with date and task id, and check plan files still match the code. | — | `/core-task-authoring`, `/core-handoff-writer`, `/core-scope-slicer` | — |

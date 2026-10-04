@@ -1,0 +1,18 @@
+# Evals: core-handoff-writer
+
+## Should trigger
+- T1: "update the handoff before you stop"
+- T2: "record today's work in AI_HANDOFF"
+- T3: "leave notes so the next session can pick up"
+- T4: "write the dated status for this phase in the handoff"
+- T5: "log what you changed and what's left"
+
+## Should not trigger
+- N1: "tell me what you did" → `core-report-writer`
+- N2: "ask Codex to review this" → `core-codex-handoff`
+- N3: "tick the roadmap steps" → `core-roadmap-sync`
+
+## Results
+| Date | Round | Should trigger | Should not | Changed |
+| --- | --- | --- | --- | --- |
+| 2026-10-03 | 1 | 5/5 | 0/0 exercised, 3 deferred | none — provisional; reruns: N1→core-report-writer, N2→core-codex-handoff, N3→core-roadmap-sync |
