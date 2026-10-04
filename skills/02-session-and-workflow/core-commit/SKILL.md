@@ -1,6 +1,6 @@
 ---
 name: core-commit
-description: "Use when committing work: stage by explicit path, write the project's commit format, check nothing private or unrelated is included. Not for pushing or merging (use `core-phase-gate`) or opening a worktree (use `core-worktree`)."
+description: "Use when committing work: stage by explicit path, write the project's commit format, check nothing private or unrelated is included. Never pushes unless you ask. Not for merging (use `core-phase-gate`) or opening a worktree (use `core-worktree`)."
 ---
 # core-commit
 
@@ -26,9 +26,9 @@ description: "Use when committing work: stage by explicit path, write the projec
 ## Steps
 1. Run `git status --short`. List your files and anything that is not yours. Done when: both lists are written down.
 2. Stage each of your files by explicit path. Never `git add .`, `-A`, or wildcards. Done when: `git diff --cached --name-only` shows only your files.
-3. Scan the staged content against `paths.private` and for secrets: `.env` values, tokens, keys, personal text, databases, logs. Use /core-privacy-guard when it is built; until then scan directly. Done when: every staged file passed and any hit stopped the commit.
+3. Scan the staged content against `paths.private` and for secrets: `.env` values, tokens, keys, personal text, databases, logs. Use /core-privacy-guard when it is built; until then scan directly. If `paths.private` is null, run the direct secret scan, report path coverage as unverified, and ask the user before committing. Done when: every staged file passed the scans and any hit stopped the commit; with null `paths.private` the user confirmed first.
 4. Read the staged diff once, adversarially: every hunk belongs to this task. For a large change, review with /core-diff-self-review when it is built. Done when: the full diff was read and each hunk is wanted.
-5. Read the commit format from `paths.tasks` (or `paths.rules`) and write the message in that format: summary first, then why and what. Done when: the message follows the format.
+5. Read the commit format from `paths.tasks` (or `paths.rules`) and write the message in that format: summary first, then why and what. If `paths.tasks` is null, read the format from `paths.rules` instead. Done when: the message follows the format.
 6. Commit and show `git log -1 --stat`. Done when: the log line shows the new commit.
 
 ## Decision rules
