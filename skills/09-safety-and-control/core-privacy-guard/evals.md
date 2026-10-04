@@ -16,3 +16,4 @@
 | Date | Round | Should trigger | Should not | Changed |
 | --- | --- | --- | --- | --- |
 | 2026-10-03 | 1 | 5/5 | 1/1 exercised, 2 deferred (N1 → none, target core-security-review unbuilt; N2 → none, target textclone-synthetic-fixtures unbuilt) | none — provisional; fresh session 01a10497-79f7-7f71-9a7a-9468afb0c529, muse-spark-1.3, HEAD f798095; re-run N1 when core-security-review exists, N2 when textclone-synthetic-fixtures exists |
+| 2026-10-04 | 2 | 5/5 | 1/1 exercised, 2 deferred | none — provisional; batch close, fresh session 01a1052c-1c8d-78a2-b250-eaf7dc4202c6, Lane A, HEAD c4aabfa (skill text unchanged since); reruns: N1→core-security-review, N2→textclone-synthetic-fixtures (both observed none) |
