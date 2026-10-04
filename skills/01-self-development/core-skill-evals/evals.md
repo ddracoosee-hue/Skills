@@ -19,3 +19,4 @@
 | 2026-10-02 | 2 | 5/5 | 1/3 (N2,N3 → none; targets core-retro, core-recheck-loop unbuilt, routing correct, no misfire) | none — re-run N2/N3 when targets exist |
 | 2026-10-02 | 3 | 5/5 | 1/1 exercised, 2 deferred (N2,N3 → none; targets core-retro, core-recheck-loop unbuilt, routing correct, no misfire) | none — provisional; re-run N2/N3 when targets exist; fresh-context subagent round |
 | 2026-10-03 | 1 (0.3.0) | 5/5 | 1/1 exercised, 2 deferred (N2,N3 → none; targets core-retro, core-recheck-loop unbuilt, routing correct) | none — provisional; fresh Muse session, HEAD 57ec25f, muse 1.4.2; re-run N2 when core-retro exists, N3 when core-recheck-loop exists |
+| 2026-10-04 | 2 (0.3.0) | 5/5 | 2/2 exercised, 1 deferred | none — provisional (N3→core-recheck-loop newly exercised); batch close, fresh session 01a1052c-1c8d-78a2-b250-eaf7dc4202c6, Lane A, HEAD c4aabfa; rerun: N2→core-retro (observed none) |
