@@ -24,8 +24,8 @@ description: "Use when work needs its own git worktree and branch: create, set u
 - The base: the project's integration branch unless the task names another.
 
 ## Steps
-1. Name the branch from `worktrees.branch_pattern` and the folder under `worktrees.root`. Never reuse another agent's worktree or branch. Done when: the branch and folder names are written down and neither exists yet.
-2. Create it: `git worktree add <root>\<slug> -b <branch> <base>`. Done when: `git worktree list` shows the new worktree.
+1. Name the branch from `worktrees.branch_pattern`. Build the folder by substituting the slug into `worktrees.root`: the pattern already holds the `<slug>` slot, so never append the slug again. If `worktrees.root`, `worktrees.branch_pattern`, or `worktrees.setup_ref` is null, stop and ask. Never reuse another agent's worktree or branch. Done when: the branch and folder names are written down and neither exists yet.
+2. Create it: `git worktree add <folder> -b <branch> <base>`, with the folder from step 1. Done when: `git worktree list` shows the new worktree.
 3. Run the project's setup from `worktrees.setup_ref` inside the worktree. If a setup step is unclear, read references/windows-setup.md. Done when: every setup step ran without error.
 4. Verify the code resolves inside the worktree. For Python: print the package path; the printed path must be inside the worktree. Otherwise STOP: the tests would validate the wrong code. Done when: the printed path is inside the worktree.
 5. Run `git status --short` in the worktree. Every setup item must be ignored. If anything new shows up, stop: it would be committed. Done when: status shows nothing new.
@@ -34,6 +34,7 @@ description: "Use when work needs its own git worktree and branch: create, set u
 
 ## Decision rules
 - If the task names no base, then use the project's integration branch.
+- If `paths.handoff` is null, then stop and ask where to record the worktree; never skip the record.
 - If another agent owns a worktree, then never reuse it; create your own.
 - If setup makes an untracked file appear, then stop; it would be committed.
 - If the setup uses `PYTHONPATH`, then set it in every command block; it does not persist.
