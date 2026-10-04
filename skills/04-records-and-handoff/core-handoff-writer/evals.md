@@ -16,3 +16,4 @@
 | Date | Round | Should trigger | Should not | Changed |
 | --- | --- | --- | --- | --- |
 | 2026-10-03 | 1 | 5/5 | 0/0 exercised, 3 deferred | none — provisional; reruns: N1→core-report-writer, N2→core-codex-handoff, N3→core-roadmap-sync |
+| 2026-10-03 | 2 | 5/5 | 0/0 exercised, 3 deferred | R4 null rule — provisional; fresh session 01a104eb-2323-72c0-854b-cb47c0a5b723, Lane A, HEAD a6dec9e + uncommitted R4 text; output trials/core-handoff-writer/r2-output-r4group.md; reruns: N1→core-report-writer, N2→core-codex-handoff, N3→core-roadmap-sync |

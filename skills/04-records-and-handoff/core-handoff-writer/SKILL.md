@@ -23,7 +23,7 @@ description: "Use when updating the project's handoff file after meaningful work
 - For a review handoff: intended behavior, uncertainties, areas to inspect, the commit or uncommitted diff.
 
 ## Steps
-1. Re-read `paths.handoff` right before editing. Keep every unresolved note from other agents. Done when: the latest handoff was read and no foreign note is missing.
+1. Re-read `paths.handoff` right before editing. If `paths.handoff` is null, stop and ask where the handoff lives. Keep every unresolved note from other agents. Done when: the latest handoff was read and no foreign note is missing.
 2. Add a dated section: `## <agent> <topic> (YYYY-MM-DD)`. Done when: the new section exists with today's date.
 3. Write: scope; branch, worktree and commit (or "uncommitted diff of <files>"); files changed; checks with exact results; findings; limits; next action. Done when: all seven items are present.
 4. List completed changes and proposals in separate lists. Done when: no proposal sits in the completed list and vice versa.
