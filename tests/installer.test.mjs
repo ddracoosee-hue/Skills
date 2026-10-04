@@ -50,6 +50,19 @@ function countLinks(target, repoDir) {
   }
   return n;
 }
+// Skill folders the installer should link: skills/<category>/<name>/SKILL.md.
+// Counted from the copied repo so the expectation tracks the library as it grows.
+function countRepoSkills(repoDir) {
+  let n = 0;
+  const root = join(repoDir, 'skills');
+  for (const c of readdirSync(root, { withFileTypes: true })) {
+    if (!c.isDirectory()) continue;
+    for (const s of readdirSync(join(root, c.name), { withFileTypes: true })) {
+      if (s.isDirectory() && existsSync(join(root, c.name, s.name, 'SKILL.md'))) n++;
+    }
+  }
+  return n;
+}
 
 export const cases = [
   {
@@ -87,7 +100,7 @@ export const cases = [
       assertEq(readFileSync(join(target, 'realdir', 'keep.txt'), 'utf8'), 'real contents\n', 'real dir contents untouched');
       assertEq(readFileSync(join(target, 'keep.txt'), 'utf8'), 'top contents\n', 'target file untouched');
       assertEq(readFileSync(join(sibling, 'live', 'keep.txt'), 'utf8'), 'sibling contents\n', 'sibling target contents untouched');
-      assertEq(countLinks(target, repo), 3 + 3, 'three skill links plus the three surviving junctions');
+      assertEq(countLinks(target, repo), countRepoSkills(repo) + 3, 'one link per repo skill plus the three surviving junctions');
     },
   },
   {
@@ -148,7 +161,7 @@ export const cases = [
   },
   {
     id: 'F10b',
-    name: 'normal and repeat installation link three skills (control)',
+    name: 'normal and repeat installation link every repo skill (control)',
     run: async () => {
       const repo = makeInstallRepo('f10b');
       await initGit(repo);
@@ -156,7 +169,7 @@ export const cases = [
       for (const round of [1, 2]) {
         const r = await runInstaller(repo, target);
         assertEq(r.exit, 0, `install round ${round} must succeed: ${(r.stdout + r.stderr).slice(0, 500)}`);
-        assertEq(countLinks(target, repo), 3, `round ${round} must leave exactly three links`);
+        assertEq(countLinks(target, repo), countRepoSkills(repo), `round ${round} must leave exactly one link per repo skill`);
       }
       const hooks = await git(repo, 'config', 'core.hooksPath');
       assertEq(hooks.stdout.trim(), '.githooks', 'normal install enables the hook path');
