@@ -24,13 +24,15 @@ description: "Use after a change passes once: re-run the focused tests, unit sui
 
 ## Steps
 1. List the focused tests: the tests this change added or touched. Done when: the list is written down.
-2. Run `commands.test_focused` with the focused tests, `commands.test_unit`, and `commands.lint_py` — plus the web commands when web files changed — until `recheck.consecutive_passes` consecutive clean passes. See references/loop-script.md for the loop shape. Done when: the counter reached consecutive_passes with zero failures.
+2. Check `recheck.consecutive_passes`: if it is null or not positive, stop and ask the user for the required pass count; never run a zero-pass loop. Otherwise run `commands.test_focused` with the focused tests, `commands.test_unit`, and `commands.lint_py` — plus the web commands when web files changed — until that many consecutive clean passes. See references/loop-script.md for the loop shape. Done when: the counter reached consecutive_passes with zero failures.
 3. On any failure: reset the counter to 0, diagnose the failure from its output, fix the cause, and restart the loop. Done when: the loop restarted at 0 after a fix.
 4. After the loop passes: run `git diff --check`. Done when: it exits 0.
-5. Stop after `recheck.max_fix_cycles` failed cycles and report; never run past the cap. Done when: the report names cycles used and the stopping reason.
+5. Stop after `recheck.max_fix_cycles` failed cycles and report; never run past the cap. If `max_fix_cycles` is null, propose an explicit default cap to the user, proceed only after they confirm it, and report the confirmed cap. Done when: the report names cycles used, the cap, and the stopping reason.
 
 ## Decision rules
 - If a failure matches a `known_flakes` signature, then record it and continue; never patch around it in this task.
+- If `known_flakes` is null, then no signature can match; report flakes as unchecked.
+- If every loop command is null, then stop and ask instead of running an empty loop.
 - If a failure is in code you did not touch, then run /core-flake-triage before fixing anything.
 - If a check fails, then never skip, xfail, or loosen an assertion to get green.
 
@@ -41,6 +43,7 @@ description: "Use after a change passes once: re-run the focused tests, unit sui
 
 ## Evidence to report
 - Each run: the command with its pass/fail counts.
+- Every null command skipped, by key.
 - Cycles used and the stopping reason.
 - The known flakes seen, if any.
 - Anything not verified and why.
