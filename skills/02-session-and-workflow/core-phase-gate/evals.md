@@ -17,3 +17,4 @@
 | --- | --- | --- | --- | --- |
 | 2026-10-04 | 1 | 5/5 | 2/2 exercised, 1 deferred | none — provisional; rerun: N2→core-report-writer |
 | 2026-10-03 | 2 | 5/5 | 2/2 exercised, 1 deferred | R4 null rules — provisional; fresh session 01a104ea-adb3-72f0-8768-53499567b485, Lane A, HEAD a6dec9e + uncommitted R4 text; output trials/core-phase-gate/r2-output-r4group.md; rerun: N2→core-report-writer (observed none) |
+| 2026-10-04 | 3 | 5/5 | 2/2 exercised, 1 deferred | none — provisional; batch close, fresh session 01a1052c-1c8d-78a2-b250-eaf7dc4202c6, Lane A, HEAD c4aabfa (skill text unchanged since); rerun: N2→core-report-writer (observed none) |
