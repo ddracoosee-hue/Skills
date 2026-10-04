@@ -18,3 +18,4 @@
 | 2026-10-02 | 1 | 5/5 | 1/3 (N1,N2 → none; targets core-skill-evals, core-retro unbuilt, routing correct, no misfire) | none — re-run N1 at batch close, N2 when core-retro exists |
 | 2026-10-02 | 2 | 5/5 | 2/3 (N1 → core-skill-evals ✓; N2 → none, target core-retro unbuilt, routing correct) | none — re-run N2 when core-retro exists |
 | 2026-10-02 | 3 | 5/5 | 2/2 exercised, 1 deferred (N2 → none, target core-retro unbuilt, routing correct) | none — provisional; re-run N2 when core-retro exists; fresh-context subagent round |
+| 2026-10-03 | 1 (0.3.0) | 5/5 | 2/2 exercised, 1 deferred (N2 → none, target core-retro unbuilt, routing correct) | none — provisional; fresh Muse session, HEAD 57ec25f, muse 1.4.2; re-run N2 when core-retro exists |
