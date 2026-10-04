@@ -30,6 +30,8 @@ description: "Use when unsure whether to proceed or ask: the action is hard to r
 
 ## Decision rules
 - If a project stop condition applies, then stop; it always wins.
+- If neither `paths.tasks` nor `paths.rules` names a source for stop conditions, then report stop conditions as unknown.
+- If `paths.handoff` is null, then stop and ask where to record the open question.
 - If the user approved a different task, then that approval does not carry to this one.
 - If you only believe the user would agree, then that is not approval; ask.
 
