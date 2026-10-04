@@ -39,6 +39,8 @@ description: "Use at the start of any coding session or after a restart or conte
 - If another agent's worktree is active, then do not touch its branch.
 - If the task's files hold uncommitted edits by someone else, then ask before editing them.
 - If the profile `lane` is null or the project has no `LANES.md`, then write "lane unverified" in the scope statement and ask the user to confirm the lane before touching project data.
+- If `paths.rules` is null, then no rules files are listed; note it and continue with the nested-rules check.
+- If `paths.handoff` is null, then no handoff is designated; note it and continue.
 - If a rules file or the handoff is missing, then note it as missing and continue; never invent its contents.
 - If the task is unclear after scoping, then ask one precise question and continue independent work meanwhile.
 
