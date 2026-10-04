@@ -9,4 +9,3 @@ cycle 2 (flagged exactly two, clean file silent; cycle 1 failed step 1,
 fixed with lane fallback, no-LANES.md fallback, step-5 no-leak case).
 No stable evaluator tag: bootstrap review required, status stays draft.
 Because: evals.md Results round 1, TRIALS.md R3 fresh trial runs 1-2.
-Accepted by user in the build session (2026-10-03).
